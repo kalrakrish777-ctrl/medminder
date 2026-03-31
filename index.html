@@ -4,23 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="MedMinder - A calming medication reminder app for elderly users">
-    <meta name="theme-color" content="#4A9B9B">
+    <meta name="theme-color" content="#5B8A8A">
     <title>MedMinder - Medication Tracker</title>
     <link rel="manifest" href="manifest.json">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>">
     <style>
         :root {
-            --primary: #4A9B9B;
-            --primary-dark: #3A7A7A;
-            --background: #F5F9F8;
+            --primary: #5B8A8A;
+            --primary-light: #7AADAD;
+            --primary-dark: #4A7575;
+            --background: #F0F5F5;
+            --background-gradient: linear-gradient(135deg, #E8F4F4 0%, #F5FAFA 50%, #EEF4F4 100%);
             --card: #FFFFFF;
-            --text: #2D3436;
-            --text-light: #636E72;
-            --success: #6ABF9E;
+            --card-shadow: 0 8px 32px rgba(91, 138, 138, 0.12);
+            --card-shadow-hover: 0 12px 40px rgba(91, 138, 138, 0.2);
+            --text: #2D3A3A;
+            --text-light: #6B7B7B;
+            --text-muted: #9AADA8;
+            --success: #4CAF7D;
+            --success-light: #E8F7EF;
             --pending: #7FB3D5;
-            --overdue: #D4A574;
-            --shadow: 0 4px 12px rgba(0,0,0,0.08);
-            --radius: 12px;
+            --pending-light: #EAF3FA;
+            --overdue: #E5A855;
+            --overdue-light: #FDF6E8;
+            --danger: #E57373;
+            --danger-light: #FDEEED;
+            --border: #E2E8E8;
+            --radius: 20px;
+            --radius-sm: 12px;
         }
 
         * {
@@ -30,258 +44,463 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            font-size: 18px;
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 17px;
             line-height: 1.6;
             color: var(--text);
             background: var(--background);
+            background-image: var(--background-gradient);
             min-height: 100vh;
-            padding-bottom: 100px;
+            padding-bottom: 140px;
         }
 
         .container {
-            max-width: 600px;
+            max-width: 640px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
         header {
-            background: var(--card);
-            padding: 24px 20px;
-            box-shadow: var(--shadow);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 28px 24px;
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid rgba(91, 138, 138, 0.1);
         }
 
-        .header-content {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            font-size: 28px;
-            color: var(--primary);
+        .header-top {
             display: flex;
             align-items: center;
-            gap: 12px;
+            justify-content: space-between;
+            margin-bottom: 20px;
         }
 
-        .progress-section {
-            margin-top: 16px;
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
-        .progress-text {
-            font-size: 16px;
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            box-shadow: 0 4px 12px rgba(91, 138, 138, 0.3);
+        }
+
+        .logo h1 {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: none;
+            background: var(--background);
             color: var(--text-light);
-            margin-bottom: 8px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .progress-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: var(--radius);
+            padding: 24px;
+            color: white;
+            box-shadow: 0 8px 24px rgba(91, 138, 138, 0.3);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .progress-label {
+            font-size: 15px;
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .progress-value {
+            font-size: 32px;
+            font-weight: 800;
         }
 
         .progress-bar {
-            height: 12px;
-            background: #E8F0F0;
-            border-radius: 6px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
             overflow: hidden;
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--success), var(--primary));
-            border-radius: 6px;
-            transition: width 0.4s ease;
+            background: white;
+            border-radius: 5px;
+            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .progress-subtext {
+            margin-top: 12px;
+            font-size: 14px;
+            opacity: 0.85;
+        }
+
+        .emergency-section {
+            margin-top: 24px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .emergency-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 14px;
+        }
+
+        .emergency-contacts {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .emergency-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 12px;
+            background: var(--card);
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            color: var(--text);
+        }
+
+        .emergency-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: var(--card-shadow);
+        }
+
+        .emergency-btn .icon {
+            font-size: 28px;
+        }
+
+        .emergency-btn .label {
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .emergency-btn.family { border-color: #B8D4E3; }
+        .emergency-btn.family:hover { background: #F0F7FC; border-color: #7FB3D5; }
+        .emergency-btn.doctor { border-color: #D4E3B8; }
+        .emergency-btn.doctor:hover { background: #F7FCF0; border-color: #A5C980; }
+        .emergency-btn.pharmacy { border-color: #E3D4B8; }
+        .emergency-btn.pharmacy:hover { background: #FCF8F0; border-color: #E5A855; }
 
         .tabs {
             display: flex;
             gap: 8px;
-            padding: 20px;
-            justify-content: center;
+            padding: 24px 0;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+
+        .tabs::-webkit-scrollbar { display: none; }
 
         .tab-btn {
             flex: 1;
-            max-width: 200px;
-            padding: 16px 24px;
-            font-size: 18px;
-            font-weight: 600;
-            border: 2px solid var(--primary);
+            min-width: 100px;
+            padding: 16px 20px;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
             background: var(--card);
-            color: var(--primary);
-            border-radius: var(--radius);
+            color: var(--text-light);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
         }
 
         .tab-btn:hover {
-            background: #E8F4F4;
+            color: var(--primary);
+            transform: translateY(-2px);
         }
 
         .tab-btn.active {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
+            box-shadow: 0 4px 16px rgba(91, 138, 138, 0.3);
         }
 
+        .tab-btn .emoji { font-size: 20px; }
+
         .view-container {
-            padding: 0 20px 20px;
+            padding-bottom: 20px;
         }
 
         .view {
             display: none;
+            animation: fadeSlideIn 0.4s ease;
         }
 
-        .view.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
+        .view.active { display: block; }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .time-section {
-            margin-bottom: 24px;
+            margin-bottom: 28px;
         }
 
         .time-section-header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 12px 16px;
-            background: var(--primary);
+            gap: 14px;
+            padding: 16px 20px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            border-radius: var(--radius);
-            margin-bottom: 12px;
-            font-weight: 600;
+            border-radius: var(--radius-sm);
+            margin-bottom: 16px;
+            box-shadow: 0 4px 12px rgba(91, 138, 138, 0.2);
         }
 
         .time-section-header .icon {
-            font-size: 24px;
+            font-size: 28px;
+        }
+
+        .time-section-header .label {
+            font-size: 18px;
+            font-weight: 700;
         }
 
         .time-range {
-            font-size: 14px;
-            opacity: 0.85;
             margin-left: auto;
+            font-size: 13px;
+            opacity: 0.85;
+            font-weight: 600;
         }
 
         .medication-card {
             background: var(--card);
             border-radius: var(--radius);
-            padding: 20px;
-            margin-bottom: 12px;
-            box-shadow: var(--shadow);
-            border-left: 4px solid var(--pending);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            padding: 0;
+            margin-bottom: 16px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border);
         }
 
         .medication-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+            transform: translateY(-4px);
+            box-shadow: var(--card-shadow-hover);
         }
 
         .medication-card.taken {
-            border-left-color: var(--success);
-            opacity: 0.8;
+            border-color: var(--success);
+            background: linear-gradient(to bottom, var(--success-light) 0%, var(--card) 100%);
         }
 
         .medication-card.overdue {
-            border-left-color: var(--overdue);
+            border-color: var(--overdue);
+            background: linear-gradient(to bottom, var(--overdue-light) 0%, var(--card) 100%);
         }
 
         .med-header {
             display: flex;
             align-items: flex-start;
-            gap: 12px;
-            margin-bottom: 12px;
+            gap: 16px;
+            padding: 20px;
         }
 
         .med-icon {
-            font-size: 32px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
             flex-shrink: 0;
         }
 
-        .med-info {
-            flex: 1;
-        }
+        .med-icon.color-blue { background: linear-gradient(135deg, #7FB3D5, #A8D0E6); }
+        .med-icon.color-green { background: linear-gradient(135deg, #6ABF9E, #8FD4B8); }
+        .med-icon.color-purple { background: linear-gradient(135deg, #B39DDB, #D1C4E9); }
+        .med-icon.color-orange { background: linear-gradient(135deg, #FFB74D, #FFD54F); }
+        .med-icon.color-pink { background: linear-gradient(135deg, #F48FB1, #F8BBD9); }
+        .med-icon.color-teal { background: linear-gradient(135deg, #5B8A8A, #7AADAD); }
+
+        .med-info { flex: 1; min-width: 0; }
 
         .med-name {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: var(--text);
+            margin-bottom: 4px;
         }
 
         .med-dosage {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-light);
+            margin-bottom: 4px;
         }
 
-        .med-time {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            background: #E8F4F4;
-            padding: 6px 12px;
+        .med-frequency {
+            font-size: 13px;
+            color: var(--text-muted);
+            display: inline-block;
+            padding: 4px 10px;
+            background: var(--background);
             border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .med-notes {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: var(--background);
+            border-radius: var(--radius-sm);
+            font-size: 14px;
+            color: var(--text-light);
+            border-left: 3px solid var(--primary);
+        }
+
+        .med-notes strong {
+            color: var(--text);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .med-times {
+            padding: 0 20px 20px;
+        }
+
+        .time-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .time-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .time-icon {
+            font-size: 18px;
+        }
+
+        .time-label {
             font-size: 16px;
             font-weight: 600;
-            color: var(--primary-dark);
-            margin-top: 8px;
-        }
-
-        .med-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+            color: var(--text);
         }
 
         .btn {
-            padding: 14px 24px;
-            font-size: 18px;
-            font-weight: 600;
+            padding: 12px 20px;
+            font-size: 15px;
+            font-weight: 700;
             border: none;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.2s ease;
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
+            font-family: inherit;
         }
 
         .btn-primary {
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
+            box-shadow: 0 4px 12px rgba(91, 138, 138, 0.3);
         }
 
         .btn-primary:hover {
-            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(91, 138, 138, 0.4);
         }
 
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, #6ECF8F 100%);
             color: white;
+            box-shadow: 0 4px 12px rgba(76, 175, 125, 0.3);
         }
 
         .btn-success:hover {
-            background: #5AAF8E;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(76, 175, 125, 0.4);
         }
 
         .btn-secondary {
-            background: #E8F0F0;
+            background: var(--background);
             color: var(--text);
         }
 
         .btn-secondary:hover {
-            background: #D8E8E8;
+            background: #E5EBEB;
         }
 
         .btn-danger {
-            background: #F8E0E0;
-            color: #C0392B;
+            background: var(--danger-light);
+            color: var(--danger);
         }
 
         .btn-danger:hover {
-            background: #F0D0D0;
+            background: #FCD5D5;
         }
 
         .btn-small {
@@ -294,53 +513,74 @@
             color: white;
         }
 
-        .btn-undo {
-            background: #E8F0F0;
-            color: var(--text-light);
+        .btn-taken.taken-state {
+            background: var(--success-light);
+            color: var(--success);
+            border: 2px solid var(--success);
         }
 
-        .fab {
+        .card-actions {
+            display: flex;
+            gap: 8px;
+            padding: 16px 20px;
+            background: var(--background);
+            border-top: 1px solid var(--border);
+        }
+
+        .card-actions .btn {
+            flex: 1;
+        }
+
+        .fab-container {
             position: fixed;
             bottom: 24px;
             right: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+            z-index: 100;
+        }
+
+        .fab-label {
+            background: var(--text);
+            color: white;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.3s ease;
+            pointer-events: none;
+        }
+
+        .fab {
             width: 64px;
             height: 64px;
             border-radius: 50%;
-            background: var(--primary);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             font-size: 32px;
             border: none;
             cursor: pointer;
-            box-shadow: 0 4px 16px rgba(74, 155, 155, 0.4);
-            transition: all 0.3s ease;
+            box-shadow: 0 6px 24px rgba(91, 138, 138, 0.4);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 100;
         }
 
         .fab:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 20px rgba(74, 155, 155, 0.5);
+            transform: scale(1.1) rotate(90deg);
+            box-shadow: 0 8px 32px rgba(91, 138, 138, 0.5);
         }
 
-        .fab-label {
-            position: absolute;
-            bottom: 75px;
-            right: 0;
-            background: var(--text);
-            color: white;
-            padding: 8px 16px;
-            border-radius: 8px;
-            font-size: 14px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s ease;
-        }
-
-        .fab:hover .fab-label {
+        .fab:hover + .fab-label,
+        .fab-container:hover .fab-label {
             opacity: 1;
+            transform: translateX(0);
         }
 
         .modal-overlay {
@@ -350,11 +590,17 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(45, 58, 58, 0.6);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             z-index: 200;
-            align-items: center;
+            align-items: flex-end;
             justify-content: center;
             padding: 20px;
+        }
+
+        @media (min-width: 480px) {
+            .modal-overlay { align-items: center; }
         }
 
         .modal-overlay.active {
@@ -364,80 +610,242 @@
 
         .modal {
             background: var(--card);
-            border-radius: var(--radius);
+            border-radius: var(--radius) var(--radius) 0 0;
             padding: 32px;
             width: 100%;
-            max-width: 480px;
+            max-width: 520px;
             max-height: 90vh;
             overflow-y: auto;
-            animation: slideUp 0.3s ease;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @media (min-width: 480px) {
+            .modal { border-radius: var(--radius); }
         }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(100px); }
             to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 28px;
         }
 
         .modal h2 {
             font-size: 24px;
-            color: var(--primary);
-            margin-bottom: 24px;
+            font-weight: 800;
+            color: var(--text);
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: none;
+            background: var(--background);
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .modal-close:hover {
+            background: var(--danger-light);
+            color: var(--danger);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         .form-group label {
             display: block;
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 700;
             color: var(--text);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .form-group input,
-        .form-group select {
+        .form-group select,
+        .form-group textarea {
             width: 100%;
-            padding: 14px 16px;
-            font-size: 18px;
-            border: 2px solid #E0E0E0;
-            border-radius: var(--radius);
-            background: white;
+            padding: 16px 18px;
+            font-size: 17px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--card);
             color: var(--text);
-            transition: border-color 0.2s ease;
+            transition: all 0.2s ease;
+            font-family: inherit;
         }
 
         .form-group input:focus,
-        .form-group select:focus {
+        .form-group select:focus,
+        .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(91, 138, 138, 0.1);
         }
 
-        .time-inputs {
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .color-tags {
             display: flex;
+            gap: 10px;
             flex-wrap: wrap;
-            gap: 12px;
         }
 
-        .time-inputs input {
-            flex: 1;
-            min-width: 100px;
-        }
-
-        .add-time-btn {
-            padding: 14px 20px;
-            background: #E8F4F4;
-            border: 2px dashed var(--primary);
-            border-radius: var(--radius);
-            color: var(--primary);
-            font-size: 16px;
+        .color-tag {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 3px solid transparent;
             cursor: pointer;
             transition: all 0.2s ease;
         }
 
+        .color-tag:hover { transform: scale(1.1); }
+        .color-tag.selected { border-color: var(--text); transform: scale(1.1); }
+
+        .color-tag.blue { background: linear-gradient(135deg, #7FB3D5, #A8D0E6); }
+        .color-tag.green { background: linear-gradient(135deg, #6ABF9E, #8FD4B8); }
+        .color-tag.purple { background: linear-gradient(135deg, #B39DDB, #D1C4E9); }
+        .color-tag.orange { background: linear-gradient(135deg, #FFB74D, #FFD54F); }
+        .color-tag.pink { background: linear-gradient(135deg, #F48FB1, #F8BBD9); }
+        .color-tag.teal { background: linear-gradient(135deg, #5B8A8A, #7AADAD); }
+
+        .time-inputs {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .time-input-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .time-input-row input {
+            flex: 1;
+        }
+
+        .remove-time {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: none;
+            background: var(--danger-light);
+            color: var(--danger);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .remove-time:hover {
+            background: var(--danger);
+            color: white;
+        }
+
+        .add-time-btn {
+            padding: 16px;
+            background: transparent;
+            border: 2px dashed var(--border);
+            border-radius: var(--radius-sm);
+            color: var(--text-light);
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+
         .add-time-btn:hover {
-            background: #D8E8E8;
+            border-color: var(--primary);
+            color: var(--primary);
+            background: var(--success-light);
+        }
+
+        .refill-section {
+            padding: 20px;
+            background: linear-gradient(135deg, #FFF9E6 0%, #FFFDF5 100%);
+            border: 2px solid #FFE082;
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+        }
+
+        .refill-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .refill-icon { font-size: 24px; }
+
+        .refill-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #B8860B;
+        }
+
+        .refill-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .refill-inputs label {
+            font-size: 13px;
+            color: var(--text-light);
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .refill-inputs input {
+            width: 100%;
+            padding: 12px 14px;
+            font-size: 16px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+        }
+
+        .refill-warning {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            background: var(--overdue-light);
+            border-radius: var(--radius-sm);
+            margin-top: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #B8860B;
         }
 
         .modal-actions {
@@ -446,118 +854,335 @@
             margin-top: 32px;
         }
 
-        .modal-actions .btn {
-            flex: 1;
-        }
+        .modal-actions .btn { flex: 1; }
 
         .empty-state {
             text-align: center;
-            padding: 60px 20px;
-            color: var(--text-light);
+            padding: 60px 30px;
         }
 
         .empty-state .icon {
-            font-size: 64px;
-            margin-bottom: 16px;
+            font-size: 80px;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
         }
 
         .empty-state h3 {
-            font-size: 22px;
-            margin-bottom: 8px;
+            font-size: 24px;
+            font-weight: 800;
             color: var(--text);
+            margin-bottom: 10px;
         }
 
         .empty-state p {
             font-size: 16px;
+            color: var(--text-light);
         }
 
         .check-icon {
-            color: var(--success);
-            font-size: 20px;
-        }
-
-        .status-badge {
-            display: inline-flex;
+            width: 28px;
+            height: 28px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 4px 12px;
-            border-radius: 12px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-left: 8px;
+            justify-content: center;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
         }
 
-        .status-badge.taken {
-            background: #E8F8F0;
-            color: var(--success);
+        /* Weekly Calendar Styles */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 8px;
+        }
+
+        .calendar-nav button {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-nav button:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+
+        .calendar-title {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            margin-bottom: 24px;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            padding: 8px 0;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            background: var(--card);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .calendar-day:hover {
+            border-color: var(--primary);
+        }
+
+        .calendar-day.today {
+            border-color: var(--primary);
+            background: var(--success-light);
+        }
+
+        .calendar-day.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .calendar-day .day-num {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .calendar-day .day-indicator {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            margin-top: 4px;
+        }
+
+        .calendar-day .day-indicator.has-meds { background: var(--primary); }
+        .calendar-day .day-indicator.all-taken { background: var(--success); }
+
+        .selected-day-info {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+        }
+
+        .selected-day-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .history-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .history-item:last-child { border-bottom: none; }
+
+        .history-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .history-icon.taken { background: var(--success-light); }
+        .history-icon.missed { background: var(--danger-light); }
+
+        .history-content { flex: 1; }
+
+        .history-med {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .history-time {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+
+        .history-date {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Emergency Contacts Modal */
+        .contacts-form .contact-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+            align-items: flex-end;
+        }
+
+        .contacts-form .contact-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .contacts-form .contact-type {
+            width: 60px;
+        }
+
+        .contact-icon-select {
+            width: 100%;
+            padding: 14px;
+            font-size: 24px;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: var(--card);
+            cursor: pointer;
+        }
+
+        /* Print Styles */
+        @media print {
+            body { background: white; }
+            header, .tabs, .fab-container, .modal-overlay, .card-actions, .med-times { display: none !important; }
+            .medication-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+            .container { max-width: 100%; }
         }
 
         @media (max-width: 480px) {
-            .tabs {
-                padding: 16px;
-            }
-
-            .tab-btn {
-                padding: 14px 16px;
-                font-size: 16px;
-            }
-
-            .modal {
-                padding: 24px;
-            }
-
-            .btn {
-                padding: 12px 20px;
-                font-size: 16px;
-            }
-
-            .fab {
-                bottom: 20px;
-                right: 20px;
-                width: 56px;
-                height: 56px;
-            }
+            header { padding: 20px 16px; }
+            .logo h1 { font-size: 22px; }
+            .logo-icon { width: 44px; height: 44px; font-size: 24px; border-radius: 12px; }
+            .progress-card { padding: 20px; }
+            .progress-value { font-size: 28px; }
+            .emergency-contacts { grid-template-columns: repeat(3, 1fr); gap: 8px; }
+            .emergency-btn { padding: 12px 8px; }
+            .emergency-btn .icon { font-size: 24px; }
+            .emergency-btn .label { font-size: 11px; }
+            .tabs { padding: 16px 0; }
+            .tab-btn { padding: 14px 16px; font-size: 14px; }
+            .modal { padding: 24px; }
+            .fab { width: 56px; height: 56px; font-size: 28px; }
+            .refill-inputs { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
     <header>
-        <div class="header-content">
-            <h1>
-                <span>💊</span>
-                MedMinder
-            </h1>
-            <div class="progress-section">
-                <p class="progress-text"><span id="progress-count">0</span> of <span id="progress-total">0</span> medications taken today</p>
+        <div class="container">
+            <div class="header-top">
+                <div class="logo">
+                    <div class="logo-icon">💊</div>
+                    <h1>MedMinder</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" onclick="openContactsModal()" title="Emergency Contacts">📞</button>
+                    <button class="icon-btn" onclick="printMedications()" title="Print List">🖨️</button>
+                    <button class="icon-btn" onclick="openHistoryModal()" title="History">📋</button>
+                </div>
+            </div>
+            <div class="progress-card">
+                <div class="progress-header">
+                    <span class="progress-label">Today's Progress</span>
+                    <span class="progress-value"><span id="progress-count">0</span>/<span id="progress-total">0</span></span>
+                </div>
                 <div class="progress-bar">
                     <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <p class="progress-subtext" id="progress-message">Add your medications to get started</p>
+            </div>
+            <div class="emergency-section">
+                <p class="emergency-title">Quick Emergency Contacts</p>
+                <div class="emergency-contacts">
+                    <a href="#" class="emergency-btn family" id="contact-family" onclick="callContact('family')">
+                        <span class="icon">👨‍👩‍👧</span>
+                        <span class="label">Family</span>
+                    </a>
+                    <a href="#" class="emergency-btn doctor" id="contact-doctor" onclick="callContact('doctor')">
+                        <span class="icon">👨‍⚕️</span>
+                        <span class="label">Doctor</span>
+                    </a>
+                    <a href="#" class="emergency-btn pharmacy" id="contact-pharmacy" onclick="callContact('pharmacy')">
+                        <span class="icon">🏥</span>
+                        <span class="label">Pharmacy</span>
+                    </a>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="tabs" role="tablist">
-        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="time-view" id="tab-time" onclick="switchView('time')">
-            By Time
-        </button>
-        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="list-view" id="tab-list" onclick="switchView('list')">
-            By List
-        </button>
+    <div class="container">
+        <div class="tabs" role="tablist">
+            <button class="tab-btn active" role="tab" onclick="switchView('time')">
+                <span class="emoji">🕐</span>
+                <span>By Time</span>
+            </button>
+            <button class="tab-btn" role="tab" onclick="switchView('list')">
+                <span class="emoji">📝</span>
+                <span>By List</span>
+            </button>
+            <button class="tab-btn" role="tab" onclick="switchView('calendar')">
+                <span class="emoji">📅</span>
+                <span>Calendar</span>
+            </button>
+        </div>
+
+        <div class="view-container">
+            <div class="view active" id="time-view"></div>
+            <div class="view" id="list-view"></div>
+            <div class="view" id="calendar-view"></div>
+        </div>
     </div>
 
-    <div class="view-container">
-        <div class="view active" id="time-view" role="tabpanel" aria-labelledby="tab-time"></div>
-        <div class="view" id="list-view" role="tabpanel" aria-labelledby="tab-list"></div>
-    </div>
-
-    <button class="fab" onclick="openModal()" aria-label="Add medication">
-        <span>+</span>
+    <div class="fab-container">
         <span class="fab-label">Add Medication</span>
-    </button>
+        <button class="fab" onclick="openMedModal()" aria-label="Add medication">+</button>
+    </div>
 
-    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
-        <div class="modal" role="dialog" aria-labelledby="modal-title">
-            <h2 id="modal-title">Add Medication</h2>
+    <!-- Medication Modal -->
+    <div class="modal-overlay" id="med-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="med-modal-title">Add Medication</h2>
+                <button class="modal-close" onclick="closeMedModal()">×</button>
+            </div>
             <form id="med-form" onsubmit="saveMedication(event)">
                 <input type="hidden" id="med-id">
                 
@@ -572,9 +1197,22 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Color Tag</label>
+                    <div class="color-tags">
+                        <div class="color-tag blue selected" data-color="blue" onclick="selectColor(this)"></div>
+                        <div class="color-tag green" data-color="green" onclick="selectColor(this)"></div>
+                        <div class="color-tag purple" data-color="purple" onclick="selectColor(this)"></div>
+                        <div class="color-tag orange" data-color="orange" onclick="selectColor(this)"></div>
+                        <div class="color-tag pink" data-color="pink" onclick="selectColor(this)"></div>
+                        <div class="color-tag teal" data-color="teal" onclick="selectColor(this)"></div>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="med-frequency">Frequency</label>
                     <select id="med-frequency">
                         <option value="daily">Daily</option>
+                        <option value="twice-daily">Twice Daily</option>
                         <option value="weekly">Weekly</option>
                         <option value="asneeded">As Needed</option>
                     </select>
@@ -583,25 +1221,148 @@
                 <div class="form-group">
                     <label>Time(s) to Take</label>
                     <div class="time-inputs" id="time-inputs">
-                        <input type="time" class="time-input" value="08:00">
+                        <div class="time-input-row">
+                            <input type="time" class="time-input" value="08:00">
+                        </div>
                     </div>
-                    <button type="button" class="add-time-btn" onclick="addTimeInput()" style="margin-top: 12px;">
+                    <button type="button" class="add-time-btn" onclick="addTimeInput()">
                         + Add Another Time
                     </button>
                 </div>
 
+                <div class="form-group">
+                    <label for="med-notes">Notes / Instructions</label>
+                    <textarea id="med-notes" placeholder="e.g., Take with food, Avoid alcohol..."></textarea>
+                </div>
+
+                <div class="refill-section">
+                    <div class="refill-header">
+                        <span class="refill-icon">💉</span>
+                        <span class="refill-title">Refill Reminder (Optional)</span>
+                    </div>
+                    <div class="refill-inputs">
+                        <div>
+                            <label>Pills Remaining</label>
+                            <input type="number" id="med-pills-left" placeholder="e.g., 30" min="0">
+                        </div>
+                        <div>
+                            <label>Daily Dose</label>
+                            <input type="number" id="med-daily-dose" placeholder="e.g., 2" min="1">
+                        </div>
+                    </div>
+                    <div class="refill-warning" id="refill-warning" style="display: none;">
+                        ⚠️ <span id="refill-warning-text">Running low! Refill soon.</span>
+                    </div>
+                </div>
+
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeMedModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Medication</button>
                 </div>
             </form>
         </div>
     </div>
 
+    <!-- Contacts Modal -->
+    <div class="modal-overlay" id="contacts-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Emergency Contacts</h2>
+                <button class="modal-close" onclick="closeContactsModal()">×</button>
+            </div>
+            <form id="contacts-form" class="contacts-form" onsubmit="saveContacts(event)">
+                <div class="contact-row">
+                    <div class="form-group contact-type">
+                        <label>Icon</label>
+                        <select class="contact-icon-select" id="family-icon">
+                            <option>👨</option>
+                            <option>👩</option>
+                            <option>👨‍👩‍👧</option>
+                            <option>👴</option>
+                            <option>👵</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="family-name">Family Contact Name</label>
+                        <input type="text" id="family-name" placeholder="e.g., John (Son)">
+                    </div>
+                    <div class="form-group" style="max-width: 140px;">
+                        <label for="family-phone">Phone</label>
+                        <input type="tel" id="family-phone" placeholder="555-1234">
+                    </div>
+                </div>
+
+                <div class="contact-row">
+                    <div class="form-group contact-type">
+                        <label>Icon</label>
+                        <select class="contact-icon-select" id="doctor-icon">
+                            <option>👨‍⚕️</option>
+                            <option>👩‍⚕️</option>
+                            <option>🩺</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="doctor-name">Doctor Name</label>
+                        <input type="text" id="doctor-name" placeholder="e.g., Dr. Smith">
+                    </div>
+                    <div class="form-group" style="max-width: 140px;">
+                        <label for="doctor-phone">Phone</label>
+                        <input type="tel" id="doctor-phone" placeholder="555-5678">
+                    </div>
+                </div>
+
+                <div class="contact-row">
+                    <div class="form-group contact-type">
+                        <label>Icon</label>
+                        <select class="contact-icon-select" id="pharmacy-icon">
+                            <option>🏥</option>
+                            <option>💊</option>
+                            <option>🏪</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="pharmacy-name">Pharmacy Name</label>
+                        <input type="text" id="pharmacy-name" placeholder="e.g., CVS Pharmacy">
+                    </div>
+                    <div class="form-group" style="max-width: 140px;">
+                        <label for="pharmacy-phone">Phone</label>
+                        <input type="tel" id="pharmacy-phone" placeholder="555-9012">
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeContactsModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Contacts</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- History Modal -->
+    <div class="modal-overlay" id="history-modal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Medication History</h2>
+                <button class="modal-close" onclick="closeHistoryModal()">×</button>
+            </div>
+            <div class="history-list" id="history-list">
+                <p style="text-align: center; color: var(--text-muted); padding: 40px;">No history yet. Start tracking your medications!</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="clearHistory()" style="flex: 1;">Clear History</button>
+                <button class="btn btn-primary" onclick="closeHistoryModal()" style="flex: 1;">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let medications = [];
+        let contacts = { family: {}, doctor: {}, pharmacy: {} };
+        let history = [];
         let currentView = 'time';
         let takenToday = {};
+        let selectedColor = 'blue';
+        let selectedDate = new Date();
 
         const timeSections = [
             { id: 'morning', label: 'Morning', icon: '🌅', start: 6, end: 12 },
@@ -610,36 +1371,45 @@
             { id: 'night', label: 'Night', icon: '🌙', start: 21, end: 24 }
         ];
 
-        function getTodayKey() {
-            return new Date().toISOString().split('T')[0];
+        const frequencyLabels = {
+            'daily': 'Daily',
+            'twice-daily': 'Twice Daily',
+            'weekly': 'Weekly',
+            'asneeded': 'As Needed'
+        };
+
+        function getTodayKey(date = new Date()) {
+            return date.toISOString().split('T')[0];
         }
 
         function loadData() {
             const stored = localStorage.getItem('medminder_medications');
-            if (stored) {
-                medications = JSON.parse(stored);
-            }
+            if (stored) medications = JSON.parse(stored);
+            
             const takenStored = localStorage.getItem('medminder_taken');
-            if (takenStored) {
-                takenToday = JSON.parse(takenStored);
-            }
+            if (takenStored) takenToday = JSON.parse(takenStored);
+            
+            const contactsStored = localStorage.getItem('medminder_contacts');
+            if (contactsStored) contacts = JSON.parse(contactsStored);
+            
+            const historyStored = localStorage.getItem('medminder_history');
+            if (historyStored) history = JSON.parse(historyStored);
+            
             const todayKey = getTodayKey();
-            if (!takenToday[todayKey]) {
-                takenToday[todayKey] = {};
-            }
+            if (!takenToday[todayKey]) takenToday[todayKey] = {};
         }
 
         function saveData() {
             localStorage.setItem('medminder_medications', JSON.stringify(medications));
             localStorage.setItem('medminder_taken', JSON.stringify(takenToday));
+            localStorage.setItem('medminder_contacts', JSON.stringify(contacts));
+            localStorage.setItem('medminder_history', JSON.stringify(history));
         }
 
         function getTimeOfDay(timeStr) {
             const [hours] = timeStr.split(':').map(Number);
             for (const section of timeSections) {
-                if (hours >= section.start && hours < section.end) {
-                    return section.id;
-                }
+                if (hours >= section.start && hours < section.end) return section.id;
             }
             return 'night';
         }
@@ -649,7 +1419,7 @@
             const [hours, minutes] = timeStr.split(':').map(Number);
             const medTime = new Date();
             medTime.setHours(hours, minutes, 0, 0);
-            return now > medTime;
+            return now > medTime && now.getHours() - hours < 4;
         }
 
         function formatTime(timeStr) {
@@ -659,12 +1429,13 @@
             return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
         }
 
-        function getTimeRange(section) {
-            const startPeriod = section.start >= 12 ? 'PM' : 'AM';
-            const endPeriod = section.end >= 12 ? 'PM' : 'AM';
-            const startHour = section.start % 12 || 12;
-            const endHour = section.end % 12 || 12;
-            return `${startHour}:00 ${startPeriod} - ${endHour}:00 ${endPeriod}`;
+        function formatDate(date) {
+            const options = { weekday: 'long', month: 'long', day: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        }
+
+        function formatShortDate(date) {
+            return date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
         }
 
         function switchView(view) {
@@ -672,36 +1443,34 @@
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
             
-            document.getElementById(`tab-${view}`).classList.add('active');
+            event.target.closest('.tab-btn').classList.add('active');
             document.getElementById(`${view}-view`).classList.add('active');
+            
+            if (view === 'calendar') renderCalendar();
             
             localStorage.setItem('medminder_view', view);
         }
 
         function renderTimeView() {
             const container = document.getElementById('time-view');
-            
             if (medications.length === 0) {
                 container.innerHTML = renderEmptyState();
                 return;
             }
 
-            let html = '';
             const todayKey = getTodayKey();
+            let html = '';
 
             for (const section of timeSections) {
-                const sectionMeds = medications.filter(med => {
-                    return med.times.some(t => getTimeOfDay(t) === section.id);
-                });
-
+                const sectionMeds = medications.filter(med => med.times.some(t => getTimeOfDay(t) === section.id));
                 if (sectionMeds.length === 0) continue;
 
                 html += `
                     <div class="time-section">
                         <div class="time-section-header">
                             <span class="icon">${section.icon}</span>
-                            <span>${section.label}</span>
-                            <span class="time-range">${getTimeRange(section)}</span>
+                            <span class="label">${section.label}</span>
+                            <span class="time-range">${section.start % 12 || 12}:00 ${section.start >= 12 ? 'PM' : 'AM'} - ${section.end % 12 || 12}:00 ${section.end >= 12 ? 'PM' : 'AM'}</span>
                         </div>
                         ${sectionMeds.map(med => renderMedicationCard(med, todayKey)).join('')}
                     </div>
@@ -713,70 +1482,156 @@
 
         function renderListView() {
             const container = document.getElementById('list-view');
-            
             if (medications.length === 0) {
                 container.innerHTML = renderEmptyState();
                 return;
             }
 
             const todayKey = getTodayKey();
-            
             const sortedMeds = [...medications].sort((a, b) => {
                 const aTime = a.times[0] || '23:59';
                 const bTime = b.times[0] || '23:59';
                 return aTime.localeCompare(bTime);
             });
 
-            const html = sortedMeds.map(med => renderMedicationCard(med, todayKey)).join('');
-            container.innerHTML = html || renderEmptyState();
+            container.innerHTML = sortedMeds.map(med => renderMedicationCard(med, todayKey)).join('');
         }
 
-        function renderMedicationCard(med, todayKey) {
-            const isTaken = takenToday[todayKey]?.[med.id];
-            const allTimesTaken = med.times.every(t => takenToday[todayKey]?.[`${med.id}-${t}`]);
+        function renderCalendar() {
+            const container = document.getElementById('calendar-view');
+            const today = new Date();
+            const startOfWeek = new Date(selectedDate);
+            startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+
+            let html = `
+                <div class="calendar-header">
+                    <div class="calendar-nav">
+                        <button onclick="navigateWeek(-1)">←</button>
+                        <button onclick="navigateWeek(1)">→</button>
+                    </div>
+                    <span class="calendar-title">${formatDate(startOfWeek)} - ${formatDate(new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000))}</span>
+                    <button class="btn btn-small btn-secondary" onclick="goToToday()">Today</button>
+                </div>
+                <div class="calendar-grid">
+                    <div class="calendar-day-header">Sun</div>
+                    <div class="calendar-day-header">Mon</div>
+                    <div class="calendar-day-header">Tue</div>
+                    <div class="calendar-day-header">Wed</div>
+                    <div class="calendar-day-header">Thu</div>
+                    <div class="calendar-day-header">Fri</div>
+                    <div class="calendar-day-header">Sat</div>
+            `;
+
+            for (let i = 0; i < 7; i++) {
+                const date = new Date(startOfWeek.getTime() + i * 24 * 60 * 60 * 1000);
+                const dateKey = getTodayKey(date);
+                const isToday = getTodayKey(date) === getTodayKey(today);
+                const isSelected = getTodayKey(date) === getTodayKey(selectedDate);
+                const hasMeds = medications.length > 0;
+                
+                const dayClasses = ['calendar-day'];
+                if (isToday) dayClasses.push('today');
+                if (isSelected) dayClasses.push('selected');
+
+                html += `
+                    <div class="${dayClasses.join(' ')}" onclick="selectDay('${dateKey}')">
+                        <span class="day-num">${date.getDate()}</span>
+                        ${hasMeds ? `<span class="day-indicator ${isToday ? 'all-taken' : 'has-meds'}"></span>` : ''}
+                    </div>
+                `;
+            }
+
+            html += '</div>';
+
+            const selectedDateKey = getTodayKey(selectedDate);
+            const dayMeds = medications.filter(med => {
+                const dateTaken = takenToday[selectedDateKey];
+                return dateTaken && Object.keys(dateTaken).some(key => key.startsWith(med.id));
+            });
+
+            html += `
+                <div class="selected-day-info">
+                    <h3 class="selected-day-title">${formatDate(selectedDate)}</h3>
+                    ${dayMeds.length > 0 ? dayMeds.map(med => renderMedicationCard(med, selectedDateKey)).join('') : '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No medications scheduled for this day</p>'}
+                </div>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        function navigateWeek(direction) {
+            selectedDate = new Date(selectedDate.getTime() + direction * 7 * 24 * 60 * 60 * 1000);
+            renderCalendar();
+        }
+
+        function goToToday() {
+            selectedDate = new Date();
+            renderCalendar();
+        }
+
+        function selectDay(dateKey) {
+            selectedDate = new Date(dateKey);
+            renderCalendar();
+        }
+
+        function renderMedicationCard(med, dateKey) {
+            const allTimesTaken = med.times.every(t => takenToday[dateKey]?.[`${med.id}-${t}`]);
+            const anyTaken = med.times.some(t => takenToday[dateKey]?.[`${med.id}-${t}`]);
             
             let cardClass = 'medication-card';
-            if (isTaken || allTimesTaken) cardClass += ' taken';
-            else if (med.times.some(t => isOverdue(t))) cardClass += ' overdue';
+            if (allTimesTaken) cardClass += ' taken';
+            else if (anyTaken) cardClass += ' partial';
+            else if (dateKey === getTodayKey() && med.times.some(t => isOverdue(t))) cardClass += ' overdue';
+
+            const pillsLeft = med.pillsLeft;
+            const dailyDose = med.dailyDose;
+            let refillWarning = '';
+            if (pillsLeft !== undefined && dailyDose && pillsLeft <= dailyDose * 7) {
+                refillWarning = `
+                    <div class="refill-warning" style="display: flex; margin: 12px 20px 0;">
+                        ⚠️ Only ${pillsLeft} pills left! Refill in ~${Math.ceil(pillsLeft / dailyDose)} days.
+                    </div>
+                `;
+            }
 
             return `
                 <div class="${cardClass}" data-id="${med.id}">
                     <div class="med-header">
-                        <span class="med-icon">💊</span>
+                        <div class="med-icon color-${med.color || 'blue'}">💊</div>
                         <div class="med-info">
                             <div class="med-name">${med.name}</div>
                             ${med.dosage ? `<div class="med-dosage">${med.dosage}</div>` : ''}
+                            <span class="med-frequency">${frequencyLabels[med.frequency] || 'Daily'}</span>
                         </div>
                     </div>
+                    ${med.notes ? `<div class="med-notes"><strong>Notes:</strong> ${med.notes}</div>` : ''}
                     <div class="med-times">
                         ${med.times.map(time => {
-                            const timeTaken = takenToday[todayKey]?.[`${med.id}-${time}`];
+                            const timeTaken = takenToday[dateKey]?.[`${med.id}-${time}`];
                             return `
-                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #E8F0F0;">
-                                    <span class="med-time">🕐 ${formatTime(time)}</span>
-                                    <div class="med-actions">
-                                        ${timeTaken ? `
-                                            <button class="btn btn-undo btn-small" onclick="undoTaken('${med.id}', '${time}')">
-                                                ↩️ Undo
-                                            </button>
-                                            <span class="check-icon">✓</span>
-                                        ` : `
-                                            <button class="btn btn-taken btn-small" onclick="markTaken('${med.id}', '${time}')">
-                                                ✓ Mark Taken
-                                            </button>
-                                        `}
+                                <div class="time-row">
+                                    <div class="time-info">
+                                        <span class="time-icon">🕐</span>
+                                        <span class="time-label">${formatTime(time)}</span>
                                     </div>
+                                    ${timeTaken ? `
+                                        <div style="display: flex; align-items: center; gap: 8px;">
+                                            <div class="check-icon">✓</div>
+                                            <button class="btn btn-small btn-secondary" onclick="undoTaken('${med.id}', '${time}', '${dateKey}')">Undo</button>
+                                        </div>
+                                    ` : `
+                                        <button class="btn btn-small btn-taken" onclick="markTaken('${med.id}', '${time}')">
+                                            ✓ Mark Taken
+                                        </button>
+                                    `}
                                 </div>
                             `;
                         }).join('')}
                     </div>
-                    <div style="margin-top: 16px; display: flex; gap: 8px;">
-                        <button class="btn btn-secondary btn-small" onclick="editMedication('${med.id}')">
-                            ✏️ Edit
-                        </button>
-                        <button class="btn btn-danger btn-small" onclick="deleteMedication('${med.id}')">
-                            🗑️ Delete
-                        </button>
+                    ${refillWarning}
+                    <div class="card-actions">
+                        <button class="btn btn-secondary btn-small" onclick="editMedication('${med.id}')">✏️ Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteMedication('${med.id}')">🗑️ Delete</button>
                     </div>
                 </div>
             `;
@@ -787,7 +1642,7 @@
                 <div class="empty-state">
                     <div class="icon">💊</div>
                     <h3>No Medications Yet</h3>
-                    <p>Tap the + button below to add your first medication</p>
+                    <p>Tap the + button to add your first medication</p>
                 </div>
             `;
         }
@@ -800,9 +1655,7 @@
             medications.forEach(med => {
                 med.times.forEach(time => {
                     total++;
-                    if (takenToday[todayKey]?.[`${med.id}-${time}`]) {
-                        taken++;
-                    }
+                    if (takenToday[todayKey]?.[`${med.id}-${time}`]) taken++;
                 });
             });
 
@@ -811,31 +1664,79 @@
             
             const percentage = total > 0 ? (taken / total) * 100 : 0;
             document.getElementById('progress-fill').style.width = `${percentage}%`;
+            
+            const message = total === 0 ? 'Add your medications to get started' :
+                           taken === total ? '🎉 All done for today!' :
+                           `${total - taken} medication${total - taken > 1 ? 's' : ''} remaining`;
+            document.getElementById('progress-message').textContent = message;
         }
 
-        function markTaken(medId, time) {
-            const todayKey = getTodayKey();
-            if (!takenToday[todayKey]) takenToday[todayKey] = {};
-            takenToday[todayKey][`${medId}-${time}`] = true;
+        function updateEmergencyButtons() {
+            const familyEl = document.getElementById('contact-family');
+            const doctorEl = document.getElementById('contact-doctor');
+            const pharmacyEl = document.getElementById('contact-pharmacy');
+
+            if (contacts.family?.name) {
+                familyEl.querySelector('.label').textContent = contacts.family.name.split(' ')[0];
+            }
+            if (contacts.doctor?.name) {
+                doctorEl.querySelector('.label').textContent = contacts.doctor.name.split(' ')[0];
+            }
+            if (contacts.pharmacy?.name) {
+                pharmacyEl.querySelector('.label').textContent = contacts.pharmacy.name.split(' ')[0];
+            }
+        }
+
+        function markTaken(medId, time, dateKey = null) {
+            const key = dateKey || getTodayKey();
+            if (!takenToday[key]) takenToday[key] = {};
+            takenToday[key][`${medId}-${time}`] = true;
+            
+            const med = medications.find(m => m.id === medId);
+            if (med) {
+                history.unshift({
+                    id: Date.now(),
+                    medId,
+                    medName: med.name,
+                    dosage: med.dosage,
+                    time,
+                    date: key,
+                    action: 'taken'
+                });
+                if (history.length > 100) history = history.slice(0, 100);
+            }
+            
             saveData();
             render();
         }
 
-        function undoTaken(medId, time) {
-            const todayKey = getTodayKey();
-            if (takenToday[todayKey]) {
-                delete takenToday[todayKey][`${medId}-${time}`];
+        function undoTaken(medId, time, dateKey = null) {
+            const key = dateKey || getTodayKey();
+            if (takenToday[key]) {
+                delete takenToday[key][`${medId}-${time}`];
             }
             saveData();
             render();
         }
 
-        function openModal(medId = null) {
-            const modal = document.getElementById('modal-overlay');
-            const title = document.getElementById('modal-title');
-            const form = document.getElementById('med-form');
+        function selectColor(el) {
+            document.querySelectorAll('.color-tag').forEach(t => t.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedColor = el.dataset.color;
+        }
+
+        function openMedModal(medId = null) {
+            const modal = document.getElementById('med-modal');
+            const title = document.getElementById('med-modal-title');
             
-            document.getElementById('time-inputs').innerHTML = '<input type="time" class="time-input" value="08:00">';
+            document.getElementById('time-inputs').innerHTML = `
+                <div class="time-input-row">
+                    <input type="time" class="time-input" value="08:00">
+                </div>
+            `;
+            document.querySelectorAll('.color-tag').forEach(t => t.classList.remove('selected'));
+            document.querySelector('.color-tag.blue').classList.add('selected');
+            selectedColor = 'blue';
             
             if (medId) {
                 const med = medications.find(m => m.id === medId);
@@ -845,15 +1746,27 @@
                     document.getElementById('med-name').value = med.name;
                     document.getElementById('med-dosage').value = med.dosage || '';
                     document.getElementById('med-frequency').value = med.frequency || 'daily';
+                    document.getElementById('med-notes').value = med.notes || '';
+                    document.getElementById('med-pills-left').value = med.pillsLeft || '';
+                    document.getElementById('med-daily-dose').value = med.dailyDose || '';
+                    
+                    selectedColor = med.color || 'blue';
+                    document.querySelectorAll('.color-tag').forEach(t => {
+                        t.classList.remove('selected');
+                        if (t.dataset.color === selectedColor) t.classList.add('selected');
+                    });
                     
                     const timeInputs = document.getElementById('time-inputs');
-                    timeInputs.innerHTML = med.times.map((t, i) => 
-                        `<input type="time" class="time-input" value="${t}">`
-                    ).join('');
+                    timeInputs.innerHTML = med.times.map(t => `
+                        <div class="time-input-row">
+                            <input type="time" class="time-input" value="${t}">
+                            <button type="button" class="remove-time" onclick="removeTimeInput(this)">×</button>
+                        </div>
+                    `).join('');
                 }
             } else {
                 title.textContent = 'Add Medication';
-                form.reset();
+                document.getElementById('med-form').reset();
                 document.getElementById('med-id').value = '';
             }
             
@@ -861,27 +1774,29 @@
             document.getElementById('med-name').focus();
         }
 
-        function closeModal() {
-            document.getElementById('modal-overlay').classList.remove('active');
-        }
-
-        function closeModalOnOverlay(event) {
-            if (event.target === event.currentTarget) {
-                closeModal();
-            }
+        function closeMedModal() {
+            document.getElementById('med-modal').classList.remove('active');
         }
 
         function addTimeInput() {
             const container = document.getElementById('time-inputs');
             const inputs = container.querySelectorAll('.time-input');
+            if (inputs.length >= 6) return;
             
-            if (inputs.length >= 4) return;
-            
-            const newInput = document.createElement('input');
-            newInput.type = 'time';
-            newInput.className = 'time-input';
-            newInput.value = '12:00';
-            container.appendChild(newInput);
+            const row = document.createElement('div');
+            row.className = 'time-input-row';
+            row.innerHTML = `
+                <input type="time" class="time-input" value="12:00">
+                <button type="button" class="remove-time" onclick="removeTimeInput(this)">×</button>
+            `;
+            container.appendChild(row);
+        }
+
+        function removeTimeInput(btn) {
+            const container = document.getElementById('time-inputs');
+            if (container.querySelectorAll('.time-input-row').length > 1) {
+                btn.closest('.time-input-row').remove();
+            }
         }
 
         function saveMedication(event) {
@@ -891,20 +1806,26 @@
             const name = document.getElementById('med-name').value.trim();
             const dosage = document.getElementById('med-dosage').value.trim();
             const frequency = document.getElementById('med-frequency').value;
+            const notes = document.getElementById('med-notes').value.trim();
+            const pillsLeft = document.getElementById('med-pills-left').value;
+            const dailyDose = document.getElementById('med-daily-dose').value;
             
             const timeInputs = document.querySelectorAll('.time-input');
-            const times = Array.from(timeInputs)
-                .map(input => input.value)
-                .filter(t => t);
+            const times = Array.from(timeInputs).map(input => input.value).filter(t => t);
 
             if (!name || times.length === 0) {
                 alert('Please enter a medication name and at least one time.');
                 return;
             }
 
-            const existingIndex = medications.findIndex(m => m.id === id);
-            const medication = { id, name, dosage, frequency, times };
+            const medication = {
+                id, name, dosage, frequency, notes, times,
+                color: selectedColor,
+                pillsLeft: pillsLeft ? parseInt(pillsLeft) : undefined,
+                dailyDose: dailyDose ? parseInt(dailyDose) : undefined
+            };
 
+            const existingIndex = medications.findIndex(m => m.id === id);
             if (existingIndex >= 0) {
                 medications[existingIndex] = medication;
             } else {
@@ -912,12 +1833,12 @@
             }
 
             saveData();
-            closeModal();
+            closeMedModal();
             render();
         }
 
         function editMedication(medId) {
-            openModal(medId);
+            openMedModal(medId);
         }
 
         function deleteMedication(medId) {
@@ -928,10 +1849,150 @@
             }
         }
 
+        function openContactsModal() {
+            const modal = document.getElementById('contacts-modal');
+            
+            document.getElementById('family-name').value = contacts.family?.name || '';
+            document.getElementById('family-phone').value = contacts.family?.phone || '';
+            document.getElementById('family-icon').value = contacts.family?.icon || '👨';
+            
+            document.getElementById('doctor-name').value = contacts.doctor?.name || '';
+            document.getElementById('doctor-phone').value = contacts.doctor?.phone || '';
+            document.getElementById('doctor-icon').value = contacts.doctor?.icon || '👨‍⚕️';
+            
+            document.getElementById('pharmacy-name').value = contacts.pharmacy?.name || '';
+            document.getElementById('pharmacy-phone').value = contacts.pharmacy?.phone || '';
+            document.getElementById('pharmacy-icon').value = contacts.pharmacy?.icon || '🏥';
+            
+            modal.classList.add('active');
+        }
+
+        function closeContactsModal() {
+            document.getElementById('contacts-modal').classList.remove('active');
+        }
+
+        function saveContacts(event) {
+            event.preventDefault();
+            
+            contacts.family = {
+                name: document.getElementById('family-name').value,
+                phone: document.getElementById('family-phone').value,
+                icon: document.getElementById('family-icon').value
+            };
+            contacts.doctor = {
+                name: document.getElementById('doctor-name').value,
+                phone: document.getElementById('doctor-phone').value,
+                icon: document.getElementById('doctor-icon').value
+            };
+            contacts.pharmacy = {
+                name: document.getElementById('pharmacy-name').value,
+                phone: document.getElementById('pharmacy-phone').value,
+                icon: document.getElementById('pharmacy-icon').value
+            };
+            
+            saveData();
+            updateEmergencyButtons();
+            closeContactsModal();
+        }
+
+        function callContact(type) {
+            const contact = contacts[type];
+            if (contact && contact.phone) {
+                window.location.href = `tel:${contact.phone.replace(/\D/g, '')}`;
+            } else {
+                openContactsModal();
+            }
+        }
+
+        function openHistoryModal() {
+            const modal = document.getElementById('history-modal');
+            const list = document.getElementById('history-list');
+            
+            if (history.length === 0) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 40px;">No history yet. Start tracking your medications!</p>';
+            } else {
+                list.innerHTML = history.slice(0, 50).map(item => `
+                    <div class="history-item">
+                        <div class="history-icon ${item.action === 'taken' ? 'taken' : 'missed'}">
+                            ${item.action === 'taken' ? '✓' : '×'}
+                        </div>
+                        <div class="history-content">
+                            <div class="history-med">${item.medName} ${item.dosage ? `(${item.dosage})` : ''}</div>
+                            <div class="history-time">${formatTime(item.time)}</div>
+                            <div class="history-date">${new Date(item.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            
+            modal.classList.add('active');
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('history-modal').classList.remove('active');
+        }
+
+        function clearHistory() {
+            if (confirm('Clear all history? This cannot be undone.')) {
+                history = [];
+                saveData();
+                openHistoryModal();
+            }
+        }
+
+        function printMedications() {
+            const printWindow = window.open('', '_blank');
+            const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+            
+            printWindow.document.write(`
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>MedMinder - Medication List</title>
+                    <style>
+                        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
+                        h1 { color: #5B8A8A; border-bottom: 2px solid #5B8A8A; padding-bottom: 10px; }
+                        .date { color: #666; margin-bottom: 30px; }
+                        .med { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
+                        .med-name { font-size: 20px; font-weight: bold; }
+                        .med-dosage { color: #666; margin: 8px 0; }
+                        .med-times { color: #5B8A8A; font-weight: bold; }
+                        .med-notes { background: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 14px; }
+                        .contacts { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
+                        .contact { margin: 10px 0; }
+                        @media print { body { padding: 20px; } }
+                    </style>
+                </head>
+                <body>
+                    <h1>💊 My Medications</h1>
+                    <p class="date">Generated: ${today}</p>
+                    ${medications.map(med => `
+                        <div class="med">
+                            <div class="med-name">${med.name}</div>
+                            ${med.dosage ? `<div class="med-dosage">${med.dosage}</div>` : ''}
+                            <div class="med-times">${med.times.map(formatTime).join(', ')}</div>
+                            ${med.notes ? `<div class="med-notes"><strong>Notes:</strong> ${med.notes}</div>` : ''}
+                        </div>
+                    `).join('')}
+                    <div class="contacts">
+                        <h2>Emergency Contacts</h2>
+                        ${contacts.family?.name ? `<div class="contact"><strong>Family:</strong> ${contacts.family.name} ${contacts.family.phone ? `- ${contacts.family.phone}` : ''}</div>` : ''}
+                        ${contacts.doctor?.name ? `<div class="contact"><strong>Doctor:</strong> ${contacts.doctor.name} ${contacts.doctor.phone ? `- ${contacts.doctor.phone}` : ''}</div>` : ''}
+                        ${contacts.pharmacy?.name ? `<div class="contact"><strong>Pharmacy:</strong> ${contacts.pharmacy.name} ${contacts.pharmacy.phone ? `- ${contacts.pharmacy.phone}` : ''}</div>` : ''}
+                    </div>
+                </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
         function render() {
             renderTimeView();
             renderListView();
             updateProgress();
+            updateEmergencyButtons();
+            if (currentView === 'calendar') renderCalendar();
         }
 
         function init() {
@@ -939,14 +2000,18 @@
             
             const savedView = localStorage.getItem('medminder_view');
             if (savedView) {
-                switchView(savedView);
+                switch (savedView) {
+                    case 'time': document.querySelector('.tab-btn:nth-child(1)').click(); break;
+                    case 'list': document.querySelector('.tab-btn:nth-child(2)').click(); break;
+                    case 'calendar': document.querySelector('.tab-btn:nth-child(3)').click(); break;
+                }
             }
             
             render();
 
             document.addEventListener('keydown', (e) => {
                 if (e.key === 'Escape') {
-                    closeModal();
+                    document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
                 }
             });
         }
