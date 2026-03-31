@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MedMinder - A calming medication reminder app for elderly users">
+    <meta name="theme-color" content="#4A9B9B">
+    <title>MedMinder - Medication Tracker</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>">
+    <style>
+        :root {
+            --primary: #4A9B9B;
+            --primary-dark: #3A7A7A;
+            --background: #F5F9F8;
+            --card: #FFFFFF;
+            --text: #2D3436;
+            --text-light: #636E72;
+            --success: #6ABF9E;
+            --pending: #7FB3D5;
+            --overdue: #D4A574;
+            --shadow: 0 4px 12px rgba(0,0,0,0.08);
+            --radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text);
+            background: var(--background);
+            min-height: 100vh;
+            padding-bottom: 100px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: var(--card);
+            padding: 24px 20px;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .progress-section {
+            margin-top: 16px;
+        }
+
+        .progress-text {
+            font-size: 16px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            height: 12px;
+            background: #E8F0F0;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--success), var(--primary));
+            border-radius: 6px;
+            transition: width 0.4s ease;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 8px;
+            padding: 20px;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 16px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            border: 2px solid var(--primary);
+            background: var(--card);
+            color: var(--primary);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: #E8F4F4;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .view-container {
+            padding: 0 20px 20px;
+        }
+
+        .view {
+            display: none;
+        }
+
+        .view.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .time-section {
+            margin-bottom: 24px;
+        }
+
+        .time-section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            background: var(--primary);
+            color: white;
+            border-radius: var(--radius);
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .time-section-header .icon {
+            font-size: 24px;
+        }
+
+        .time-range {
+            font-size: 14px;
+            opacity: 0.85;
+            margin-left: auto;
+        }
+
+        .medication-card {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 12px;
+            box-shadow: var(--shadow);
+            border-left: 4px solid var(--pending);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .medication-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+        }
+
+        .medication-card.taken {
+            border-left-color: var(--success);
+            opacity: 0.8;
+        }
+
+        .medication-card.overdue {
+            border-left-color: var(--overdue);
+        }
+
+        .med-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .med-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+        }
+
+        .med-info {
+            flex: 1;
+        }
+
+        .med-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .med-dosage {
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        .med-time {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #E8F4F4;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--primary-dark);
+            margin-top: 8px;
+        }
+
+        .med-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #5AAF8E;
+        }
+
+        .btn-secondary {
+            background: #E8F0F0;
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #D8E8E8;
+        }
+
+        .btn-danger {
+            background: #F8E0E0;
+            color: #C0392B;
+        }
+
+        .btn-danger:hover {
+            background: #F0D0D0;
+        }
+
+        .btn-small {
+            padding: 10px 16px;
+            font-size: 14px;
+        }
+
+        .btn-taken {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-undo {
+            background: #E8F0F0;
+            color: var(--text-light);
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            font-size: 32px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(74, 155, 155, 0.4);
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(74, 155, 155, 0.5);
+        }
+
+        .fab-label {
+            position: absolute;
+            bottom: 75px;
+            right: 0;
+            background: var(--text);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+        }
+
+        .fab:hover .fab-label {
+            opacity: 1;
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+            animation: fadeIn 0.2s ease;
+        }
+
+        .modal {
+            background: var(--card);
+            border-radius: var(--radius);
+            padding: 32px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .modal h2 {
+            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 18px;
+            border: 2px solid #E0E0E0;
+            border-radius: var(--radius);
+            background: white;
+            color: var(--text);
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .time-inputs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .time-inputs input {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .add-time-btn {
+            padding: 14px 20px;
+            background: #E8F4F4;
+            border: 2px dashed var(--primary);
+            border-radius: var(--radius);
+            color: var(--primary);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .add-time-btn:hover {
+            background: #D8E8E8;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+        }
+
+        .modal-actions .btn {
+            flex: 1;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-light);
+        }
+
+        .empty-state .icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: var(--text);
+        }
+
+        .empty-state p {
+            font-size: 16px;
+        }
+
+        .check-icon {
+            color: var(--success);
+            font-size: 20px;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .status-badge.taken {
+            background: #E8F8F0;
+            color: var(--success);
+        }
+
+        @media (max-width: 480px) {
+            .tabs {
+                padding: 16px;
+            }
+
+            .tab-btn {
+                padding: 14px 16px;
+                font-size: 16px;
+            }
+
+            .modal {
+                padding: 24px;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 16px;
+            }
+
+            .fab {
+                bottom: 20px;
+                right: 20px;
+                width: 56px;
+                height: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>
+                <span>💊</span>
+                MedMinder
+            </h1>
+            <div class="progress-section">
+                <p class="progress-text"><span id="progress-count">0</span> of <span id="progress-total">0</span> medications taken today</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="tabs" role="tablist">
+        <button class="tab-btn active" role="tab" aria-selected="true" aria-controls="time-view" id="tab-time" onclick="switchView('time')">
+            By Time
+        </button>
+        <button class="tab-btn" role="tab" aria-selected="false" aria-controls="list-view" id="tab-list" onclick="switchView('list')">
+            By List
+        </button>
+    </div>
+
+    <div class="view-container">
+        <div class="view active" id="time-view" role="tabpanel" aria-labelledby="tab-time"></div>
+        <div class="view" id="list-view" role="tabpanel" aria-labelledby="tab-list"></div>
+    </div>
+
+    <button class="fab" onclick="openModal()" aria-label="Add medication">
+        <span>+</span>
+        <span class="fab-label">Add Medication</span>
+    </button>
+
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModalOnOverlay(event)">
+        <div class="modal" role="dialog" aria-labelledby="modal-title">
+            <h2 id="modal-title">Add Medication</h2>
+            <form id="med-form" onsubmit="saveMedication(event)">
+                <input type="hidden" id="med-id">
+                
+                <div class="form-group">
+                    <label for="med-name">Medication Name *</label>
+                    <input type="text" id="med-name" required placeholder="e.g., Aspirin">
+                </div>
+
+                <div class="form-group">
+                    <label for="med-dosage">Dosage</label>
+                    <input type="text" id="med-dosage" placeholder="e.g., 500mg or 1 tablet">
+                </div>
+
+                <div class="form-group">
+                    <label for="med-frequency">Frequency</label>
+                    <select id="med-frequency">
+                        <option value="daily">Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="asneeded">As Needed</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Time(s) to Take</label>
+                    <div class="time-inputs" id="time-inputs">
+                        <input type="time" class="time-input" value="08:00">
+                    </div>
+                    <button type="button" class="add-time-btn" onclick="addTimeInput()" style="margin-top: 12px;">
+                        + Add Another Time
+                    </button>
+                </div>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let medications = [];
+        let currentView = 'time';
+        let takenToday = {};
+
+        const timeSections = [
+            { id: 'morning', label: 'Morning', icon: '🌅', start: 6, end: 12 },
+            { id: 'afternoon', label: 'Afternoon', icon: '☀️', start: 12, end: 17 },
+            { id: 'evening', label: 'Evening', icon: '🌆', start: 17, end: 21 },
+            { id: 'night', label: 'Night', icon: '🌙', start: 21, end: 24 }
+        ];
+
+        function getTodayKey() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function loadData() {
+            const stored = localStorage.getItem('medminder_medications');
+            if (stored) {
+                medications = JSON.parse(stored);
+            }
+            const takenStored = localStorage.getItem('medminder_taken');
+            if (takenStored) {
+                takenToday = JSON.parse(takenStored);
+            }
+            const todayKey = getTodayKey();
+            if (!takenToday[todayKey]) {
+                takenToday[todayKey] = {};
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('medminder_medications', JSON.stringify(medications));
+            localStorage.setItem('medminder_taken', JSON.stringify(takenToday));
+        }
+
+        function getTimeOfDay(timeStr) {
+            const [hours] = timeStr.split(':').map(Number);
+            for (const section of timeSections) {
+                if (hours >= section.start && hours < section.end) {
+                    return section.id;
+                }
+            }
+            return 'night';
+        }
+
+        function isOverdue(timeStr) {
+            const now = new Date();
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const medTime = new Date();
+            medTime.setHours(hours, minutes, 0, 0);
+            return now > medTime;
+        }
+
+        function formatTime(timeStr) {
+            const [hours, minutes] = timeStr.split(':').map(Number);
+            const period = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+            return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+        }
+
+        function getTimeRange(section) {
+            const startPeriod = section.start >= 12 ? 'PM' : 'AM';
+            const endPeriod = section.end >= 12 ? 'PM' : 'AM';
+            const startHour = section.start % 12 || 12;
+            const endHour = section.end % 12 || 12;
+            return `${startHour}:00 ${startPeriod} - ${endHour}:00 ${endPeriod}`;
+        }
+
+        function switchView(view) {
+            currentView = view;
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            
+            document.getElementById(`tab-${view}`).classList.add('active');
+            document.getElementById(`${view}-view`).classList.add('active');
+            
+            localStorage.setItem('medminder_view', view);
+        }
+
+        function renderTimeView() {
+            const container = document.getElementById('time-view');
+            
+            if (medications.length === 0) {
+                container.innerHTML = renderEmptyState();
+                return;
+            }
+
+            let html = '';
+            const todayKey = getTodayKey();
+
+            for (const section of timeSections) {
+                const sectionMeds = medications.filter(med => {
+                    return med.times.some(t => getTimeOfDay(t) === section.id);
+                });
+
+                if (sectionMeds.length === 0) continue;
+
+                html += `
+                    <div class="time-section">
+                        <div class="time-section-header">
+                            <span class="icon">${section.icon}</span>
+                            <span>${section.label}</span>
+                            <span class="time-range">${getTimeRange(section)}</span>
+                        </div>
+                        ${sectionMeds.map(med => renderMedicationCard(med, todayKey)).join('')}
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html || renderEmptyState();
+        }
+
+        function renderListView() {
+            const container = document.getElementById('list-view');
+            
+            if (medications.length === 0) {
+                container.innerHTML = renderEmptyState();
+                return;
+            }
+
+            const todayKey = getTodayKey();
+            
+            const sortedMeds = [...medications].sort((a, b) => {
+                const aTime = a.times[0] || '23:59';
+                const bTime = b.times[0] || '23:59';
+                return aTime.localeCompare(bTime);
+            });
+
+            const html = sortedMeds.map(med => renderMedicationCard(med, todayKey)).join('');
+            container.innerHTML = html || renderEmptyState();
+        }
+
+        function renderMedicationCard(med, todayKey) {
+            const isTaken = takenToday[todayKey]?.[med.id];
+            const allTimesTaken = med.times.every(t => takenToday[todayKey]?.[`${med.id}-${t}`]);
+            
+            let cardClass = 'medication-card';
+            if (isTaken || allTimesTaken) cardClass += ' taken';
+            else if (med.times.some(t => isOverdue(t))) cardClass += ' overdue';
+
+            return `
+                <div class="${cardClass}" data-id="${med.id}">
+                    <div class="med-header">
+                        <span class="med-icon">💊</span>
+                        <div class="med-info">
+                            <div class="med-name">${med.name}</div>
+                            ${med.dosage ? `<div class="med-dosage">${med.dosage}</div>` : ''}
+                        </div>
+                    </div>
+                    <div class="med-times">
+                        ${med.times.map(time => {
+                            const timeTaken = takenToday[todayKey]?.[`${med.id}-${time}`];
+                            return `
+                                <div style="display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #E8F0F0;">
+                                    <span class="med-time">🕐 ${formatTime(time)}</span>
+                                    <div class="med-actions">
+                                        ${timeTaken ? `
+                                            <button class="btn btn-undo btn-small" onclick="undoTaken('${med.id}', '${time}')">
+                                                ↩️ Undo
+                                            </button>
+                                            <span class="check-icon">✓</span>
+                                        ` : `
+                                            <button class="btn btn-taken btn-small" onclick="markTaken('${med.id}', '${time}')">
+                                                ✓ Mark Taken
+                                            </button>
+                                        `}
+                                    </div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                    <div style="margin-top: 16px; display: flex; gap: 8px;">
+                        <button class="btn btn-secondary btn-small" onclick="editMedication('${med.id}')">
+                            ✏️ Edit
+                        </button>
+                        <button class="btn btn-danger btn-small" onclick="deleteMedication('${med.id}')">
+                            🗑️ Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEmptyState() {
+            return `
+                <div class="empty-state">
+                    <div class="icon">💊</div>
+                    <h3>No Medications Yet</h3>
+                    <p>Tap the + button below to add your first medication</p>
+                </div>
+            `;
+        }
+
+        function updateProgress() {
+            const todayKey = getTodayKey();
+            let total = 0;
+            let taken = 0;
+
+            medications.forEach(med => {
+                med.times.forEach(time => {
+                    total++;
+                    if (takenToday[todayKey]?.[`${med.id}-${time}`]) {
+                        taken++;
+                    }
+                });
+            });
+
+            document.getElementById('progress-count').textContent = taken;
+            document.getElementById('progress-total').textContent = total;
+            
+            const percentage = total > 0 ? (taken / total) * 100 : 0;
+            document.getElementById('progress-fill').style.width = `${percentage}%`;
+        }
+
+        function markTaken(medId, time) {
+            const todayKey = getTodayKey();
+            if (!takenToday[todayKey]) takenToday[todayKey] = {};
+            takenToday[todayKey][`${medId}-${time}`] = true;
+            saveData();
+            render();
+        }
+
+        function undoTaken(medId, time) {
+            const todayKey = getTodayKey();
+            if (takenToday[todayKey]) {
+                delete takenToday[todayKey][`${medId}-${time}`];
+            }
+            saveData();
+            render();
+        }
+
+        function openModal(medId = null) {
+            const modal = document.getElementById('modal-overlay');
+            const title = document.getElementById('modal-title');
+            const form = document.getElementById('med-form');
+            
+            document.getElementById('time-inputs').innerHTML = '<input type="time" class="time-input" value="08:00">';
+            
+            if (medId) {
+                const med = medications.find(m => m.id === medId);
+                if (med) {
+                    title.textContent = 'Edit Medication';
+                    document.getElementById('med-id').value = med.id;
+                    document.getElementById('med-name').value = med.name;
+                    document.getElementById('med-dosage').value = med.dosage || '';
+                    document.getElementById('med-frequency').value = med.frequency || 'daily';
+                    
+                    const timeInputs = document.getElementById('time-inputs');
+                    timeInputs.innerHTML = med.times.map((t, i) => 
+                        `<input type="time" class="time-input" value="${t}">`
+                    ).join('');
+                }
+            } else {
+                title.textContent = 'Add Medication';
+                form.reset();
+                document.getElementById('med-id').value = '';
+            }
+            
+            modal.classList.add('active');
+            document.getElementById('med-name').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').classList.remove('active');
+        }
+
+        function closeModalOnOverlay(event) {
+            if (event.target === event.currentTarget) {
+                closeModal();
+            }
+        }
+
+        function addTimeInput() {
+            const container = document.getElementById('time-inputs');
+            const inputs = container.querySelectorAll('.time-input');
+            
+            if (inputs.length >= 4) return;
+            
+            const newInput = document.createElement('input');
+            newInput.type = 'time';
+            newInput.className = 'time-input';
+            newInput.value = '12:00';
+            container.appendChild(newInput);
+        }
+
+        function saveMedication(event) {
+            event.preventDefault();
+            
+            const id = document.getElementById('med-id').value || Date.now().toString();
+            const name = document.getElementById('med-name').value.trim();
+            const dosage = document.getElementById('med-dosage').value.trim();
+            const frequency = document.getElementById('med-frequency').value;
+            
+            const timeInputs = document.querySelectorAll('.time-input');
+            const times = Array.from(timeInputs)
+                .map(input => input.value)
+                .filter(t => t);
+
+            if (!name || times.length === 0) {
+                alert('Please enter a medication name and at least one time.');
+                return;
+            }
+
+            const existingIndex = medications.findIndex(m => m.id === id);
+            const medication = { id, name, dosage, frequency, times };
+
+            if (existingIndex >= 0) {
+                medications[existingIndex] = medication;
+            } else {
+                medications.push(medication);
+            }
+
+            saveData();
+            closeModal();
+            render();
+        }
+
+        function editMedication(medId) {
+            openModal(medId);
+        }
+
+        function deleteMedication(medId) {
+            if (confirm('Are you sure you want to delete this medication?')) {
+                medications = medications.filter(m => m.id !== medId);
+                saveData();
+                render();
+            }
+        }
+
+        function render() {
+            renderTimeView();
+            renderListView();
+            updateProgress();
+        }
+
+        function init() {
+            loadData();
+            
+            const savedView = localStorage.getItem('medminder_view');
+            if (savedView) {
+                switchView(savedView);
+            }
+            
+            render();
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeModal();
+                }
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+{
+  "name": "MedMinder - Medication Tracker",
+  "short_name": "MedMinder",
+  "description": "A calming medication reminder app designed for elderly users",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#F5F9F8",
+  "theme_color": "#4A9B9B",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234A9B9B' width='100' height='100' rx='20'/><text y='.9em' x='50%' text-anchor='middle' font-size='70'>💊</text></svg>",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}
