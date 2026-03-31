@@ -2,39 +2,65 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="MedMinder - A calming medication reminder app for elderly users">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="MedMinder - Your caring medication companion">
     <meta name="theme-color" content="#5B8A8A">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>MedMinder - Medication Tracker</title>
     <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>">
     <style>
         :root {
             --primary: #5B8A8A;
             --primary-light: #7AADAD;
             --primary-dark: #4A7575;
-            --background: #F0F5F5;
-            --background-gradient: linear-gradient(135deg, #E8F4F4 0%, #F5FAFA 50%, #EEF4F4 100%);
+            --primary-glow: rgba(91, 138, 138, 0.3);
+            --background: #F7FAFA;
+            --background-dark: #E8F0F0;
             --card: #FFFFFF;
-            --card-shadow: 0 8px 32px rgba(91, 138, 138, 0.12);
-            --card-shadow-hover: 0 12px 40px rgba(91, 138, 138, 0.2);
-            --text: #2D3A3A;
-            --text-light: #6B7B7B;
-            --text-muted: #9AADA8;
-            --success: #4CAF7D;
-            --success-light: #E8F7EF;
-            --pending: #7FB3D5;
-            --pending-light: #EAF3FA;
-            --overdue: #E5A855;
-            --overdue-light: #FDF6E8;
-            --danger: #E57373;
-            --danger-light: #FDEEED;
+            --card-elevated: #FFFFFF;
+            --text: #1A2B2B;
+            --text-secondary: #5A6B6B;
+            --text-muted: #8A9E9E;
+            --success: #34B477;
+            --success-light: #E6F7EF;
+            --warning: #E5A855;
+            --warning-light: #FDF6E8;
+            --danger: #E55858;
+            --danger-light: #FDEEEE;
+            --info: #5B9BD5;
+            --info-light: #EEF5FC;
             --border: #E2E8E8;
-            --radius: 20px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
+            --shadow-md: 0 8px 32px rgba(91, 138, 138, 0.12);
+            --shadow-lg: 0 16px 48px rgba(91, 138, 138, 0.18);
+            --shadow-glow: 0 0 40px rgba(91, 138, 138, 0.2);
             --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 24px;
+            --radius-xl: 32px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #7AADAD;
+            --primary-light: #9BCACA;
+            --primary-dark: #5B8A8A;
+            --primary-glow: rgba(122, 173, 173, 0.3);
+            --background: #1A2424;
+            --background-dark: #0F1818;
+            --card: #243030;
+            --card-elevated: #2A3838;
+            --text: #F0F5F5;
+            --text-secondary: #A8BABA;
+            --text-muted: #6A8080;
+            --border: #3A4848;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+            --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.4);
         }
 
         * {
@@ -43,40 +69,46 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 17px;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 16px;
             line-height: 1.6;
             color: var(--text);
             background: var(--background);
-            background-image: var(--background-gradient);
             min-height: 100vh;
-            padding-bottom: 140px;
+            min-height: 100dvh;
+            padding-bottom: 160px;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .container {
-            max-width: 640px;
+            max-width: 680px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
+        /* Header */
         header {
-            background: rgba(255, 255, 255, 0.85);
+            background: var(--card);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            padding: 28px 24px;
-            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            border-bottom: 1px solid rgba(91, 138, 138, 0.1);
+            border-bottom: 1px solid var(--border);
+            transition: all 0.3s ease;
         }
 
-        .header-top {
+        .header-inner {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 20px;
+            gap: 16px;
         }
 
         .logo {
@@ -85,25 +117,43 @@
             gap: 14px;
         }
 
+        .logo-badge {
+            position: relative;
+        }
+
         .logo-icon {
             width: 52px;
             height: 52px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 28px;
-            box-shadow: 0 4px 12px rgba(91, 138, 138, 0.3);
+            box-shadow: var(--shadow-md);
+            transition: transform 0.3s ease;
         }
 
-        .logo h1 {
-            font-size: 26px;
+        .logo-icon:hover {
+            transform: rotate(10deg) scale(1.05);
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-size: 24px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            color: var(--text);
+            letter-spacing: -0.5px;
+        }
+
+        .logo-text span {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 500;
         }
 
         .header-actions {
@@ -112,150 +162,322 @@
         }
 
         .icon-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            border: none;
-            background: var(--background);
-            color: var(--text-light);
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: var(--card);
+            color: var(--text-secondary);
             font-size: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
         }
 
         .icon-btn:hover {
             background: var(--primary);
             color: white;
+            border-color: var(--primary);
             transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .icon-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        /* Progress Card */
+        .progress-section {
+            padding: 24px 0;
         }
 
         .progress-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
-            border-radius: var(--radius);
-            padding: 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, #6B9B9B 50%, var(--primary-light) 100%);
+            border-radius: var(--radius-lg);
+            padding: 28px;
             color: white;
-            box-shadow: 0 8px 24px rgba(91, 138, 138, 0.3);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .progress-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .progress-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 50%;
         }
 
         .progress-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 1;
         }
 
-        .progress-label {
-            font-size: 15px;
+        .progress-info h2 {
+            font-size: 14px;
             font-weight: 600;
             opacity: 0.9;
+            margin-bottom: 4px;
         }
 
-        .progress-value {
-            font-size: 32px;
+        .progress-info .greeting {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .progress-stats {
+            text-align: right;
+        }
+
+        .progress-stats .number {
+            font-size: 42px;
             font-weight: 800;
+            line-height: 1;
+        }
+
+        .progress-stats .label {
+            font-size: 13px;
+            opacity: 0.85;
+            font-weight: 500;
         }
 
         .progress-bar {
-            height: 10px;
-            background: rgba(255, 255, 255, 0.3);
-            border-radius: 5px;
+            height: 12px;
+            background: rgba(255,255,255,0.25);
+            border-radius: 6px;
             overflow: hidden;
+            position: relative;
+            z-index: 1;
         }
 
         .progress-fill {
             height: 100%;
             background: white;
-            border-radius: 5px;
-            transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 6px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
         }
 
-        .progress-subtext {
-            margin-top: 12px;
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            width: 20px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
+        }
+
+        .progress-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-message {
             font-size: 14px;
-            opacity: 0.85;
+            opacity: 0.95;
+            font-weight: 500;
         }
 
-        .emergency-section {
-            margin-top: 24px;
-            padding: 20px 0;
-            border-top: 1px solid var(--border);
+        .progress-actions {
+            display: flex;
+            gap: 8px;
         }
 
-        .emergency-title {
+        .progress-actions button {
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
             font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--text-muted);
-            margin-bottom: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
 
-        .emergency-contacts {
+        .progress-actions button:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        /* Quick Stats */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255,255,255,0.15);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .stat-card .stat-value {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .stat-card .stat-label {
+            font-size: 11px;
+            opacity: 0.85;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Emergency Contacts */
+        .emergency-section {
+            padding: 24px 0;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+
+        .section-header h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .section-header a {
+            font-size: 14px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .emergency-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 12px;
         }
 
-        .emergency-btn {
+        .emergency-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            padding: 20px 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 8px;
-            padding: 16px 12px;
-            background: var(--card);
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            color: var(--text);
+            gap: 10px;
         }
 
-        .emergency-btn:hover {
+        .emergency-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
             border-color: var(--primary);
-            transform: translateY(-2px);
-            box-shadow: var(--card-shadow);
         }
 
-        .emergency-btn .icon {
+        .emergency-card .icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 28px;
         }
 
-        .emergency-btn .label {
-            font-size: 12px;
-            font-weight: 600;
+        .emergency-card.family .icon { background: var(--info-light); }
+        .emergency-card.doctor .icon { background: var(--success-light); }
+        .emergency-card.pharmacy .icon { background: var(--warning-light); }
+
+        .emergency-card .name {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text);
         }
 
-        .emergency-btn.family { border-color: #B8D4E3; }
-        .emergency-btn.family:hover { background: #F0F7FC; border-color: #7FB3D5; }
-        .emergency-btn.doctor { border-color: #D4E3B8; }
-        .emergency-btn.doctor:hover { background: #F7FCF0; border-color: #A5C980; }
-        .emergency-btn.pharmacy { border-color: #E3D4B8; }
-        .emergency-btn.pharmacy:hover { background: #FCF8F0; border-color: #E5A855; }
+        .emergency-card .phone {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
 
-        .tabs {
+        .emergency-card.empty {
+            border-style: dashed;
+            opacity: 0.7;
+        }
+
+        .emergency-card.empty:hover {
+            opacity: 1;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
             display: flex;
             gap: 8px;
-            padding: 24px 0;
+            padding: 8px;
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            margin: 24px 0;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
         }
 
-        .tabs::-webkit-scrollbar { display: none; }
+        .nav-tabs::-webkit-scrollbar { display: none; }
 
-        .tab-btn {
+        .nav-tab {
             flex: 1;
-            min-width: 100px;
-            padding: 16px 20px;
-            font-size: 15px;
-            font-weight: 700;
+            min-width: fit-content;
+            padding: 14px 20px;
             border: none;
-            background: var(--card);
-            color: var(--text-light);
+            background: transparent;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
             border-radius: var(--radius-sm);
             cursor: pointer;
             transition: all 0.3s ease;
@@ -263,22 +485,26 @@
             align-items: center;
             justify-content: center;
             gap: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            font-family: inherit;
+            white-space: nowrap;
         }
 
-        .tab-btn:hover {
+        .nav-tab:hover {
             color: var(--primary);
-            transform: translateY(-2px);
+            background: var(--background);
         }
 
-        .tab-btn.active {
+        .nav-tab.active {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            box-shadow: 0 4px 16px rgba(91, 138, 138, 0.3);
+            box-shadow: 0 4px 16px var(--primary-glow);
         }
 
-        .tab-btn .emoji { font-size: 20px; }
+        .nav-tab .emoji {
+            font-size: 18px;
+        }
 
+        /* View Container */
         .view-container {
             padding-bottom: 20px;
         }
@@ -291,10 +517,11 @@
         .view.active { display: block; }
 
         @keyframes fadeSlideIn {
-            from { opacity: 0; transform: translateY(16px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Time Sections */
         .time-section {
             margin-bottom: 28px;
         }
@@ -306,13 +533,20 @@
             padding: 16px 20px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            border-radius: var(--radius-sm);
+            border-radius: var(--radius-md);
             margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(91, 138, 138, 0.2);
+            box-shadow: 0 4px 16px var(--primary-glow);
         }
 
         .time-section-header .icon {
             font-size: 28px;
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .time-section-header .label {
@@ -320,40 +554,49 @@
             font-weight: 700;
         }
 
-        .time-range {
+        .time-section-header .count {
             margin-left: auto;
+            background: rgba(255,255,255,0.25);
+            padding: 6px 14px;
+            border-radius: 20px;
             font-size: 13px;
-            opacity: 0.85;
             font-weight: 600;
         }
 
+        /* Medication Card */
         .medication-card {
             background: var(--card);
-            border-radius: var(--radius);
-            padding: 0;
+            border-radius: var(--radius-lg);
             margin-bottom: 16px;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
             overflow: hidden;
             transition: all 0.3s ease;
-            border: 1px solid var(--border);
+            animation: cardAppear 0.4s ease backwards;
+        }
+
+        @keyframes cardAppear {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .medication-card:hover {
             transform: translateY(-4px);
-            box-shadow: var(--card-shadow-hover);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
         }
 
         .medication-card.taken {
             border-color: var(--success);
-            background: linear-gradient(to bottom, var(--success-light) 0%, var(--card) 100%);
+            background: linear-gradient(135deg, var(--success-light) 0%, var(--card) 50%);
         }
 
         .medication-card.overdue {
-            border-color: var(--overdue);
-            background: linear-gradient(to bottom, var(--overdue-light) 0%, var(--card) 100%);
+            border-color: var(--warning);
+            background: linear-gradient(135deg, var(--warning-light) 0%, var(--card) 50%);
         }
 
-        .med-header {
+        .med-card-header {
             display: flex;
             align-items: flex-start;
             gap: 16px;
@@ -361,14 +604,15 @@
         }
 
         .med-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 32px;
             flex-shrink: 0;
+            position: relative;
         }
 
         .med-icon.color-blue { background: linear-gradient(135deg, #7FB3D5, #A8D0E6); }
@@ -378,46 +622,85 @@
         .med-icon.color-pink { background: linear-gradient(135deg, #F48FB1, #F8BBD9); }
         .med-icon.color-teal { background: linear-gradient(135deg, #5B8A8A, #7AADAD); }
 
-        .med-info { flex: 1; min-width: 0; }
+        .med-icon .badge {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            width: 24px;
+            height: 24px;
+            background: var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            border: 2px solid var(--card);
+        }
+
+        .med-info {
+            flex: 1;
+            min-width: 0;
+        }
 
         .med-name {
             font-size: 20px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
         .med-dosage {
             font-size: 15px;
-            color: var(--text-light);
-            margin-bottom: 4px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
         }
 
-        .med-frequency {
-            font-size: 13px;
-            color: var(--text-muted);
-            display: inline-block;
-            padding: 4px 10px;
-            background: var(--background);
+        .med-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .med-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 12px;
             border-radius: 20px;
+            font-size: 12px;
             font-weight: 600;
         }
 
+        .med-tag.frequency {
+            background: var(--info-light);
+            color: var(--info);
+        }
+
+        .med-tag.food {
+            background: var(--warning-light);
+            color: var(--warning);
+        }
+
         .med-notes {
-            margin-top: 12px;
-            padding: 12px 16px;
+            margin: 0 20px 16px;
+            padding: 14px 16px;
             background: var(--background);
             border-radius: var(--radius-sm);
             font-size: 14px;
-            color: var(--text-light);
-            border-left: 3px solid var(--primary);
+            color: var(--text-secondary);
+            border-left: 4px solid var(--primary);
         }
 
         .med-notes strong {
             color: var(--text);
-            font-size: 12px;
+            display: block;
+            font-size: 11px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            margin-bottom: 4px;
         }
 
         .med-times {
@@ -432,6 +715,10 @@
             border-top: 1px solid var(--border);
         }
 
+        .time-row:first-child {
+            border-top: none;
+        }
+
         .time-info {
             display: flex;
             align-items: center;
@@ -439,6 +726,13 @@
         }
 
         .time-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--background);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 18px;
         }
 
@@ -448,6 +742,18 @@
             color: var(--text);
         }
 
+        .time-status {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .time-status.overdue {
+            color: var(--warning);
+            font-weight: 600;
+        }
+
+        /* Buttons */
         .btn {
             padding: 12px 20px;
             font-size: 15px;
@@ -455,7 +761,7 @@
             border: none;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -466,32 +772,35 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(91, 138, 138, 0.3);
+            box-shadow: 0 4px 16px var(--primary-glow);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(91, 138, 138, 0.4);
+            box-shadow: 0 6px 24px var(--primary-glow);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, var(--success) 0%, #6ECF8F 100%);
+            background: linear-gradient(135deg, var(--success) 0%, #4CC989 100%);
             color: white;
-            box-shadow: 0 4px 12px rgba(76, 175, 125, 0.3);
+            box-shadow: 0 4px 16px rgba(52, 180, 119, 0.3);
         }
 
         .btn-success:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(76, 175, 125, 0.4);
+            box-shadow: 0 6px 24px rgba(52, 180, 119, 0.4);
         }
 
         .btn-secondary {
             background: var(--background);
             color: var(--text);
+            border: 1px solid var(--border);
         }
 
         .btn-secondary:hover {
-            background: #E5EBEB;
+            background: var(--background-dark);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
         .btn-danger {
@@ -500,7 +809,8 @@
         }
 
         .btn-danger:hover {
-            background: #FCD5D5;
+            background: var(--danger);
+            color: white;
         }
 
         .btn-small {
@@ -511,17 +821,26 @@
         .btn-taken {
             background: var(--success);
             color: white;
+            padding: 10px 18px;
+            font-size: 14px;
         }
 
-        .btn-taken.taken-state {
-            background: var(--success-light);
-            color: var(--success);
-            border: 2px solid var(--success);
+        .btn-taken:hover {
+            background: #2DA36A;
+            transform: scale(1.02);
+        }
+
+        .btn-undo {
+            background: var(--background);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 10px 16px;
+            font-size: 13px;
         }
 
         .card-actions {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             padding: 16px 20px;
             background: var(--background);
             border-top: 1px solid var(--border);
@@ -531,22 +850,40 @@
             flex: 1;
         }
 
+        /* Refill Warning */
+        .refill-warning {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 20px;
+            background: var(--warning-light);
+            border-top: 1px solid rgba(229, 168, 85, 0.2);
+            font-size: 14px;
+            font-weight: 600;
+            color: #B8860B;
+        }
+
+        .refill-warning .icon {
+            font-size: 20px;
+        }
+
+        /* FAB */
         .fab-container {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
+            bottom: 28px;
+            right: 28px;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 12px;
+            gap: 16px;
             z-index: 100;
         }
 
-        .fab-label {
+        .fab-tooltip {
             background: var(--text);
             color: white;
-            padding: 10px 16px;
-            border-radius: 10px;
+            padding: 10px 18px;
+            border-radius: 12px;
             font-size: 14px;
             font-weight: 600;
             white-space: nowrap;
@@ -565,24 +902,46 @@
             font-size: 32px;
             border: none;
             cursor: pointer;
-            box-shadow: 0 6px 24px rgba(91, 138, 138, 0.4);
+            box-shadow: 0 8px 32px var(--primary-glow);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             justify-content: center;
+            position: relative;
+        }
+
+        .fab::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.3s ease;
         }
 
         .fab:hover {
             transform: scale(1.1) rotate(90deg);
-            box-shadow: 0 8px 32px rgba(91, 138, 138, 0.5);
+            box-shadow: 0 12px 40px var(--primary-glow);
         }
 
-        .fab:hover + .fab-label,
-        .fab-container:hover .fab-label {
+        .fab:hover::before {
+            opacity: 0.3;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0; }
+        }
+
+        .fab-container:hover .fab-tooltip {
             opacity: 1;
             transform: translateX(0);
         }
 
+        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -590,47 +949,47 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(45, 58, 58, 0.6);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            background: rgba(26, 43, 43, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             z-index: 200;
             align-items: flex-end;
             justify-content: center;
             padding: 20px;
         }
 
-        @media (min-width: 480px) {
+        @media (min-width: 600px) {
             .modal-overlay { align-items: center; }
         }
 
         .modal-overlay.active {
             display: flex;
-            animation: fadeIn 0.2s ease;
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .modal {
             background: var(--card);
-            border-radius: var(--radius) var(--radius) 0 0;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
             padding: 32px;
             width: 100%;
-            max-width: 520px;
-            max-height: 90vh;
+            max-width: 540px;
+            max-height: 92vh;
             overflow-y: auto;
-            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: modalSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        @media (min-width: 480px) {
-            .modal { border-radius: var(--radius); }
+        @media (min-width: 600px) {
+            .modal { border-radius: var(--radius-xl); }
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(100px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        @keyframes modalSlideUp {
+            from { opacity: 0; transform: translateY(60px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
         .modal-header {
@@ -647,12 +1006,13 @@
         }
 
         .modal-close {
-            width: 40px;
-            height: 40px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: none;
             background: var(--background);
-            font-size: 24px;
+            font-size: 28px;
+            color: var(--text-secondary);
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -671,7 +1031,7 @@
 
         .form-group label {
             display: block;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 10px;
@@ -684,7 +1044,7 @@
         .form-group textarea {
             width: 100%;
             padding: 16px 18px;
-            font-size: 17px;
+            font-size: 16px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             background: var(--card);
@@ -698,7 +1058,7 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(91, 138, 138, 0.1);
+            box-shadow: 0 0 0 4px var(--primary-glow);
         }
 
         .form-group textarea {
@@ -706,23 +1066,50 @@
             resize: vertical;
         }
 
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
         .color-tags {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .color-tag {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
             border: 3px solid transparent;
             cursor: pointer;
             transition: all 0.2s ease;
+            position: relative;
         }
 
         .color-tag:hover { transform: scale(1.1); }
-        .color-tag.selected { border-color: var(--text); transform: scale(1.1); }
+        .color-tag.selected { 
+            border-color: var(--text); 
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+        }
+
+        .color-tag::after {
+            content: '✓';
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+
+        .color-tag.selected::after { opacity: 1; }
 
         .color-tag.blue { background: linear-gradient(135deg, #7FB3D5, #A8D0E6); }
         .color-tag.green { background: linear-gradient(135deg, #6ABF9E, #8FD4B8); }
@@ -748,13 +1135,13 @@
         }
 
         .remove-time {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
             border: none;
             background: var(--danger-light);
             color: var(--danger);
-            font-size: 20px;
+            font-size: 24px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -765,6 +1152,7 @@
         .remove-time:hover {
             background: var(--danger);
             color: white;
+            transform: scale(1.05);
         }
 
         .add-time-btn {
@@ -772,7 +1160,7 @@
             background: transparent;
             border: 2px dashed var(--border);
             border-radius: var(--radius-sm);
-            color: var(--text-light);
+            color: var(--text-secondary);
             font-size: 15px;
             font-weight: 700;
             cursor: pointer;
@@ -790,119 +1178,111 @@
             background: var(--success-light);
         }
 
-        .refill-section {
-            padding: 20px;
-            background: linear-gradient(135deg, #FFF9E6 0%, #FFFDF5 100%);
-            border: 2px solid #FFE082;
-            border-radius: var(--radius-sm);
-            margin-top: 16px;
+        .food-options {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .refill-header {
+        .food-option {
+            padding: 10px 16px;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            background: var(--card);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
+            gap: 6px;
         }
 
-        .refill-icon { font-size: 24px; }
+        .food-option:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
 
-        .refill-title {
+        .food-option.selected {
+            border-color: var(--primary);
+            background: var(--primary);
+            color: white;
+        }
+
+        .refill-section {
+            padding: 24px;
+            background: linear-gradient(135deg, #FFFBF0 0%, #FFFDF5 100%);
+            border: 2px solid #FFE082;
+            border-radius: var(--radius-md);
+            margin-top: 8px;
+        }
+
+        .refill-section h4 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
             font-size: 16px;
             font-weight: 700;
             color: #B8860B;
-        }
-
-        .refill-inputs {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .refill-inputs label {
-            font-size: 13px;
-            color: var(--text-light);
-            display: block;
-            margin-bottom: 6px;
-        }
-
-        .refill-inputs input {
-            width: 100%;
-            padding: 12px 14px;
-            font-size: 16px;
-            border: 2px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: inherit;
-        }
-
-        .refill-warning {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 16px;
-            background: var(--overdue-light);
-            border-radius: var(--radius-sm);
-            margin-top: 16px;
-            font-size: 14px;
-            font-weight: 600;
-            color: #B8860B;
+            margin-bottom: 16px;
         }
 
         .modal-actions {
             display: flex;
             gap: 12px;
             margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
         }
 
         .modal-actions .btn { flex: 1; }
 
+        /* Empty State */
         .empty-state {
             text-align: center;
             padding: 60px 30px;
         }
 
         .empty-state .icon {
-            font-size: 80px;
-            margin-bottom: 20px;
+            font-size: 100px;
+            margin-bottom: 24px;
             animation: float 3s ease-in-out infinite;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-15px) rotate(5deg); }
+            75% { transform: translateY(-5deg) rotate(-5deg); }
         }
 
         .empty-state h3 {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
             color: var(--text);
-            margin-bottom: 10px;
+            margin-bottom: 12px;
         }
 
         .empty-state p {
             font-size: 16px;
-            color: var(--text-light);
+            color: var(--text-secondary);
+            margin-bottom: 24px;
         }
 
-        .check-icon {
-            width: 28px;
-            height: 28px;
-            background: var(--success);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 16px;
-            font-weight: bold;
+        .empty-state .btn {
+            margin: 8px;
         }
 
-        /* Weekly Calendar Styles */
+        /* Calendar View */
         .calendar-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
+            padding: 20px;
+            background: var(--card);
+            border-radius: var(--radius-md);
+            border: 1px solid var(--border);
         }
 
         .calendar-nav {
@@ -911,19 +1291,24 @@
         }
 
         .calendar-nav button {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            border: 2px solid var(--border);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
             background: var(--card);
-            font-size: 18px;
+            font-size: 20px;
             cursor: pointer;
             transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .calendar-nav button:hover {
             border-color: var(--primary);
             color: var(--primary);
+            background: var(--primary-light);
+            color: white;
         }
 
         .calendar-title {
@@ -944,12 +1329,13 @@
             font-size: 12px;
             font-weight: 700;
             color: var(--text-muted);
-            padding: 8px 0;
+            padding: 10px 0;
+            text-transform: uppercase;
         }
 
         .calendar-day {
             aspect-ratio: 1;
-            border-radius: 12px;
+            border-radius: 14px;
             border: 2px solid var(--border);
             background: var(--card);
             display: flex;
@@ -958,20 +1344,23 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            gap: 4px;
         }
 
         .calendar-day:hover {
             border-color: var(--primary);
+            transform: scale(1.05);
         }
 
         .calendar-day.today {
             border-color: var(--primary);
-            background: var(--success-light);
+            background: var(--primary);
+            color: white;
         }
 
         .calendar-day.selected {
             border-color: var(--primary);
-            background: var(--primary);
+            background: var(--primary-light);
             color: white;
         }
 
@@ -981,31 +1370,33 @@
         }
 
         .calendar-day .day-indicator {
-            width: 6px;
-            height: 6px;
+            width: 8px;
+            height: 8px;
             border-radius: 50%;
-            margin-top: 4px;
         }
 
         .calendar-day .day-indicator.has-meds { background: var(--primary); }
         .calendar-day .day-indicator.all-taken { background: var(--success); }
+        .calendar-day .day-indicator.missed { background: var(--warning); }
 
-        .selected-day-info {
+        .selected-day-card {
             background: var(--card);
-            border-radius: var(--radius);
+            border-radius: var(--radius-lg);
             padding: 24px;
-            box-shadow: var(--card-shadow);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
         }
 
-        .selected-day-title {
+        .selected-day-card h3 {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 20px;
             color: var(--text);
         }
 
+        /* History */
         .history-list {
-            max-height: 400px;
+            max-height: 500px;
             overflow-y: auto;
         }
 
@@ -1020,13 +1411,13 @@
         .history-item:last-child { border-bottom: none; }
 
         .history-icon {
-            width: 44px;
-            height: 44px;
+            width: 48px;
+            height: 48px;
             border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 22px;
+            font-size: 24px;
             flex-shrink: 0;
         }
 
@@ -1043,136 +1434,323 @@
 
         .history-time {
             font-size: 14px;
-            color: var(--text-light);
+            color: var(--text-secondary);
         }
 
         .history-date {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
         }
 
-        /* Emergency Contacts Modal */
+        /* Stats View */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stats-card {
+            background: var(--card);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+
+        .stats-card .icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .stats-card .value {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 4px;
+        }
+
+        .stats-card .label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .stats-card.primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .stats-card.primary .value,
+        .stats-card.primary .label {
+            color: white;
+        }
+
+        .streak-card {
+            background: linear-gradient(135deg, #FFB74D 0%, #FFD54F 100%);
+            color: white;
+            grid-column: span 2;
+        }
+
+        .streak-card .value { font-size: 48px; }
+        .streak-card .icon { font-size: 48px; }
+        .streak-card .label { color: rgba(255,255,255,0.9); }
+
+        .chart-placeholder {
+            background: var(--card);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            border: 1px solid var(--border);
+        }
+
+        .chart-placeholder h4 {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--text);
+        }
+
+        .week-chart {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 120px;
+            gap: 8px;
+        }
+
+        .day-bar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bar {
+            width: 100%;
+            border-radius: 8px;
+            background: var(--background);
+            min-height: 20px;
+            transition: height 0.5s ease;
+        }
+
+        .bar-fill {
+            background: linear-gradient(to top, var(--success), var(--primary-light));
+            border-radius: 8px;
+        }
+
+        .day-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        /* Contacts Form */
         .contacts-form .contact-row {
             display: flex;
             gap: 12px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             align-items: flex-end;
         }
 
-        .contacts-form .contact-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
+        .contacts-form .contact-icon {
+            flex-shrink: 0;
         }
 
-        .contacts-form .contact-type {
+        .contact-icon select {
             width: 60px;
-        }
-
-        .contact-icon-select {
-            width: 100%;
-            padding: 14px;
-            font-size: 24px;
+            height: 52px;
+            font-size: 28px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             background: var(--card);
             cursor: pointer;
+            text-align: center;
         }
 
-        /* Print Styles */
+        .contacts-form .contact-fields {
+            flex: 1;
+            display: flex;
+            gap: 12px;
+        }
+
+        .contacts-form .contact-fields .form-group {
+            margin-bottom: 0;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: var(--text);
+            color: var(--card);
+            padding: 16px 28px;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 600;
+            box-shadow: var(--shadow-lg);
+            z-index: 300;
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { background: var(--success); }
+        .toast.warning { background: var(--warning); }
+        .toast.error { background: var(--danger); }
+
+        /* Print */
         @media print {
-            body { background: white; }
-            header, .tabs, .fab-container, .modal-overlay, .card-actions, .med-times { display: none !important; }
+            header, .nav-tabs, .fab-container, .modal-overlay, .card-actions, .emergency-section { display: none !important; }
             .medication-card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
-            .container { max-width: 100%; }
+            body { padding: 0; }
         }
 
+        /* Responsive */
         @media (max-width: 480px) {
-            header { padding: 20px 16px; }
-            .logo h1 { font-size: 22px; }
-            .logo-icon { width: 44px; height: 44px; font-size: 24px; border-radius: 12px; }
-            .progress-card { padding: 20px; }
-            .progress-value { font-size: 28px; }
-            .emergency-contacts { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .emergency-btn { padding: 12px 8px; }
-            .emergency-btn .icon { font-size: 24px; }
-            .emergency-btn .label { font-size: 11px; }
-            .tabs { padding: 16px 0; }
-            .tab-btn { padding: 14px 16px; font-size: 14px; }
+            header { padding: 16px 0; }
+            .logo-icon { width: 48px; height: 48px; font-size: 26px; }
+            .logo-text h1 { font-size: 22px; }
+            .icon-btn { width: 44px; height: 44px; }
+            .progress-card { padding: 24px; }
+            .progress-stats .number { font-size: 36px; }
+            .quick-stats { gap: 8px; }
+            .stat-card { padding: 14px 8px; }
+            .stat-card .stat-value { font-size: 24px; }
+            .stat-card .stat-label { font-size: 10px; }
+            .emergency-grid { gap: 8px; }
+            .emergency-card { padding: 16px 12px; }
+            .emergency-card .icon { width: 48px; height: 48px; font-size: 24px; }
+            .nav-tab { padding: 12px 16px; font-size: 13px; }
             .modal { padding: 24px; }
-            .fab { width: 56px; height: 56px; font-size: 28px; }
-            .refill-inputs { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .fab { width: 60px; height: 60px; font-size: 28px; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .stats-card.primary, .streak-card { grid-column: span 1; }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="container">
-            <div class="header-top">
+            <div class="header-inner">
                 <div class="logo">
-                    <div class="logo-icon">💊</div>
-                    <h1>MedMinder</h1>
+                    <div class="logo-badge">
+                        <div class="logo-icon">💊</div>
+                    </div>
+                    <div class="logo-text">
+                        <h1>MedMinder</h1>
+                        <span>Your daily companion</span>
+                    </div>
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn" onclick="openContactsModal()" title="Emergency Contacts">📞</button>
-                    <button class="icon-btn" onclick="printMedications()" title="Print List">🖨️</button>
+                    <button class="icon-btn" onclick="toggleTheme()" title="Toggle theme" id="theme-btn">🌙</button>
+                    <button class="icon-btn" onclick="openContactsModal()" title="Contacts">📞</button>
                     <button class="icon-btn" onclick="openHistoryModal()" title="History">📋</button>
-                </div>
-            </div>
-            <div class="progress-card">
-                <div class="progress-header">
-                    <span class="progress-label">Today's Progress</span>
-                    <span class="progress-value"><span id="progress-count">0</span>/<span id="progress-total">0</span></span>
-                </div>
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
-                </div>
-                <p class="progress-subtext" id="progress-message">Add your medications to get started</p>
-            </div>
-            <div class="emergency-section">
-                <p class="emergency-title">Quick Emergency Contacts</p>
-                <div class="emergency-contacts">
-                    <a href="#" class="emergency-btn family" id="contact-family" onclick="callContact('family')">
-                        <span class="icon">👨‍👩‍👧</span>
-                        <span class="label">Family</span>
-                    </a>
-                    <a href="#" class="emergency-btn doctor" id="contact-doctor" onclick="callContact('doctor')">
-                        <span class="icon">👨‍⚕️</span>
-                        <span class="label">Doctor</span>
-                    </a>
-                    <a href="#" class="emergency-btn pharmacy" id="contact-pharmacy" onclick="callContact('pharmacy')">
-                        <span class="icon">🏥</span>
-                        <span class="label">Pharmacy</span>
-                    </a>
+                    <button class="icon-btn" onclick="printMedications()" title="Print">🖨️</button>
                 </div>
             </div>
         </div>
     </header>
 
-    <div class="container">
-        <div class="tabs" role="tablist">
-            <button class="tab-btn active" role="tab" onclick="switchView('time')">
-                <span class="emoji">🕐</span>
-                <span>By Time</span>
-            </button>
-            <button class="tab-btn" role="tab" onclick="switchView('list')">
-                <span class="emoji">📝</span>
-                <span>By List</span>
-            </button>
-            <button class="tab-btn" role="tab" onclick="switchView('calendar')">
-                <span class="emoji">📅</span>
-                <span>Calendar</span>
-            </button>
+    <main class="container">
+        <div class="progress-section">
+            <div class="progress-card">
+                <div class="progress-header">
+                    <div class="progress-info">
+                        <h2 id="greeting">Good Morning</h2>
+                        <div class="greeting" id="greeting-name">Stay healthy today!</div>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="number"><span id="progress-count">0</span>/<span id="progress-total">0</span></div>
+                        <div class="label">Completed</div>
+                    </div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                </div>
+                <div class="progress-footer">
+                    <span class="progress-message" id="progress-message">Add medications to get started</span>
+                    <div class="progress-actions">
+                        <button onclick="switchViewById('stats')">📊 Stats</button>
+                        <button onclick="switchViewById('calendar')">📅 Week</button>
+                    </div>
+                </div>
+                <div class="quick-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-pending">0</div>
+                        <div class="stat-label">Pending</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-taken">0</div>
+                        <div class="stat-label">Taken</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="stat-streak">0</div>
+                        <div class="stat-label">Day Streak</div>
+                    </div>
+                </div>
+            </div>
         </div>
+
+        <div class="emergency-section">
+            <div class="section-header">
+                <h3>Quick Emergency</h3>
+                <a href="#" onclick="openContactsModal(); return false;">Edit</a>
+            </div>
+            <div class="emergency-grid">
+                <a href="#" class="emergency-card family" id="contact-family" onclick="callContact('family')">
+                    <div class="icon" id="family-icon-bg">👨</div>
+                    <div class="name" id="family-name-text">Family</div>
+                    <div class="phone" id="family-phone-text">Tap to edit</div>
+                </a>
+                <a href="#" class="emergency-card doctor" id="contact-doctor" onclick="callContact('doctor')">
+                    <div class="icon" id="doctor-icon-bg">👨‍⚕️</div>
+                    <div class="name" id="doctor-name-text">Doctor</div>
+                    <div class="phone" id="doctor-phone-text">Tap to edit</div>
+                </a>
+                <a href="#" class="emergency-card pharmacy" id="contact-pharmacy" onclick="callContact('pharmacy')">
+                    <div class="icon" id="pharmacy-icon-bg">🏥</div>
+                    <div class="name" id="pharmacy-name-text">Pharmacy</div>
+                    <div class="phone" id="pharmacy-phone-text">Tap to edit</div>
+                </a>
+            </div>
+        </div>
+
+        <nav class="nav-tabs" role="tablist">
+            <button class="nav-tab active" onclick="switchView('time')" data-view="time">
+                <span class="emoji">🕐</span> By Time
+            </button>
+            <button class="nav-tab" onclick="switchView('list')" data-view="list">
+                <span class="emoji">📝</span> List
+            </button>
+            <button class="nav-tab" onclick="switchView('calendar')" data-view="calendar">
+                <span class="emoji">📅</span> Calendar
+            </button>
+            <button class="nav-tab" onclick="switchView('stats')" data-view="stats">
+                <span class="emoji">📊</span> Stats
+            </button>
+        </nav>
 
         <div class="view-container">
             <div class="view active" id="time-view"></div>
             <div class="view" id="list-view"></div>
             <div class="view" id="calendar-view"></div>
+            <div class="view" id="stats-view"></div>
         </div>
-    </div>
+    </main>
 
     <div class="fab-container">
-        <span class="fab-label">Add Medication</span>
+        <span class="fab-tooltip">Add Medication</span>
         <button class="fab" onclick="openMedModal()" aria-label="Add medication">+</button>
     </div>
 
@@ -1191,9 +1769,20 @@
                     <input type="text" id="med-name" required placeholder="e.g., Aspirin">
                 </div>
 
-                <div class="form-group">
-                    <label for="med-dosage">Dosage</label>
-                    <input type="text" id="med-dosage" placeholder="e.g., 500mg or 1 tablet">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="med-dosage">Dosage</label>
+                        <input type="text" id="med-dosage" placeholder="e.g., 500mg">
+                    </div>
+                    <div class="form-group">
+                        <label for="med-frequency">Frequency</label>
+                        <select id="med-frequency">
+                            <option value="daily">Daily</option>
+                            <option value="twice-daily">Twice Daily</option>
+                            <option value="weekly">Weekly</option>
+                            <option value="asneeded">As Needed</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -1209,16 +1798,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="med-frequency">Frequency</label>
-                    <select id="med-frequency">
-                        <option value="daily">Daily</option>
-                        <option value="twice-daily">Twice Daily</option>
-                        <option value="weekly">Weekly</option>
-                        <option value="asneeded">As Needed</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
                     <label>Time(s) to Take</label>
                     <div class="time-inputs" id="time-inputs">
                         <div class="time-input-row">
@@ -1231,33 +1810,36 @@
                 </div>
 
                 <div class="form-group">
+                    <label>Take With Food</label>
+                    <div class="food-options">
+                        <button type="button" class="food-option selected" data-food="none" onclick="selectFood(this)">🍽️ Any</button>
+                        <button type="button" class="food-option" data-food="food" onclick="selectFood(this)">🥗 With Food</button>
+                        <button type="button" class="food-option" data-food="empty" onclick="selectFood(this)">⏰ Empty Stomach</button>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label for="med-notes">Notes / Instructions</label>
                     <textarea id="med-notes" placeholder="e.g., Take with food, Avoid alcohol..."></textarea>
                 </div>
 
                 <div class="refill-section">
-                    <div class="refill-header">
-                        <span class="refill-icon">💉</span>
-                        <span class="refill-title">Refill Reminder (Optional)</span>
-                    </div>
-                    <div class="refill-inputs">
-                        <div>
+                    <h4>💉 Refill Reminder</h4>
+                    <div class="form-row">
+                        <div class="form-group">
                             <label>Pills Remaining</label>
                             <input type="number" id="med-pills-left" placeholder="e.g., 30" min="0">
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label>Daily Dose</label>
                             <input type="number" id="med-daily-dose" placeholder="e.g., 2" min="1">
                         </div>
-                    </div>
-                    <div class="refill-warning" id="refill-warning" style="display: none;">
-                        ⚠️ <span id="refill-warning-text">Running low! Refill soon.</span>
                     </div>
                 </div>
 
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeMedModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Medication</button>
+                    <button type="submit" class="btn btn-primary">💾 Save</button>
                 </div>
             </form>
         </div>
@@ -1272,67 +1854,62 @@
             </div>
             <form id="contacts-form" class="contacts-form" onsubmit="saveContacts(event)">
                 <div class="contact-row">
-                    <div class="form-group contact-type">
-                        <label>Icon</label>
-                        <select class="contact-icon-select" id="family-icon">
-                            <option>👨</option>
-                            <option>👩</option>
-                            <option>👨‍👩‍👧</option>
-                            <option>👴</option>
-                            <option>👵</option>
+                    <div class="contact-icon">
+                        <select id="family-icon">
+                            <option>👨</option><option>👩</option><option>👨‍👩‍👧</option><option>👴</option><option>👵</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="family-name">Family Contact Name</label>
-                        <input type="text" id="family-name" placeholder="e.g., John (Son)">
-                    </div>
-                    <div class="form-group" style="max-width: 140px;">
-                        <label for="family-phone">Phone</label>
-                        <input type="tel" id="family-phone" placeholder="555-1234">
+                    <div class="contact-fields">
+                        <div class="form-group">
+                            <label for="family-name">Name</label>
+                            <input type="text" id="family-name" placeholder="John (Son)">
+                        </div>
+                        <div class="form-group" style="max-width: 140px;">
+                            <label for="family-phone">Phone</label>
+                            <input type="tel" id="family-phone" placeholder="555-1234">
+                        </div>
                     </div>
                 </div>
 
                 <div class="contact-row">
-                    <div class="form-group contact-type">
-                        <label>Icon</label>
-                        <select class="contact-icon-select" id="doctor-icon">
-                            <option>👨‍⚕️</option>
-                            <option>👩‍⚕️</option>
-                            <option>🩺</option>
+                    <div class="contact-icon">
+                        <select id="doctor-icon">
+                            <option>👨‍⚕️</option><option>👩‍⚕️</option><option>🩺</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="doctor-name">Doctor Name</label>
-                        <input type="text" id="doctor-name" placeholder="e.g., Dr. Smith">
-                    </div>
-                    <div class="form-group" style="max-width: 140px;">
-                        <label for="doctor-phone">Phone</label>
-                        <input type="tel" id="doctor-phone" placeholder="555-5678">
+                    <div class="contact-fields">
+                        <div class="form-group">
+                            <label for="doctor-name">Name</label>
+                            <input type="text" id="doctor-name" placeholder="Dr. Smith">
+                        </div>
+                        <div class="form-group" style="max-width: 140px;">
+                            <label for="doctor-phone">Phone</label>
+                            <input type="tel" id="doctor-phone" placeholder="555-5678">
+                        </div>
                     </div>
                 </div>
 
                 <div class="contact-row">
-                    <div class="form-group contact-type">
-                        <label>Icon</label>
-                        <select class="contact-icon-select" id="pharmacy-icon">
-                            <option>🏥</option>
-                            <option>💊</option>
-                            <option>🏪</option>
+                    <div class="contact-icon">
+                        <select id="pharmacy-icon">
+                            <option>🏥</option><option>💊</option><option>🏪</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="pharmacy-name">Pharmacy Name</label>
-                        <input type="text" id="pharmacy-name" placeholder="e.g., CVS Pharmacy">
-                    </div>
-                    <div class="form-group" style="max-width: 140px;">
-                        <label for="pharmacy-phone">Phone</label>
-                        <input type="tel" id="pharmacy-phone" placeholder="555-9012">
+                    <div class="contact-fields">
+                        <div class="form-group">
+                            <label for="pharmacy-name">Name</label>
+                            <input type="text" id="pharmacy-name" placeholder="CVS Pharmacy">
+                        </div>
+                        <div class="form-group" style="max-width: 140px;">
+                            <label for="pharmacy-phone">Phone</label>
+                            <input type="tel" id="pharmacy-phone" placeholder="555-9012">
+                        </div>
                     </div>
                 </div>
 
                 <div class="modal-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeContactsModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">Save Contacts</button>
+                    <button type="submit" class="btn btn-primary">💾 Save</button>
                 </div>
             </form>
         </div>
@@ -1346,14 +1923,17 @@
                 <button class="modal-close" onclick="closeHistoryModal()">×</button>
             </div>
             <div class="history-list" id="history-list">
-                <p style="text-align: center; color: var(--text-muted); padding: 40px;">No history yet. Start tracking your medications!</p>
+                <p style="text-align: center; color: var(--text-muted); padding: 40px;">No history yet. Start tracking!</p>
             </div>
             <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="clearHistory()" style="flex: 1;">Clear History</button>
+                <button class="btn btn-danger" onclick="clearHistory()" style="flex: 1;">Clear All</button>
                 <button class="btn btn-primary" onclick="closeHistoryModal()" style="flex: 1;">Close</button>
             </div>
         </div>
     </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
 
     <script>
         let medications = [];
@@ -1362,7 +1942,9 @@
         let currentView = 'time';
         let takenToday = {};
         let selectedColor = 'blue';
+        let selectedFood = 'none';
         let selectedDate = new Date();
+        let streak = 0;
 
         const timeSections = [
             { id: 'morning', label: 'Morning', icon: '🌅', start: 6, end: 12 },
@@ -1372,31 +1954,29 @@
         ];
 
         const frequencyLabels = {
-            'daily': 'Daily',
-            'twice-daily': 'Twice Daily',
-            'weekly': 'Weekly',
-            'asneeded': 'As Needed'
+            'daily': 'Daily', 'twice-daily': '2x Daily', 'weekly': 'Weekly', 'asneeded': 'As Needed'
         };
+
+        const foodLabels = { 'none': 'Any', 'food': 'With Food', 'empty': 'Empty Stomach' };
 
         function getTodayKey(date = new Date()) {
             return date.toISOString().split('T')[0];
         }
 
         function loadData() {
-            const stored = localStorage.getItem('medminder_medications');
-            if (stored) medications = JSON.parse(stored);
-            
-            const takenStored = localStorage.getItem('medminder_taken');
-            if (takenStored) takenToday = JSON.parse(takenStored);
-            
-            const contactsStored = localStorage.getItem('medminder_contacts');
-            if (contactsStored) contacts = JSON.parse(contactsStored);
-            
-            const historyStored = localStorage.getItem('medminder_history');
-            if (historyStored) history = JSON.parse(historyStored);
+            medications = JSON.parse(localStorage.getItem('medminder_medications') || '[]');
+            takenToday = JSON.parse(localStorage.getItem('medminder_taken') || '{}');
+            contacts = JSON.parse(localStorage.getItem('medminder_contacts') || '{}');
+            history = JSON.parse(localStorage.getItem('medminder_history') || '[]');
+            streak = parseInt(localStorage.getItem('medminder_streak') || '0');
             
             const todayKey = getTodayKey();
             if (!takenToday[todayKey]) takenToday[todayKey] = {};
+            
+            if (localStorage.getItem('medminder_theme')) {
+                document.documentElement.setAttribute('data-theme', localStorage.getItem('medminder_theme'));
+                document.getElementById('theme-btn').textContent = localStorage.getItem('medminder_theme') === 'dark' ? '☀️' : '🌙';
+            }
         }
 
         function saveData() {
@@ -1404,12 +1984,21 @@
             localStorage.setItem('medminder_taken', JSON.stringify(takenToday));
             localStorage.setItem('medminder_contacts', JSON.stringify(contacts));
             localStorage.setItem('medminder_history', JSON.stringify(history));
+            localStorage.setItem('medminder_streak', streak.toString());
+        }
+
+        function toggleTheme() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('medminder_theme', next);
+            document.getElementById('theme-btn').textContent = next === 'dark' ? '☀️' : '🌙';
         }
 
         function getTimeOfDay(timeStr) {
             const [hours] = timeStr.split(':').map(Number);
-            for (const section of timeSections) {
-                if (hours >= section.start && hours < section.end) return section.id;
+            for (const s of timeSections) {
+                if (hours >= s.start && hours < s.end) return s.id;
             }
             return 'night';
         }
@@ -1419,86 +2008,81 @@
             const [hours, minutes] = timeStr.split(':').map(Number);
             const medTime = new Date();
             medTime.setHours(hours, minutes, 0, 0);
-            return now > medTime && now.getHours() - hours < 4;
+            const diff = (now - medTime) / (1000 * 60);
+            return diff > 0 && diff < 240;
         }
 
         function formatTime(timeStr) {
             const [hours, minutes] = timeStr.split(':').map(Number);
             const period = hours >= 12 ? 'PM' : 'AM';
-            const displayHours = hours % 12 || 12;
-            return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+            return `${hours % 12 || 12}:${minutes.toString().padStart(2, '0')} ${period}`;
         }
 
         function formatDate(date) {
-            const options = { weekday: 'long', month: 'long', day: 'numeric' };
-            return date.toLocaleDateString('en-US', options);
+            return date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
         }
 
-        function formatShortDate(date) {
-            return date.toLocaleDateString('en-US', { weekday: 'short', day: 'numeric' });
+        function getGreeting() {
+            const hour = new Date().getHours();
+            if (hour < 12) return 'Good Morning';
+            if (hour < 17) return 'Good Afternoon';
+            return 'Good Evening';
         }
 
         function switchView(view) {
             currentView = view;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelector(`.nav-tab[data-view="${view}"]`)?.classList.add('active');
             document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            
-            event.target.closest('.tab-btn').classList.add('active');
             document.getElementById(`${view}-view`).classList.add('active');
             
             if (view === 'calendar') renderCalendar();
+            if (view === 'stats') renderStats();
             
             localStorage.setItem('medminder_view', view);
         }
 
-        function renderTimeView() {
-            const container = document.getElementById('time-view');
-            if (medications.length === 0) {
-                container.innerHTML = renderEmptyState();
-                return;
-            }
+        function switchViewById(view) {
+            switchView(view);
+        }
 
+        function renderTimeView() {
+            const c = document.getElementById('time-view');
+            if (!medications.length) { c.innerHTML = renderEmptyState(); return; }
+            
             const todayKey = getTodayKey();
             let html = '';
-
             for (const section of timeSections) {
-                const sectionMeds = medications.filter(med => med.times.some(t => getTimeOfDay(t) === section.id));
-                if (sectionMeds.length === 0) continue;
-
+                const sectionMeds = medications.filter(m => m.times.some(t => getTimeOfDay(t) === section.id));
+                if (!sectionMeds.length) continue;
+                
+                const taken = sectionMeds.filter(m => m.times.every(t => takenToday[todayKey]?.[`${m.id}-${t}`])).length;
+                
                 html += `
                     <div class="time-section">
                         <div class="time-section-header">
-                            <span class="icon">${section.icon}</span>
+                            <div class="icon">${section.icon}</div>
                             <span class="label">${section.label}</span>
-                            <span class="time-range">${section.start % 12 || 12}:00 ${section.start >= 12 ? 'PM' : 'AM'} - ${section.end % 12 || 12}:00 ${section.end >= 12 ? 'PM' : 'AM'}</span>
+                            <span class="count">${taken}/${sectionMeds.length} done</span>
                         </div>
-                        ${sectionMeds.map(med => renderMedicationCard(med, todayKey)).join('')}
+                        ${sectionMeds.map(m => renderMedicationCard(m, todayKey)).join('')}
                     </div>
                 `;
             }
-
-            container.innerHTML = html || renderEmptyState();
+            c.innerHTML = html || renderEmptyState();
         }
 
         function renderListView() {
-            const container = document.getElementById('list-view');
-            if (medications.length === 0) {
-                container.innerHTML = renderEmptyState();
-                return;
-            }
-
+            const c = document.getElementById('list-view');
+            if (!medications.length) { c.innerHTML = renderEmptyState(); return; }
+            
             const todayKey = getTodayKey();
-            const sortedMeds = [...medications].sort((a, b) => {
-                const aTime = a.times[0] || '23:59';
-                const bTime = b.times[0] || '23:59';
-                return aTime.localeCompare(bTime);
-            });
-
-            container.innerHTML = sortedMeds.map(med => renderMedicationCard(med, todayKey)).join('');
+            const sorted = [...medications].sort((a, b) => (a.times[0] || '23:59').localeCompare(b.times[0] || '23:59'));
+            c.innerHTML = sorted.map(m => renderMedicationCard(m, todayKey)).join('');
         }
 
         function renderCalendar() {
-            const container = document.getElementById('calendar-view');
+            const c = document.getElementById('calendar-view');
             const today = new Date();
             const startOfWeek = new Date(selectedDate);
             startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
@@ -1509,126 +2093,179 @@
                         <button onclick="navigateWeek(-1)">←</button>
                         <button onclick="navigateWeek(1)">→</button>
                     </div>
-                    <span class="calendar-title">${formatDate(startOfWeek)} - ${formatDate(new Date(startOfWeek.getTime() + 6 * 24 * 60 * 60 * 1000))}</span>
+                    <span class="calendar-title">${formatDate(startOfWeek)} - ${formatDate(new Date(startOfWeek.getTime() + 6 * 86400000))}</span>
                     <button class="btn btn-small btn-secondary" onclick="goToToday()">Today</button>
                 </div>
                 <div class="calendar-grid">
-                    <div class="calendar-day-header">Sun</div>
-                    <div class="calendar-day-header">Mon</div>
-                    <div class="calendar-day-header">Tue</div>
-                    <div class="calendar-day-header">Wed</div>
-                    <div class="calendar-day-header">Thu</div>
-                    <div class="calendar-day-header">Fri</div>
-                    <div class="calendar-day-header">Sat</div>
+                    ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => `<div class="calendar-day-header">${d}</div>`).join('')}
             `;
 
             for (let i = 0; i < 7; i++) {
-                const date = new Date(startOfWeek.getTime() + i * 24 * 60 * 60 * 1000);
+                const date = new Date(startOfWeek.getTime() + i * 86400000);
                 const dateKey = getTodayKey(date);
-                const isToday = getTodayKey(date) === getTodayKey(today);
-                const isSelected = getTodayKey(date) === getTodayKey(selectedDate);
-                const hasMeds = medications.length > 0;
+                const isToday = dateKey === getTodayKey(today);
+                const isSelected = dateKey === getTodayKey(selectedDate);
                 
-                const dayClasses = ['calendar-day'];
-                if (isToday) dayClasses.push('today');
-                if (isSelected) dayClasses.push('selected');
+                const dayTaken = medications.reduce((acc, m) => {
+                    return acc + (takenToday[dateKey]?.[`${m.id}-${m.times[0]}`] ? 1 : 0);
+                }, 0);
+                const dayTotal = medications.length;
+                
+                let indicator = '';
+                if (dayTotal > 0) {
+                    if (dayTaken === dayTotal) indicator = 'all-taken';
+                    else if (dayTaken > 0) indicator = 'has-meds';
+                    else indicator = 'missed';
+                }
 
                 html += `
-                    <div class="${dayClasses.join(' ')}" onclick="selectDay('${dateKey}')">
+                    <div class="calendar-day ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}" onclick="selectDay('${dateKey}')">
                         <span class="day-num">${date.getDate()}</span>
-                        ${hasMeds ? `<span class="day-indicator ${isToday ? 'all-taken' : 'has-meds'}"></span>` : ''}
+                        ${indicator ? `<span class="day-indicator ${indicator}"></span>` : ''}
                     </div>
                 `;
             }
-
             html += '</div>';
 
             const selectedDateKey = getTodayKey(selectedDate);
-            const dayMeds = medications.filter(med => {
-                const dateTaken = takenToday[selectedDateKey];
-                return dateTaken && Object.keys(dateTaken).some(key => key.startsWith(med.id));
-            });
-
             html += `
-                <div class="selected-day-info">
-                    <h3 class="selected-day-title">${formatDate(selectedDate)}</h3>
-                    ${dayMeds.length > 0 ? dayMeds.map(med => renderMedicationCard(med, selectedDateKey)).join('') : '<p style="color: var(--text-muted); text-align: center; padding: 20px;">No medications scheduled for this day</p>'}
+                <div class="selected-day-card">
+                    <h3>${formatDate(selectedDate)}</h3>
+                    ${medications.length ? medications.map(m => renderMedicationCard(m, selectedDateKey)).join('') : '<p style="color: var(--text-muted); text-align: center;">No medications scheduled</p>'}
                 </div>
             `;
 
-            container.innerHTML = html;
+            c.innerHTML = html;
         }
 
-        function navigateWeek(direction) {
-            selectedDate = new Date(selectedDate.getTime() + direction * 7 * 24 * 60 * 60 * 1000);
+        function renderStats() {
+            const c = document.getElementById('stats-view');
+            const todayKey = getTodayKey();
+            
+            let totalTaken = 0, totalMissed = 0;
+            Object.entries(takenToday).forEach(([date, meds]) => {
+                Object.values(meds).forEach(v => { if (v) totalTaken++; else totalMissed++; });
+            });
+
+            const weeklyData = [];
+            for (let i = 6; i >= 0; i--) {
+                const date = new Date();
+                date.setDate(date.getDate() - i);
+                const dateKey = getTodayKey(date);
+                const dayTotal = medications.length * (medications[0]?.times.length || 1);
+                const dayTaken = Object.keys(takenToday[dateKey] || {}).length;
+                weeklyData.push({
+                    label: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()],
+                    percent: dayTotal ? Math.round((dayTaken / dayTotal) * 100) : 0
+                });
+            }
+
+            c.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stats-card primary">
+                        <div class="icon">🎯</div>
+                        <div class="value">${Math.round((totalTaken / (totalTaken + totalMissed || 1)) * 100)}%</div>
+                        <div class="label">Overall Adherence Rate</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="icon">✅</div>
+                        <div class="value">${totalTaken}</div>
+                        <div class="label">Doses Taken</div>
+                    </div>
+                    <div class="stats-card">
+                        <div class="icon">💊</div>
+                        <div class="value">${medications.length}</div>
+                        <div class="label">Medications</div>
+                    </div>
+                    <div class="stats-card streak-card">
+                        <div class="icon">🔥</div>
+                        <div class="value">${streak}</div>
+                        <div class="label">Day Streak - Keep it up!</div>
+                    </div>
+                </div>
+                <div class="chart-placeholder">
+                    <h4>📈 This Week's Progress</h4>
+                    <div class="week-chart">
+                        ${weeklyData.map(d => `
+                            <div class="day-bar">
+                                <div class="bar" style="height: ${Math.max(d.percent, 10)}%;"><div class="bar-fill" style="height: 100%;"></div></div>
+                                <span class="day-label">${d.label}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function navigateWeek(dir) {
+            selectedDate = new Date(selectedDate.getTime() + dir * 7 * 86400000);
             renderCalendar();
         }
 
-        function goToToday() {
-            selectedDate = new Date();
-            renderCalendar();
-        }
-
-        function selectDay(dateKey) {
-            selectedDate = new Date(dateKey);
-            renderCalendar();
-        }
+        function goToToday() { selectedDate = new Date(); renderCalendar(); }
+        function selectDay(key) { selectedDate = new Date(key); renderCalendar(); }
 
         function renderMedicationCard(med, dateKey) {
-            const allTimesTaken = med.times.every(t => takenToday[dateKey]?.[`${med.id}-${t}`]);
+            const allTaken = med.times.every(t => takenToday[dateKey]?.[`${med.id}-${t}`]);
             const anyTaken = med.times.some(t => takenToday[dateKey]?.[`${med.id}-${t}`]);
             
-            let cardClass = 'medication-card';
-            if (allTimesTaken) cardClass += ' taken';
-            else if (anyTaken) cardClass += ' partial';
-            else if (dateKey === getTodayKey() && med.times.some(t => isOverdue(t))) cardClass += ' overdue';
+            let cls = 'medication-card';
+            if (allTaken) cls += ' taken';
+            else if (anyTaken) cls += ' partial';
+            else if (dateKey === getTodayKey() && med.times.some(t => isOverdue(t))) cls += ' overdue';
 
             const pillsLeft = med.pillsLeft;
             const dailyDose = med.dailyDose;
-            let refillWarning = '';
+            let refillHtml = '';
             if (pillsLeft !== undefined && dailyDose && pillsLeft <= dailyDose * 7) {
-                refillWarning = `
-                    <div class="refill-warning" style="display: flex; margin: 12px 20px 0;">
-                        ⚠️ Only ${pillsLeft} pills left! Refill in ~${Math.ceil(pillsLeft / dailyDose)} days.
-                    </div>
-                `;
+                refillHtml = `<div class="refill-warning"><span class="icon">⚠️</span> Only ${pillsLeft} pills left! Refill in ~${Math.ceil(pillsLeft / dailyDose)} days.</div>`;
             }
 
+            const foodTag = med.food && med.food !== 'none' ? `<span class="med-tag food">${foodLabels[med.food]}</span>` : '';
+
             return `
-                <div class="${cardClass}" data-id="${med.id}">
-                    <div class="med-header">
-                        <div class="med-icon color-${med.color || 'blue'}">💊</div>
+                <div class="${cls}" data-id="${med.id}" style="animation-delay: ${Math.random() * 0.2}s">
+                    <div class="med-card-header">
+                        <div class="med-icon color-${med.color || 'blue'}">
+                            💊
+                            ${allTaken ? '<span class="badge">✓</span>' : ''}
+                        </div>
                         <div class="med-info">
                             <div class="med-name">${med.name}</div>
-                            ${med.dosage ? `<div class="med-dosage">${med.dosage}</div>` : ''}
-                            <span class="med-frequency">${frequencyLabels[med.frequency] || 'Daily'}</span>
+                            <div class="med-dosage">${med.dosage || 'As directed'}</div>
+                            <div class="med-meta">
+                                <span class="med-tag frequency">${frequencyLabels[med.frequency] || 'Daily'}</span>
+                                ${foodTag}
+                            </div>
                         </div>
                     </div>
                     ${med.notes ? `<div class="med-notes"><strong>Notes:</strong> ${med.notes}</div>` : ''}
                     <div class="med-times">
                         ${med.times.map(time => {
-                            const timeTaken = takenToday[dateKey]?.[`${med.id}-${time}`];
+                            const taken = takenToday[dateKey]?.[`${med.id}-${time}`];
+                            const overdue = !taken && isOverdue(time);
                             return `
                                 <div class="time-row">
                                     <div class="time-info">
-                                        <span class="time-icon">🕐</span>
-                                        <span class="time-label">${formatTime(time)}</span>
+                                        <div class="time-icon">🕐</div>
+                                        <div>
+                                            <div class="time-label">${formatTime(time)}</div>
+                                            <div class="time-status ${overdue ? 'overdue' : ''}">${overdue ? 'Overdue' : taken ? 'Taken' : 'Pending'}</div>
+                                        </div>
                                     </div>
-                                    ${timeTaken ? `
+                                    ${taken ? `
                                         <div style="display: flex; align-items: center; gap: 8px;">
-                                            <div class="check-icon">✓</div>
-                                            <button class="btn btn-small btn-secondary" onclick="undoTaken('${med.id}', '${time}', '${dateKey}')">Undo</button>
+                                            <span style="color: var(--success);">✓</span>
+                                            <button class="btn btn-undo btn-small" onclick="undoTaken('${med.id}', '${time}', '${dateKey}')">Undo</button>
                                         </div>
                                     ` : `
-                                        <button class="btn btn-small btn-taken" onclick="markTaken('${med.id}', '${time}')">
-                                            ✓ Mark Taken
-                                        </button>
+                                        <button class="btn btn-taken" onclick="markTaken('${med.id}', '${time}')">✓ Mark Taken</button>
                                     `}
                                 </div>
                             `;
                         }).join('')}
                     </div>
-                    ${refillWarning}
+                    ${refillHtml}
                     <div class="card-actions">
                         <button class="btn btn-secondary btn-small" onclick="editMedication('${med.id}')">✏️ Edit</button>
                         <button class="btn btn-danger btn-small" onclick="deleteMedication('${med.id}')">🗑️ Delete</button>
@@ -1642,81 +2279,83 @@
                 <div class="empty-state">
                     <div class="icon">💊</div>
                     <h3>No Medications Yet</h3>
-                    <p>Tap the + button to add your first medication</p>
+                    <p>Add your medications to start tracking</p>
+                    <button class="btn btn-primary" onclick="openMedModal()">+ Add Medication</button>
                 </div>
             `;
         }
 
         function updateProgress() {
             const todayKey = getTodayKey();
-            let total = 0;
-            let taken = 0;
-
-            medications.forEach(med => {
-                med.times.forEach(time => {
+            let total = 0, taken = 0, pending = 0;
+            medications.forEach(m => {
+                m.times.forEach(t => {
                     total++;
-                    if (takenToday[todayKey]?.[`${med.id}-${time}`]) taken++;
+                    if (takenToday[todayKey]?.[`${m.id}-${t}`]) taken++;
+                    else pending++;
                 });
             });
 
             document.getElementById('progress-count').textContent = taken;
             document.getElementById('progress-total').textContent = total;
-            
-            const percentage = total > 0 ? (taken / total) * 100 : 0;
-            document.getElementById('progress-fill').style.width = `${percentage}%`;
-            
-            const message = total === 0 ? 'Add your medications to get started' :
-                           taken === total ? '🎉 All done for today!' :
-                           `${total - taken} medication${total - taken > 1 ? 's' : ''} remaining`;
-            document.getElementById('progress-message').textContent = message;
+            document.getElementById('progress-fill').style.width = `${total ? (taken / total) * 100 : 0}%`;
+            document.getElementById('progress-message').textContent = !total ? 'Add medications to get started' : taken === total ? '🎉 All done for today!' : `${pending} medication${pending > 1 ? 's' : ''} remaining`;
+            document.getElementById('stat-pending').textContent = pending;
+            document.getElementById('stat-taken').textContent = taken;
+            document.getElementById('stat-streak').textContent = streak;
+            document.getElementById('greeting').textContent = getGreeting();
         }
 
         function updateEmergencyButtons() {
-            const familyEl = document.getElementById('contact-family');
-            const doctorEl = document.getElementById('contact-doctor');
-            const pharmacyEl = document.getElementById('contact-pharmacy');
-
-            if (contacts.family?.name) {
-                familyEl.querySelector('.label').textContent = contacts.family.name.split(' ')[0];
-            }
-            if (contacts.doctor?.name) {
-                doctorEl.querySelector('.label').textContent = contacts.doctor.name.split(' ')[0];
-            }
-            if (contacts.pharmacy?.name) {
-                pharmacyEl.querySelector('.label').textContent = contacts.pharmacy.name.split(' ')[0];
-            }
+            const map = [
+                ['family', 'Family', 'family-name-text', 'family-phone-text', 'family-icon-bg'],
+                ['doctor', 'Doctor', 'doctor-name-text', 'doctor-phone-text', 'doctor-icon-bg'],
+                ['pharmacy', 'Pharmacy', 'pharmacy-name-text', 'pharmacy-phone-text', 'pharmacy-icon-bg']
+            ];
+            map.forEach(([type, def, nameId, phoneId, iconId]) => {
+                const c = contacts[type] || {};
+                document.getElementById(nameId).textContent = c.name || def;
+                document.getElementById(phoneId).textContent = c.phone ? c.phone : 'Tap to edit';
+                if (c.icon) document.getElementById(iconId).textContent = c.icon;
+            });
         }
 
-        function markTaken(medId, time, dateKey = null) {
-            const key = dateKey || getTodayKey();
-            if (!takenToday[key]) takenToday[key] = {};
-            takenToday[key][`${medId}-${time}`] = true;
+        function markTaken(medId, time) {
+            const todayKey = getTodayKey();
+            if (!takenToday[todayKey]) takenToday[todayKey] = {};
+            takenToday[todayKey][`${medId}-${time}`] = true;
             
             const med = medications.find(m => m.id === medId);
             if (med) {
-                history.unshift({
-                    id: Date.now(),
-                    medId,
-                    medName: med.name,
-                    dosage: med.dosage,
-                    time,
-                    date: key,
-                    action: 'taken'
-                });
-                if (history.length > 100) history = history.slice(0, 100);
+                history.unshift({ id: Date.now(), medId, medName: med.name, dosage: med.dosage, time, date: todayKey, action: 'taken' });
+                if (history.length > 200) history = history.slice(0, 200);
+                
+                if (med.pillsLeft !== undefined) {
+                    med.pillsLeft = Math.max(0, med.pillsLeft - 1);
+                }
             }
             
+            checkStreak();
             saveData();
+            showToast('Medication marked as taken!', 'success');
             render();
         }
 
         function undoTaken(medId, time, dateKey = null) {
             const key = dateKey || getTodayKey();
-            if (takenToday[key]) {
-                delete takenToday[key][`${medId}-${time}`];
-            }
+            if (takenToday[key]) delete takenToday[key][`${medId}-${time}`];
             saveData();
             render();
+        }
+
+        function checkStreak() {
+            const todayKey = getTodayKey();
+            const todayTaken = medications.reduce((acc, m) => acc + m.times.filter(t => takenToday[todayKey]?.[`${m.id}-${t}`]).length, 0);
+            const todayTotal = medications.reduce((acc, m) => acc + m.times.length, 0);
+            
+            if (todayTaken === todayTotal && todayTotal > 0) {
+                streak++;
+            }
         }
 
         function selectColor(el) {
@@ -1725,18 +2364,23 @@
             selectedColor = el.dataset.color;
         }
 
+        function selectFood(el) {
+            document.querySelectorAll('.food-option').forEach(t => t.classList.remove('selected'));
+            el.classList.add('selected');
+            selectedFood = el.dataset.food;
+        }
+
         function openMedModal(medId = null) {
             const modal = document.getElementById('med-modal');
             const title = document.getElementById('med-modal-title');
             
-            document.getElementById('time-inputs').innerHTML = `
-                <div class="time-input-row">
-                    <input type="time" class="time-input" value="08:00">
-                </div>
-            `;
+            document.getElementById('time-inputs').innerHTML = '<div class="time-input-row"><input type="time" class="time-input" value="08:00"></div>';
             document.querySelectorAll('.color-tag').forEach(t => t.classList.remove('selected'));
             document.querySelector('.color-tag.blue').classList.add('selected');
+            document.querySelectorAll('.food-option').forEach(t => t.classList.remove('selected'));
+            document.querySelector('.food-option').classList.add('selected');
             selectedColor = 'blue';
+            selectedFood = 'none';
             
             if (medId) {
                 const med = medications.find(m => m.id === medId);
@@ -1751,16 +2395,14 @@
                     document.getElementById('med-daily-dose').value = med.dailyDose || '';
                     
                     selectedColor = med.color || 'blue';
-                    document.querySelectorAll('.color-tag').forEach(t => {
-                        t.classList.remove('selected');
-                        if (t.dataset.color === selectedColor) t.classList.add('selected');
-                    });
+                    selectedFood = med.food || 'none';
+                    document.querySelectorAll('.color-tag').forEach(t => { t.classList.remove('selected'); if (t.dataset.color === selectedColor) t.classList.add('selected'); });
+                    document.querySelectorAll('.food-option').forEach(t => { t.classList.remove('selected'); if (t.dataset.food === selectedFood) t.classList.add('selected'); });
                     
-                    const timeInputs = document.getElementById('time-inputs');
-                    timeInputs.innerHTML = med.times.map(t => `
+                    document.getElementById('time-inputs').innerHTML = med.times.map(t => `
                         <div class="time-input-row">
                             <input type="time" class="time-input" value="${t}">
-                            <button type="button" class="remove-time" onclick="removeTimeInput(this)">×</button>
+                            <button type="button" class="remove-time" onclick="this.parentElement.remove()">×</button>
                         </div>
                     `).join('');
                 }
@@ -1774,34 +2416,19 @@
             document.getElementById('med-name').focus();
         }
 
-        function closeMedModal() {
-            document.getElementById('med-modal').classList.remove('active');
-        }
+        function closeMedModal() { document.getElementById('med-modal').classList.remove('active'); }
 
         function addTimeInput() {
-            const container = document.getElementById('time-inputs');
-            const inputs = container.querySelectorAll('.time-input');
-            if (inputs.length >= 6) return;
-            
+            const c = document.getElementById('time-inputs');
+            if (c.querySelectorAll('.time-input').length >= 6) return;
             const row = document.createElement('div');
             row.className = 'time-input-row';
-            row.innerHTML = `
-                <input type="time" class="time-input" value="12:00">
-                <button type="button" class="remove-time" onclick="removeTimeInput(this)">×</button>
-            `;
-            container.appendChild(row);
+            row.innerHTML = '<input type="time" class="time-input" value="12:00"><button type="button" class="remove-time" onclick="this.parentElement.remove()">×</button>';
+            c.appendChild(row);
         }
 
-        function removeTimeInput(btn) {
-            const container = document.getElementById('time-inputs');
-            if (container.querySelectorAll('.time-input-row').length > 1) {
-                btn.closest('.time-input-row').remove();
-            }
-        }
-
-        function saveMedication(event) {
-            event.preventDefault();
-            
+        function saveMedication(e) {
+            e.preventDefault();
             const id = document.getElementById('med-id').value || Date.now().toString();
             const name = document.getElementById('med-name').value.trim();
             const dosage = document.getElementById('med-dosage').value.trim();
@@ -1809,113 +2436,74 @@
             const notes = document.getElementById('med-notes').value.trim();
             const pillsLeft = document.getElementById('med-pills-left').value;
             const dailyDose = document.getElementById('med-daily-dose').value;
-            
-            const timeInputs = document.querySelectorAll('.time-input');
-            const times = Array.from(timeInputs).map(input => input.value).filter(t => t);
+            const times = Array.from(document.querySelectorAll('.time-input')).map(i => i.value).filter(Boolean);
 
-            if (!name || times.length === 0) {
-                alert('Please enter a medication name and at least one time.');
-                return;
-            }
+            if (!name || !times.length) { alert('Name and at least one time required'); return; }
 
-            const medication = {
-                id, name, dosage, frequency, notes, times,
-                color: selectedColor,
-                pillsLeft: pillsLeft ? parseInt(pillsLeft) : undefined,
-                dailyDose: dailyDose ? parseInt(dailyDose) : undefined
-            };
-
-            const existingIndex = medications.findIndex(m => m.id === id);
-            if (existingIndex >= 0) {
-                medications[existingIndex] = medication;
-            } else {
-                medications.push(medication);
-            }
+            const med = { id, name, dosage, frequency, notes, times, color: selectedColor, food: selectedFood, pillsLeft: pillsLeft ? parseInt(pillsLeft) : undefined, dailyDose: dailyDose ? parseInt(dailyDose) : undefined };
+            const idx = medications.findIndex(m => m.id === id);
+            if (idx >= 0) medications[idx] = med; else medications.push(med);
 
             saveData();
             closeMedModal();
+            showToast('Medication saved!', 'success');
             render();
         }
 
-        function editMedication(medId) {
-            openMedModal(medId);
-        }
+        function editMedication(id) { openMedModal(id); }
 
-        function deleteMedication(medId) {
-            if (confirm('Are you sure you want to delete this medication?')) {
-                medications = medications.filter(m => m.id !== medId);
+        function deleteMedication(id) {
+            if (confirm('Delete this medication?')) {
+                medications = medications.filter(m => m.id !== id);
                 saveData();
+                showToast('Medication deleted', 'warning');
                 render();
             }
         }
 
         function openContactsModal() {
             const modal = document.getElementById('contacts-modal');
-            
-            document.getElementById('family-name').value = contacts.family?.name || '';
-            document.getElementById('family-phone').value = contacts.family?.phone || '';
-            document.getElementById('family-icon').value = contacts.family?.icon || '👨';
-            
-            document.getElementById('doctor-name').value = contacts.doctor?.name || '';
-            document.getElementById('doctor-phone').value = contacts.doctor?.phone || '';
-            document.getElementById('doctor-icon').value = contacts.doctor?.icon || '👨‍⚕️';
-            
-            document.getElementById('pharmacy-name').value = contacts.pharmacy?.name || '';
-            document.getElementById('pharmacy-phone').value = contacts.pharmacy?.phone || '';
-            document.getElementById('pharmacy-icon').value = contacts.pharmacy?.icon || '🏥';
-            
+            ['family', 'doctor', 'pharmacy'].forEach(type => {
+                document.getElementById(`${type}-name`).value = contacts[type]?.name || '';
+                document.getElementById(`${type}-phone`).value = contacts[type]?.phone || '';
+                document.getElementById(`${type}-icon`).value = contacts[type]?.icon || (type === 'family' ? '👨' : type === 'doctor' ? '👨‍⚕️' : '🏥');
+            });
             modal.classList.add('active');
         }
 
-        function closeContactsModal() {
-            document.getElementById('contacts-modal').classList.remove('active');
-        }
+        function closeContactsModal() { document.getElementById('contacts-modal').classList.remove('active'); }
 
-        function saveContacts(event) {
-            event.preventDefault();
-            
-            contacts.family = {
-                name: document.getElementById('family-name').value,
-                phone: document.getElementById('family-phone').value,
-                icon: document.getElementById('family-icon').value
-            };
-            contacts.doctor = {
-                name: document.getElementById('doctor-name').value,
-                phone: document.getElementById('doctor-phone').value,
-                icon: document.getElementById('doctor-icon').value
-            };
-            contacts.pharmacy = {
-                name: document.getElementById('pharmacy-name').value,
-                phone: document.getElementById('pharmacy-phone').value,
-                icon: document.getElementById('pharmacy-icon').value
-            };
-            
+        function saveContacts(e) {
+            e.preventDefault();
+            ['family', 'doctor', 'pharmacy'].forEach(type => {
+                contacts[type] = {
+                    name: document.getElementById(`${type}-name`).value,
+                    phone: document.getElementById(`${type}-phone`).value,
+                    icon: document.getElementById(`${type}-icon`).value
+                };
+            });
             saveData();
             updateEmergencyButtons();
             closeContactsModal();
+            showToast('Contacts saved!', 'success');
         }
 
         function callContact(type) {
-            const contact = contacts[type];
-            if (contact && contact.phone) {
-                window.location.href = `tel:${contact.phone.replace(/\D/g, '')}`;
-            } else {
-                openContactsModal();
-            }
+            const c = contacts[type];
+            if (c?.phone) window.location.href = `tel:${c.phone.replace(/\D/g, '')}`;
+            else openContactsModal();
         }
 
         function openHistoryModal() {
             const modal = document.getElementById('history-modal');
             const list = document.getElementById('history-list');
             
-            if (history.length === 0) {
-                list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 40px;">No history yet. Start tracking your medications!</p>';
+            if (!history.length) {
+                list.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 40px;">No history yet</p>';
             } else {
                 list.innerHTML = history.slice(0, 50).map(item => `
                     <div class="history-item">
-                        <div class="history-icon ${item.action === 'taken' ? 'taken' : 'missed'}">
-                            ${item.action === 'taken' ? '✓' : '×'}
-                        </div>
+                        <div class="history-icon ${item.action === 'taken' ? 'taken' : 'missed'}">${item.action === 'taken' ? '✓' : '×'}</div>
                         <div class="history-content">
                             <div class="history-med">${item.medName} ${item.dosage ? `(${item.dosage})` : ''}</div>
                             <div class="history-time">${formatTime(item.time)}</div>
@@ -1924,67 +2512,27 @@
                     </div>
                 `).join('');
             }
-            
             modal.classList.add('active');
         }
 
-        function closeHistoryModal() {
-            document.getElementById('history-modal').classList.remove('active');
-        }
+        function closeHistoryModal() { document.getElementById('history-modal').classList.remove('active'); }
 
         function clearHistory() {
-            if (confirm('Clear all history? This cannot be undone.')) {
-                history = [];
-                saveData();
-                openHistoryModal();
-            }
+            if (confirm('Clear all history?')) { history = []; saveData(); openHistoryModal(); }
+        }
+
+        function showToast(msg, type = '') {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => toast.classList.remove('show'), 3000);
         }
 
         function printMedications() {
-            const printWindow = window.open('', '_blank');
-            const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
-            
-            printWindow.document.write(`
-                <!DOCTYPE html>
-                <html>
-                <head>
-                    <title>MedMinder - Medication List</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; padding: 40px; max-width: 800px; margin: 0 auto; }
-                        h1 { color: #5B8A8A; border-bottom: 2px solid #5B8A8A; padding-bottom: 10px; }
-                        .date { color: #666; margin-bottom: 30px; }
-                        .med { border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 16px; }
-                        .med-name { font-size: 20px; font-weight: bold; }
-                        .med-dosage { color: #666; margin: 8px 0; }
-                        .med-times { color: #5B8A8A; font-weight: bold; }
-                        .med-notes { background: #f5f5f5; padding: 10px; border-radius: 4px; margin-top: 10px; font-size: 14px; }
-                        .contacts { margin-top: 40px; padding-top: 20px; border-top: 2px solid #eee; }
-                        .contact { margin: 10px 0; }
-                        @media print { body { padding: 20px; } }
-                    </style>
-                </head>
-                <body>
-                    <h1>💊 My Medications</h1>
-                    <p class="date">Generated: ${today}</p>
-                    ${medications.map(med => `
-                        <div class="med">
-                            <div class="med-name">${med.name}</div>
-                            ${med.dosage ? `<div class="med-dosage">${med.dosage}</div>` : ''}
-                            <div class="med-times">${med.times.map(formatTime).join(', ')}</div>
-                            ${med.notes ? `<div class="med-notes"><strong>Notes:</strong> ${med.notes}</div>` : ''}
-                        </div>
-                    `).join('')}
-                    <div class="contacts">
-                        <h2>Emergency Contacts</h2>
-                        ${contacts.family?.name ? `<div class="contact"><strong>Family:</strong> ${contacts.family.name} ${contacts.family.phone ? `- ${contacts.family.phone}` : ''}</div>` : ''}
-                        ${contacts.doctor?.name ? `<div class="contact"><strong>Doctor:</strong> ${contacts.doctor.name} ${contacts.doctor.phone ? `- ${contacts.doctor.phone}` : ''}</div>` : ''}
-                        ${contacts.pharmacy?.name ? `<div class="contact"><strong>Pharmacy:</strong> ${contacts.pharmacy.name} ${contacts.pharmacy.phone ? `- ${contacts.pharmacy.phone}` : ''}</div>` : ''}
-                    </div>
-                </body>
-                </html>
-            `);
-            printWindow.document.close();
-            printWindow.print();
+            const w = window.open('', '_blank');
+            w.document.write(`<!DOCTYPE html><html><head><title>My Medications</title><style>body{font-family:Arial;padding:40px;max-width:800px;margin:0 auto}h1{color:#5B8A8A}h2{margin-top:30px}.med{border:1px solid #ddd;padding:20px;margin-bottom:16px;border-radius:8px}.med-name{font-size:20px;font-weight:bold}</style></head><body><h1>💊 My Medications</h1><p>Generated: ${new Date().toLocaleDateString()}</p>${medications.map(m => `<div class="med"><div class="med-name">${m.name}</div><div>${m.dosage || ''}</div><div>Times: ${m.times.map(formatTime).join(', ')}</div>${m.notes ? `<div>Notes: ${m.notes}</div>` : ''}</div>`).join('')}</body></html>`);
+            w.document.close();
+            w.print();
         }
 
         function render() {
@@ -1993,27 +2541,15 @@
             updateProgress();
             updateEmergencyButtons();
             if (currentView === 'calendar') renderCalendar();
+            if (currentView === 'stats') renderStats();
         }
 
         function init() {
             loadData();
-            
-            const savedView = localStorage.getItem('medminder_view');
-            if (savedView) {
-                switch (savedView) {
-                    case 'time': document.querySelector('.tab-btn:nth-child(1)').click(); break;
-                    case 'list': document.querySelector('.tab-btn:nth-child(2)').click(); break;
-                    case 'calendar': document.querySelector('.tab-btn:nth-child(3)').click(); break;
-                }
-            }
-            
+            const savedView = localStorage.getItem('medminder_view') || 'time';
+            switchView(savedView);
             render();
-
-            document.addEventListener('keydown', (e) => {
-                if (e.key === 'Escape') {
-                    document.querySelectorAll('.modal-overlay.active').forEach(m => m.classList.remove('active'));
-                }
-            });
+            document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); });
         }
 
         init();
