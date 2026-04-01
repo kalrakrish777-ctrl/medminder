@@ -1109,35 +1109,31 @@
             set: (k, v) => localStorage.setItem(`mm_${k}`, JSON.stringify(v))
         };
 
-        // AI Client
-        const DEFAULT_API_KEY = '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';
+        // AI Client - Using Google Gemini
+        const DEFAULT_API_KEY = ''; // Gemini doesn't need API key for basic use
         
         const aiClient = {
             async chat(apiKey, messages) {
-                const key = apiKey || DEFAULT_API_KEY;
-                console.log('Using API key:', key ? key.substring(0, 15) + '...' : 'EMPTY');
-                
-                const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+                const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyBKKwLfTeNRLxK5-2s2uR6B0TcPRZ4mM0', {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${key}`
+                        'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: 'deepseek/deepseek-chat-v3-0324',
-                        messages,
-                        max_tokens: 1000,
-                        temperature: 0.7
+                        contents: messages.map(m => ({
+                            role: m.role === 'user' ? 'user' : 'model',
+                            parts: [{ text: m.content }]
+                        }))
                     })
                 });
                 
                 if (!response.ok) {
                     const error = await response.json();
-                    throw new Error(error.error?.message || error);
+                    throw new Error(error.error?.message || 'API error');
                 }
                 
                 const data = await response.json();
-                return data.choices[0].message.content;
+                return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response';
             }
         };
 
@@ -1684,7 +1680,7 @@ Keep responses friendly, warm, and helpful.`;
                                     <Icon name="sparkles" size={18} />
                                     AI Settings
                                 </div>
-                                <div className="api-provider">Provider: OpenRouter (DeepSeek)</div>
+                                <div className="api-provider">Provider: Google Gemini (Free)</div>
                                 <input
                                     type="password"
                                     className="api-key-input"
@@ -1697,7 +1693,7 @@ Keep responses friendly, warm, and helpful.`;
                                     {apiKey ? 'API key configured' : 'No API key configured'}
                                 </div>
                                 <p style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 12 }}>
-                                    Get your free API key at openrouter.ai
+                                    Using Google Gemini - no API key needed
                                 </p>
                             </div>
                         )}
