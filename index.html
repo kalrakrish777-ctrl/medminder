@@ -1085,74 +1085,82 @@
             )
         };
 
-        // Three.js Background
-        useEffect(() => {
-            const canvas = document.getElementById('three-bg');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            const particles = [];
-            const particleCount = 180;
-            const geometry = new THREE.SphereGeometry(0.6, 16, 16);
-            const material = new THREE.MeshBasicMaterial({ 
-                color: 0xffffff, 
-                transparent: true, 
-                opacity: 0.06 
-            });
-
-            for (let i = 0; i < particleCount; i++) {
-                const particle = new THREE.Mesh(geometry, material);
-                particle.position.set(
-                    (Math.random() - 0.5) * 50,
-                    (Math.random() - 0.5) * 50,
-                    (Math.random() - 0.5) * 20
-                );
-                particle.userData.velocity = {
-                    x: (Math.random() - 0.5) * 0.002,
-                    y: (Math.random() - 0.5) * 0.002,
-                    z: (Math.random() - 0.5) * 0.001
-                };
-                scene.add(particle);
-                particles.push(particle);
-            }
-
-            camera.position.z = 15;
-
-            function animate() {
-                requestAnimationFrame(animate);
+        // Three.js Background Component
+        function ThreeBackground() {
+            useEffect(() => {
+                const canvas = document.getElementById('three-bg');
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
                 
-                particles.forEach(p => {
-                    p.position.x += p.userData.velocity.x;
-                    p.position.y += p.userData.velocity.y;
-                    p.position.z += p.userData.velocity.z;
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-                    if (Math.abs(p.position.x) > 25) p.userData.velocity.x *= -1;
-                    if (Math.abs(p.position.y) > 25) p.userData.velocity.y *= -1;
-                    if (Math.abs(p.position.z) > 10) p.userData.velocity.z *= -1;
+                const particles = [];
+                const particleCount = 180;
+                const geometry = new THREE.SphereGeometry(0.6, 16, 16);
+                const material = new THREE.MeshBasicMaterial({ 
+                    color: 0xffffff, 
+                    transparent: true, 
+                    opacity: 0.06 
                 });
 
-                renderer.render(scene, camera);
-            }
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = new THREE.Mesh(geometry, material);
+                    particle.position.set(
+                        (Math.random() - 0.5) * 50,
+                        (Math.random() - 0.5) * 50,
+                        (Math.random() - 0.5) * 20
+                    );
+                    particle.userData.velocity = {
+                        x: (Math.random() - 0.5) * 0.002,
+                        y: (Math.random() - 0.5) * 0.002,
+                        z: (Math.random() - 0.5) * 0.001
+                    };
+                    scene.add(particle);
+                    particles.push(particle);
+                }
 
-            animate();
+                camera.position.z = 15;
 
-            const handleResize = () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            };
+                let animating = true;
 
-            window.addEventListener('resize', handleResize);
+                function animate() {
+                    if (!animating) return;
+                    requestAnimationFrame(animate);
+                    
+                    particles.forEach(p => {
+                        p.position.x += p.userData.velocity.x;
+                        p.position.y += p.userData.velocity.y;
+                        p.position.z += p.userData.velocity.z;
 
-            return () => {
-                window.removeEventListener('resize', handleResize);
-                renderer.dispose();
-            };
-        }, []);
+                        if (Math.abs(p.position.x) > 25) p.userData.velocity.x *= -1;
+                        if (Math.abs(p.position.y) > 25) p.userData.velocity.y *= -1;
+                        if (Math.abs(p.position.z) > 10) p.userData.velocity.z *= -1;
+                    });
+
+                    renderer.render(scene, camera);
+                }
+
+                animate();
+
+                const handleResize = () => {
+                    camera.aspect = window.innerWidth / window.innerHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(window.innerWidth, window.innerHeight);
+                };
+
+                window.addEventListener('resize', handleResize);
+
+                return () => {
+                    animating = false;
+                    window.removeEventListener('resize', handleResize);
+                    renderer.dispose();
+                };
+            }, []);
+
+            return null;
+        }
 
         // Storage helpers
         const storage = {
@@ -1458,6 +1466,7 @@
 
             return (
                 <div className="app">
+                    <ThreeBackground />
                     <div className="content">
                         {/* Dashboard */}
                         <div className={`screen ${view === 'dashboard' ? 'active' : ''}`}>
