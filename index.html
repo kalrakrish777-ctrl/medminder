@@ -1285,7 +1285,7 @@ Keep responses friendly, warm, and helpful.`;
 
             // AI Chat
             const handleAiSend = async () => {
-                if (!aiInput.trim() || !apiKey || aiTyping) return;
+                if (!aiInput.trim() || aiTyping) return;
                 
                 setAiTyping(true);
                 const userMessage = aiInput.trim();
@@ -1295,7 +1295,7 @@ Keep responses friendly, warm, and helpful.`;
                     const medsList = meds.map(m => `${m.name} ${m.dosage || ''}`).join(', ') || 'No medications added yet';
                     const systemPrompt = SYSTEM_PROMPT.replace('{meds}', medsList);
                     
-                    console.log('Sending to AI with key:', apiKey.substring(0, 10) + '...');
+                    console.log('Processing AI request...');
                     
                     const response = await aiClient.chat(apiKey, [
                         { role: 'system', content: systemPrompt },
