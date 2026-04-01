@@ -4,43 +4,64 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="description" content="MedMinder - Your caring medication companion">
-    <meta name="theme-color" content="#5B8A8A">
+    <meta name="theme-color" content="#5B9B9B">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
     <title>MedMinder - Medication Tracker</title>
     <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💊</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/font/lucide.min.css">
     <style>
+        /* Lucide Icon Styles */
+        .lucide {
+            width: 1em;
+            height: 1em;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            fill: none;
+        }
+
         :root {
             --primary: #5B9B9B;
             --primary-light: #7ABFBF;
             --primary-dark: #4A8080;
             --primary-glow: rgba(91, 155, 155, 0.4);
-            --background: #F5F9F9;
-            --background-secondary: #EDF4F4;
+            --primary-10: rgba(91, 155, 155, 0.1);
+            --primary-20: rgba(91, 155, 155, 0.2);
+            --background: #F8FAFA;
+            --background-secondary: #F0F5F5;
             --card: #FFFFFF;
             --text: #1A3333;
             --text-secondary: #4A6666;
-            --text-muted: #7A9999;
+            --text-muted: #8A9E9E;
             --success: #34B477;
             --success-light: #E6F7EF;
+            --success-dark: #2A9A63;
             --warning: #E5A855;
             --warning-light: #FDF6E8;
+            --warning-dark: #C98B3D;
             --danger: #E55858;
             --danger-light: #FDEEEE;
+            --danger-dark: #C44545;
             --info: #5B9BD5;
             --info-light: #EEF5FC;
+            --purple: #9B7BD5;
+            --purple-light: #F3EEFF;
             --border: #D8E8E8;
+            --border-light: #E8F0F0;
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
             --shadow-md: 0 8px 32px rgba(91, 155, 155, 0.12);
             --shadow-lg: 0 16px 48px rgba(91, 155, 155, 0.18);
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-            --radius-xl: 32px;
+            --shadow-xl: 0 24px 64px rgba(91, 155, 155, 0.24);
+            --radius-sm: 10px;
+            --radius-md: 14px;
+            --radius-lg: 20px;
+            --radius-xl: 28px;
+            --radius-full: 9999px;
         }
 
         [data-theme="dark"] {
@@ -48,16 +69,20 @@
             --primary-light: #9AD4D4;
             --primary-dark: #5B9B9B;
             --primary-glow: rgba(122, 191, 191, 0.4);
-            --background: #0D1A1A;
-            --background-secondary: #152525;
-            --card: #1A2E2E;
+            --primary-10: rgba(122, 191, 191, 0.1);
+            --primary-20: rgba(122, 191, 191, 0.2);
+            --background: #0D1616;
+            --background-secondary: #152020;
+            --card: #1A2828;
             --text: #E8F4F4;
             --text-secondary: #A8C4C4;
-            --text-muted: #6A9090;
+            --text-muted: #5A8080;
             --border: #2A4040;
+            --border-light: #354545;
             --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
             --shadow-md: 0 8px 32px rgba(0,0,0,0.3);
             --shadow-lg: 0 16px 48px rgba(0,0,0,0.4);
+            --shadow-xl: 0 24px 64px rgba(0,0,0,0.5);
         }
 
         * {
@@ -69,19 +94,21 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 16px;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-size: 15px;
             line-height: 1.6;
             color: var(--text);
             background: var(--background);
             min-height: 100vh;
             min-height: 100dvh;
-            padding-bottom: 180px;
+            padding-bottom: 200px;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         /* Animated Background */
-        .bg-animation {
+        .bg-layer {
             position: fixed;
             top: 0;
             left: 0;
@@ -92,382 +119,415 @@
             overflow: hidden;
         }
 
-        .bg-blob {
+        .bg-shape {
             position: absolute;
             border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.5;
-            animation: float 20s ease-in-out infinite;
+            filter: blur(100px);
+            animation: floatShape 25s ease-in-out infinite;
         }
 
-        .bg-blob-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--primary-glow);
-            top: -100px;
-            right: -100px;
+        .bg-shape-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--primary-20);
+            top: -150px;
+            right: -150px;
             animation-delay: 0s;
         }
 
-        .bg-blob-2 {
-            width: 300px;
-            height: 300px;
-            background: rgba(52, 180, 119, 0.2);
-            bottom: 20%;
-            left: -50px;
-            animation-delay: -5s;
+        .bg-shape-2 {
+            width: 400px;
+            height: 400px;
+            background: rgba(52, 180, 119, 0.1);
+            bottom: 10%;
+            left: -100px;
+            animation-delay: -8s;
         }
 
-        .bg-blob-3 {
-            width: 250px;
-            height: 250px;
-            background: rgba(229, 168, 85, 0.15);
-            top: 50%;
-            right: -50px;
-            animation-delay: -10s;
+        .bg-shape-3 {
+            width: 350px;
+            height: 350px;
+            background: rgba(229, 168, 85, 0.08);
+            top: 40%;
+            right: -80px;
+            animation-delay: -16s;
         }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(20px, -20px) scale(1.05); }
-            50% { transform: translate(-10px, 10px) scale(0.95); }
-            75% { transform: translate(-20px, -10px) scale(1.02); }
+        @keyframes floatShape {
+            0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+            25% { transform: translate(30px, -30px) scale(1.05) rotate(5deg); }
+            50% { transform: translate(-20px, 20px) scale(0.95) rotate(-5deg); }
+            75% { transform: translate(-30px, -20px) scale(1.02) rotate(3deg); }
         }
 
-        .container { max-width: 680px; margin: 0 auto; padding: 0 20px; }
+        .container { max-width: 700px; margin: 0 auto; padding: 0 20px; }
 
         /* Header */
         header {
-            padding: 24px 0;
-            position: relative;
-            z-index: 10;
+            padding: 24px 0 16px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: linear-gradient(to bottom, var(--background) 0%, var(--background) 70%, transparent 100%);
         }
 
-        .header-inner {
+        .header-main {
             display: flex;
             align-items: center;
             justify-content: space-between;
             gap: 16px;
         }
 
-        .logo {
+        .brand {
             display: flex;
             align-items: center;
             gap: 14px;
         }
 
-        .logo-icon {
-            width: 56px;
-            height: 56px;
+        .brand-icon {
+            width: 52px;
+            height: 52px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
             box-shadow: var(--shadow-md), 0 0 30px var(--primary-glow);
-            animation: logoFloat 4s ease-in-out infinite;
+            position: relative;
+            overflow: hidden;
         }
 
-        @keyframes logoFloat {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-4px) rotate(3deg); }
+        .brand-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.3) 50%, transparent 60%);
+            animation: shine 3s infinite;
         }
 
-        .logo-text h1 {
-            font-size: 26px;
+        @keyframes shine {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) rotate(45deg); }
+        }
+
+        .brand-icon svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-text h1 {
+            font-size: 24px;
             font-weight: 800;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--text);
             letter-spacing: -0.5px;
         }
 
-        .logo-text span {
-            font-size: 13px;
+        .brand-text span {
+            font-size: 12px;
             color: var(--text-muted);
             font-weight: 500;
         }
 
         .header-actions {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .icon-btn {
-            width: 48px;
-            height: 48px;
+            width: 46px;
+            height: 46px;
             border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: var(--card);
             color: var(--text-secondary);
-            font-size: 20px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            backdrop-filter: blur(10px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+
+        .icon-btn svg {
+            width: 20px;
+            height: 20px;
         }
 
         .icon-btn:hover {
             background: var(--primary);
-            color: white;
             border-color: var(--primary);
-            transform: translateY(-3px) scale(1.05);
-            box-shadow: var(--shadow-lg), 0 0 20px var(--primary-glow);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
-        /* Progress Hero */
-        .progress-hero {
-            padding: 32px 0;
-            position: relative;
+        .icon-btn:active {
+            transform: translateY(0);
         }
 
-        .progress-card {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 50%, #8ACFCF 100%);
+        /* Hero Card */
+        .hero-card {
+            margin: 20px 0 24px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 60%, #8FD4D4 100%);
             border-radius: var(--radius-xl);
-            padding: 32px;
+            padding: 28px;
             color: white;
             position: relative;
             overflow: hidden;
-            box-shadow: var(--shadow-lg), 0 0 60px var(--primary-glow);
+            box-shadow: var(--shadow-xl), 0 0 60px var(--primary-glow);
         }
 
-        .progress-card::before {
-            content: '';
+        .hero-bg-pattern {
             position: absolute;
-            top: -50%;
-            right: -30%;
-            width: 300px;
-            height: 300px;
-            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
-            animation: shimmerBg 8s ease-in-out infinite;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(255,255,255,0.15) 0%, transparent 40%);
+            pointer-events: none;
         }
 
-        @keyframes shimmerBg {
-            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.3; }
-            50% { transform: scale(1.2) rotate(180deg); opacity: 0.5; }
-        }
-
-        .progress-content {
+        .hero-content {
             position: relative;
             z-index: 2;
         }
 
-        .progress-header {
+        .hero-top {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 24px;
         }
 
-        .progress-greeting {
-            font-size: 14px;
+        .hero-greeting .greeting-text {
+            font-size: 13px;
             font-weight: 500;
             opacity: 0.9;
             margin-bottom: 4px;
         }
 
-        .progress-title {
-            font-size: 24px;
+        .hero-greeting .greeting-name {
+            font-size: 22px;
             font-weight: 700;
         }
 
-        .progress-stats {
+        .hero-counter {
             text-align: right;
         }
 
-        .progress-big-number {
-            font-size: 52px;
+        .hero-counter .big-num {
+            font-size: 56px;
             font-weight: 800;
             line-height: 1;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            text-shadow: 0 4px 20px rgba(0,0,0,0.15);
         }
 
-        .progress-big-number span {
-            font-size: 28px;
-            opacity: 0.8;
+        .hero-counter .big-num .total {
+            font-size: 32px;
+            opacity: 0.7;
         }
 
-        .progress-sublabel {
-            font-size: 14px;
-            opacity: 0.85;
+        .hero-counter .counter-label {
+            font-size: 13px;
+            opacity: 0.9;
             font-weight: 500;
         }
 
-        .progress-bar-container {
-            background: rgba(255,255,255,0.3);
+        .progress-track {
+            background: rgba(255,255,255,0.25);
             border-radius: 16px;
-            height: 16px;
+            height: 14px;
             overflow: hidden;
             position: relative;
         }
 
-        .progress-bar-fill {
+        .progress-fill {
             height: 100%;
             background: white;
             border-radius: 16px;
-            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+            min-width: 0;
         }
 
-        .progress-bar-fill::after {
+        .progress-fill::after {
             content: '';
             position: absolute;
             right: 0;
             top: 0;
             bottom: 0;
-            width: 40px;
+            width: 50px;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6));
-            animation: progressShine 2s infinite;
         }
 
-        @keyframes progressShine {
-            0% { opacity: 0; }
-            50% { opacity: 1; }
-            100% { opacity: 0; }
+        .hero-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 18px;
         }
 
-        .progress-message {
-            margin-top: 20px;
+        .hero-status {
+            font-size: 14px;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            font-size: 15px;
-            font-weight: 600;
+            gap: 8px;
         }
 
-        .progress-actions {
+        .hero-status svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .hero-quick-actions {
             display: flex;
             gap: 8px;
         }
 
-        .progress-actions button {
-            padding: 10px 18px;
-            border-radius: 25px;
+        .hero-quick-btn {
+            padding: 8px 14px;
+            border-radius: var(--radius-full);
             border: none;
             background: rgba(255,255,255,0.2);
             color: white;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s ease;
-            backdrop-filter: blur(10px);
             display: flex;
             align-items: center;
             gap: 6px;
+            backdrop-filter: blur(10px);
         }
 
-        .progress-actions button:hover {
+        .hero-quick-btn:hover {
             background: rgba(255,255,255,0.35);
             transform: scale(1.05);
         }
 
-        /* Quick Stats */
-        .quick-stats {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
-            margin-top: 24px;
+        .hero-quick-btn svg {
+            width: 14px;
+            height: 14px;
         }
 
-        .quick-stat {
-            background: rgba(255,255,255,0.15);
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin-bottom: 24px;
+        }
+
+        .stat-tile {
+            background: var(--card);
             border-radius: var(--radius-md);
             padding: 16px 12px;
             text-align: center;
-            backdrop-filter: blur(10px);
-            transition: transform 0.3s ease;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
         }
 
-        .quick-stat:hover { transform: translateY(-4px); }
+        .stat-tile:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary-light);
+        }
 
-        .quick-stat-value {
-            font-size: 28px;
+        .stat-tile .stat-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+        }
+
+        .stat-tile .stat-icon svg {
+            width: 22px;
+            height: 22px;
+        }
+
+        .stat-tile .stat-icon.pending { background: var(--warning-light); color: var(--warning); }
+        .stat-tile .stat-icon.done { background: var(--success-light); color: var(--success); }
+        .stat-tile .stat-icon.streak { background: #FFF3E0; color: #FF9800; }
+        .stat-tile .stat-icon.rate { background: var(--info-light); color: var(--info); }
+
+        .stat-tile .stat-num {
+            font-size: 26px;
             font-weight: 800;
+            color: var(--text);
             line-height: 1;
             margin-bottom: 4px;
         }
 
-        .quick-stat-label {
-            font-size: 11px;
+        .stat-tile .stat-lbl {
+            font-size: 10px;
             font-weight: 600;
-            opacity: 0.85;
+            color: var(--text-muted);
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
-        /* Celebration Animation */
-        .celebration {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 1000;
-            overflow: hidden;
-        }
-
-        .confetti {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            border-radius: 2px;
-            animation: confettiFall 3s ease-out forwards;
-        }
-
-        @keyframes confettiFall {
-            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
-            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
-        }
-
-        /* Emergency Section */
-        .emergency-section {
-            padding: 24px 0;
+        /* Emergency Contacts */
+        .section {
+            margin-bottom: 24px;
         }
 
         .section-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
-        .section-header h3 {
-            font-size: 18px;
+        .section-title {
+            font-size: 16px;
             font-weight: 700;
+            color: var(--text);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .section-header a {
-            font-size: 14px;
+        .section-title svg {
+            width: 20px;
+            height: 20px;
+            color: var(--primary);
+        }
+
+        .section-link {
+            font-size: 13px;
             color: var(--primary);
             text-decoration: none;
             font-weight: 600;
             transition: color 0.2s;
         }
 
-        .section-header a:hover { color: var(--primary-dark); }
+        .section-link:hover { color: var(--primary-dark); }
 
-        .emergency-grid {
+        .contacts-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
+            gap: 10px;
         }
 
-        .emergency-card {
+        .contact-card {
             background: var(--card);
             border: 2px solid var(--border);
             border-radius: var(--radius-lg);
-            padding: 20px 16px;
+            padding: 18px 14px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             color: var(--text);
             display: flex;
@@ -478,57 +538,72 @@
             overflow: hidden;
         }
 
-        .emergency-card::before {
+        .contact-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, var(--primary), transparent);
-            opacity: 0;
-            transition: opacity 0.3s;
+            height: 3px;
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
         }
 
-        .emergency-card:hover {
-            transform: translateY(-6px) scale(1.02);
+        .contact-card:hover::before { transform: scaleX(1); }
+
+        .contact-card.family::before { background: var(--info); }
+        .contact-card.doctor::before { background: var(--success); }
+        .contact-card.pharmacy::before { background: var(--warning); }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
             box-shadow: var(--shadow-lg);
-            border-color: var(--primary);
         }
 
-        .emergency-card:hover::before { opacity: 1; }
+        .contact-card.family:hover { border-color: var(--info); }
+        .contact-card.doctor:hover { border-color: var(--success); }
+        .contact-card.pharmacy:hover { border-color: var(--warning); }
 
-        .emergency-icon {
-            width: 60px;
-            height: 60px;
+        .contact-avatar {
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 30px;
             transition: transform 0.3s ease;
         }
 
-        .emergency-card:hover .emergency-icon { transform: scale(1.1) rotate(5deg); }
+        .contact-card:hover .contact-avatar { transform: scale(1.1); }
 
-        .emergency-card.family .emergency-icon { background: var(--info-light); }
-        .emergency-card.doctor .emergency-icon { background: var(--success-light); }
-        .emergency-card.pharmacy .emergency-icon { background: var(--warning-light); }
+        .contact-avatar.family { background: var(--info-light); }
+        .contact-avatar.doctor { background: var(--success-light); }
+        .contact-avatar.pharmacy { background: var(--warning-light); }
 
-        .emergency-name {
-            font-size: 15px;
-            font-weight: 700;
-            color: var(--text);
+        .contact-avatar svg {
+            width: 28px;
+            height: 28px;
         }
 
-        .emergency-phone {
-            font-size: 12px;
+        .contact-avatar.family svg { color: var(--info); }
+        .contact-avatar.doctor svg { color: var(--success); }
+        .contact-avatar.pharmacy svg { color: var(--warning); }
+
+        .contact-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .contact-phone {
+            font-size: 11px;
             color: var(--text-muted);
         }
 
-        /* Navigation */
-        .nav-container {
-            padding: 8px 0 24px;
+        /* Navigation Tabs */
+        .nav-wrapper {
+            padding: 6px 0 20px;
         }
 
         .nav-tabs {
@@ -537,8 +612,8 @@
             padding: 6px;
             background: var(--card);
             border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-md);
             border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
             overflow-x: auto;
             scrollbar-width: none;
             scroll-snap-type: x mandatory;
@@ -549,11 +624,11 @@
         .nav-tab {
             flex: 1;
             min-width: 80px;
-            padding: 14px 16px;
+            padding: 14px 12px;
             border: none;
             background: transparent;
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             border-radius: var(--radius-sm);
             cursor: pointer;
@@ -568,13 +643,22 @@
         }
 
         .nav-tab-icon {
-            font-size: 24px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             transition: transform 0.3s ease;
+        }
+
+        .nav-tab-icon svg {
+            width: 24px;
+            height: 24px;
         }
 
         .nav-tab:hover {
             color: var(--primary);
-            background: var(--background);
+            background: var(--primary-10);
         }
 
         .nav-tab:hover .nav-tab-icon { transform: scale(1.15); }
@@ -589,56 +673,62 @@
         .view-container { padding-bottom: 24px; }
 
         .view { display: none; }
-        .view.active { display: block; animation: viewAppear 0.5s ease; }
+        .view.active { display: block; animation: fadeIn 0.4s ease; }
 
-        @keyframes viewAppear {
-            from { opacity: 0; transform: translateY(20px); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Time Sections */
-        .time-section { margin-bottom: 28px; }
+        /* Time Section */
+        .time-block { margin-bottom: 28px; }
 
         .time-header {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 18px 22px;
+            padding: 16px 20px;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             border-radius: var(--radius-md);
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-md), 0 0 30px var(--primary-glow);
+            margin-bottom: 14px;
+            box-shadow: var(--shadow-md);
         }
 
         .time-icon {
-            font-size: 32px;
-            width: 56px;
-            height: 56px;
-            background: rgba(255,255,255,0.25);
-            border-radius: 14px;
+            width: 52px;
+            height: 52px;
+            background: rgba(255,255,255,0.2);
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            animation: timeIconPulse 3s ease-in-out infinite;
         }
 
-        @keyframes timeIconPulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        .time-icon svg {
+            width: 28px;
+            height: 28px;
         }
 
-        .time-label {
-            font-size: 20px;
-            font-weight: 700;
+        .time-info {
             flex: 1;
         }
 
-        .time-count {
+        .time-name {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .time-meta {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+
+        .time-badge {
             background: rgba(255,255,255,0.25);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 14px;
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            font-size: 13px;
             font-weight: 600;
         }
 
@@ -646,17 +736,16 @@
         .med-card {
             background: var(--card);
             border-radius: var(--radius-lg);
-            margin-bottom: 16px;
-            box-shadow: var(--shadow-sm);
+            margin-bottom: 14px;
             border: 2px solid var(--border);
             overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             animation: cardIn 0.5s ease backwards;
         }
 
         @keyframes cardIn {
-            from { opacity: 0; transform: translateY(30px) scale(0.95); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translateY(24px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .med-card:hover {
@@ -665,200 +754,219 @@
             border-color: var(--primary-light);
         }
 
-        .med-card.completed {
+        .med-card.done {
             border-color: var(--success);
-            background: linear-gradient(135deg, var(--success-light) 0%, var(--card) 30%);
+            background: linear-gradient(135deg, var(--success-light) 0%, var(--card) 20%);
         }
 
         .med-card.overdue {
             border-color: var(--warning);
-            background: linear-gradient(135deg, var(--warning-light) 0%, var(--card) 30%);
+            background: linear-gradient(135deg, var(--warning-light) 0%, var(--card) 20%);
         }
 
-        .med-header {
+        .med-top {
             display: flex;
             align-items: flex-start;
             gap: 16px;
-            padding: 22px;
+            padding: 20px;
         }
 
-        .med-icon-wrap {
-            position: relative;
-        }
-
-        .med-icon {
-            width: 64px;
-            height: 64px;
+        .med-pill {
+            width: 58px;
+            height: 58px;
             border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 34px;
+            flex-shrink: 0;
+            position: relative;
             transition: transform 0.3s ease;
         }
 
-        .med-card:hover .med-icon { transform: rotate(10deg) scale(1.1); }
+        .med-card:hover .med-pill { transform: rotate(8deg) scale(1.08); }
 
-        .med-card.completed .med-icon::after {
-            content: '✓';
+        .med-pill svg {
+            width: 30px;
+            height: 30px;
+            color: white;
+        }
+
+        .med-pill.blue { background: linear-gradient(135deg, #5B9BD5, #85B8E0); }
+        .med-pill.green { background: linear-gradient(135deg, #34B477, #5DC992); }
+        .med-pill.purple { background: linear-gradient(135deg, #9B7BD5, #B59BE5); }
+        .med-pill.orange { background: linear-gradient(135deg, #E5A855, #F0C070); }
+        .med-pill.pink { background: linear-gradient(135deg, #E57399, #F090B0); }
+        .med-pill.teal { background: linear-gradient(135deg, #5B9B9B, #7ABFBF); }
+
+        .med-check {
             position: absolute;
-            bottom: -6px;
-            right: -6px;
-            width: 26px;
-            height: 26px;
+            bottom: -4px;
+            right: -4px;
+            width: 22px;
+            height: 22px;
             background: var(--success);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
             border: 3px solid var(--card);
         }
 
-        .med-icon.blue { background: linear-gradient(135deg, #7FB3D5, #A8D0E6); }
-        .med-icon.green { background: linear-gradient(135deg, #6ABF9E, #8FD4B8); }
-        .med-icon.purple { background: linear-gradient(135deg, #B39DDB, #D1C4E9); }
-        .med-icon.orange { background: linear-gradient(135deg, #FFB74D, #FFD54F); }
-        .med-icon.pink { background: linear-gradient(135deg, #F48FB1, #F8BBD9); }
-        .med-icon.teal { background: linear-gradient(135deg, #5B9B9B, #7ABFBF); }
+        .med-check svg {
+            width: 12px;
+            height: 12px;
+            color: white;
+        }
 
         .med-details { flex: 1; }
 
-        .med-name {
-            font-size: 22px;
+        .med-title {
+            font-size: 19px;
             font-weight: 700;
             color: var(--text);
             margin-bottom: 4px;
         }
 
-        .med-dosage {
-            font-size: 15px;
+        .med-dose {
+            font-size: 14px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        .med-tags {
+        .med-badges {
             display: flex;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .med-tag {
+        .med-badge {
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-size: 12px;
+            gap: 4px;
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-size: 11px;
             font-weight: 600;
         }
 
-        .med-tag.freq { background: var(--info-light); color: var(--info); }
-        .med-tag.food { background: var(--warning-light); color: #B8860B; }
-        .med-tag.low { background: var(--danger-light); color: var(--danger); }
+        .med-badge svg {
+            width: 12px;
+            height: 12px;
+        }
 
-        .med-notes {
-            margin: 0 22px 18px;
-            padding: 16px;
+        .med-badge.freq { background: var(--info-light); color: var(--info); }
+        .med-badge.food { background: var(--warning-light); color: var(--warning-dark); }
+        .med-badge.low { background: var(--danger-light); color: var(--danger); }
+
+        .med-note {
+            margin: 0 20px 16px;
+            padding: 14px;
             background: var(--background);
             border-radius: var(--radius-sm);
-            font-size: 14px;
+            border-left: 3px solid var(--primary);
+            font-size: 13px;
             color: var(--text-secondary);
-            border-left: 4px solid var(--primary);
             display: flex;
             align-items: flex-start;
             gap: 10px;
         }
 
-        .med-notes-icon { font-size: 18px; }
-
-        .med-times-list {
-            padding: 0 22px 22px;
+        .med-note svg {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            margin-top: 2px;
+            color: var(--primary);
         }
 
-        .med-time-row {
+        .med-doses {
+            padding: 0 20px 20px;
+        }
+
+        .dose-row {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 14px 0;
-            border-top: 1px solid var(--border);
+            padding: 12px 0;
+            border-top: 1px solid var(--border-light);
         }
 
-        .med-time-info {
+        .dose-info {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
         }
 
-        .med-time-icon {
-            width: 44px;
-            height: 44px;
+        .dose-icon {
+            width: 40px;
+            height: 40px;
             background: var(--background);
-            border-radius: 12px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 20px;
         }
 
-        .med-time-text { font-size: 17px; font-weight: 600; color: var(--text); }
-        .med-time-status { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
-        .med-time-status.overdue { color: var(--warning); font-weight: 600; }
+        .dose-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--text-muted);
+        }
+
+        .dose-text .time {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .dose-text .status {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .dose-text .status.overdue { color: var(--warning); font-weight: 600; }
 
         /* Buttons */
         .btn {
-            padding: 12px 22px;
-            font-size: 15px;
+            padding: 10px 18px;
+            font-size: 13px;
             font-weight: 700;
             border: none;
             border-radius: var(--radius-sm);
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             font-family: inherit;
-            position: relative;
-            overflow: hidden;
         }
 
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s, height 0.6s;
+        .btn svg {
+            width: 16px;
+            height: 16px;
         }
-
-        .btn:hover::before { width: 300px; height: 300px; }
 
         .btn-primary {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            box-shadow: var(--shadow-md), 0 0 20px var(--primary-glow);
+            box-shadow: var(--shadow-sm), 0 0 20px var(--primary-glow);
         }
 
         .btn-primary:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: var(--shadow-lg), 0 0 30px var(--primary-glow);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md), 0 0 30px var(--primary-glow);
         }
 
         .btn-success {
-            background: linear-gradient(135deg, var(--success) 0%, #4CC989 100%);
+            background: var(--success);
             color: white;
-            box-shadow: var(--shadow-md), 0 0 20px rgba(52, 180, 119, 0.3);
         }
 
         .btn-success:hover {
-            transform: translateY(-3px) scale(1.02);
+            background: var(--success-dark);
+            transform: translateY(-2px);
         }
 
         .btn-ghost {
@@ -868,7 +976,7 @@
         }
 
         .btn-ghost:hover {
-            background: var(--border);
+            background: var(--border-light);
             border-color: var(--primary);
             color: var(--primary);
         }
@@ -878,37 +986,33 @@
             color: var(--danger);
         }
 
-        .btn-danger:hover { background: var(--danger); color: white; }
+        .btn-danger:hover {
+            background: var(--danger);
+            color: white;
+        }
 
-        .btn-small { padding: 10px 16px; font-size: 13px; }
-        .btn-icon { width: 44px; height: 44px; padding: 0; }
+        .btn-small { padding: 8px 14px; font-size: 12px; }
 
-        .btn-mark {
+        .btn-done {
             background: var(--success);
             color: white;
-            padding: 12px 20px;
-            font-size: 14px;
+            padding: 10px 16px;
         }
 
-        .btn-mark:hover {
-            background: #2DA36A;
-            transform: scale(1.05);
-        }
+        .btn-done:hover { background: var(--success-dark); }
 
         .btn-undo {
             background: var(--background);
             color: var(--text-muted);
-            border: 1px solid var(--border);
-            padding: 10px 14px;
-            font-size: 12px;
+            padding: 8px 12px;
         }
 
         .med-actions {
             display: flex;
-            gap: 10px;
-            padding: 18px 22px;
+            gap: 8px;
+            padding: 14px 20px;
             background: var(--background);
-            border-top: 1px solid var(--border);
+            border-top: 1px solid var(--border-light);
         }
 
         .med-actions .btn { flex: 1; }
@@ -921,40 +1025,45 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 20px;
+            gap: 16px;
             z-index: 100;
         }
 
         .fab-tooltip {
             background: var(--text);
             color: var(--card);
-            padding: 12px 20px;
-            border-radius: 14px;
-            font-size: 14px;
+            padding: 10px 18px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
             font-weight: 600;
             white-space: nowrap;
             opacity: 0;
-            transform: translateX(20px);
+            transform: translateX(16px);
             transition: all 0.3s ease;
             pointer-events: none;
-            box-shadow: var(--shadow-lg);
         }
 
         .fab {
-            width: 68px;
-            height: 68px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
-            font-size: 36px;
+            font-size: 0;
             border: none;
             cursor: pointer;
             box-shadow: var(--shadow-lg), 0 0 40px var(--primary-glow);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
+        }
+
+        .fab svg {
+            width: 28px;
+            height: 28px;
+            transition: transform 0.3s ease;
         }
 
         .fab::before {
@@ -962,26 +1071,25 @@
             position: absolute;
             inset: -8px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            background: var(--primary);
             opacity: 0;
-            z-index: -1;
             transition: all 0.3s ease;
         }
 
         .fab:hover {
-            transform: scale(1.15) rotate(90deg);
-            box-shadow: var(--shadow-lg), 0 0 60px var(--primary-glow);
+            transform: scale(1.12) rotate(90deg);
+            box-shadow: var(--shadow-xl), 0 0 60px var(--primary-glow);
         }
 
         .fab:hover::before {
-            opacity: 0.3;
-            inset: -15px;
+            opacity: 0.25;
+            inset: -14px;
             animation: fabPulse 1.5s infinite;
         }
 
         @keyframes fabPulse {
-            0%, 100% { transform: scale(1); opacity: 0.3; }
-            50% { transform: scale(1.3); opacity: 0; }
+            0%, 100% { transform: scale(1); opacity: 0.25; }
+            50% { transform: scale(1.4); opacity: 0; }
         }
 
         .fab-container:hover .fab-tooltip {
@@ -997,7 +1105,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(26, 51, 51, 0.8);
+            background: rgba(26, 51, 51, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             z-index: 200;
@@ -1008,10 +1116,7 @@
 
         @media (min-width: 600px) { .modal-overlay { align-items: center; } }
 
-        .modal-overlay.active {
-            display: flex;
-            animation: modalIn 0.3s ease;
-        }
+        .modal-overlay.active { display: flex; animation: modalIn 0.3s ease; }
 
         @keyframes modalIn {
             from { opacity: 0; }
@@ -1021,9 +1126,9 @@
         .modal {
             background: var(--card);
             border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-            padding: 36px;
+            padding: 32px;
             width: 100%;
-            max-width: 560px;
+            max-width: 540px;
             max-height: 92vh;
             overflow-y: auto;
             animation: modalSlide 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1032,7 +1137,7 @@
         @media (min-width: 600px) { .modal { border-radius: var(--radius-xl); } }
 
         @keyframes modalSlide {
-            from { opacity: 0; transform: translateY(80px) scale(0.95); }
+            from { opacity: 0; transform: translateY(60px) scale(0.96); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
@@ -1040,22 +1145,21 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
         }
 
         .modal h2 {
-            font-size: 26px;
+            font-size: 22px;
             font-weight: 800;
             color: var(--text);
         }
 
         .modal-close {
-            width: 48px;
-            height: 48px;
+            width: 44px;
+            height: 44px;
             border-radius: 50%;
             border: none;
             background: var(--background);
-            font-size: 32px;
             color: var(--text-secondary);
             cursor: pointer;
             display: flex;
@@ -1064,20 +1168,22 @@
             transition: all 0.2s ease;
         }
 
+        .modal-close svg { width: 24px; height: 24px; }
+
         .modal-close:hover {
             background: var(--danger-light);
             color: var(--danger);
             transform: rotate(90deg);
         }
 
-        .form-group { margin-bottom: 26px; }
+        .form-group { margin-bottom: 22px; }
 
         .form-group label {
             display: block;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: var(--text);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
@@ -1086,8 +1192,8 @@
         .form-group select,
         .form-group textarea {
             width: 100%;
-            padding: 18px 20px;
-            font-size: 16px;
+            padding: 16px 18px;
+            font-size: 15px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             background: var(--card);
@@ -1101,77 +1207,74 @@
         .form-group textarea:focus {
             outline: none;
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px var(--primary-glow);
+            box-shadow: 0 0 0 4px var(--primary-10);
         }
 
-        .form-group textarea { min-height: 100px; resize: vertical; }
+        .form-group textarea { min-height: 90px; resize: vertical; }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 
-        .color-picker {
+        .color-swatches {
             display: flex;
-            gap: 14px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
-        .color-option {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+        .swatch {
+            width: 46px;
+            height: 46px;
+            border-radius: var(--radius-sm);
             border: 3px solid transparent;
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
-        }
-
-        .color-option:hover { transform: scale(1.15); }
-        .color-option.selected { 
-            border-color: var(--text); 
-            transform: scale(1.15);
-            box-shadow: var(--shadow-md);
-        }
-
-        .color-option::after {
-            content: '✓';
-            position: absolute;
-            inset: 0;
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .swatch:hover { transform: scale(1.12); }
+
+        .swatch.selected {
+            border-color: var(--text);
+            transform: scale(1.12);
+            box-shadow: var(--shadow-md);
+        }
+
+        .swatch svg {
+            width: 20px;
+            height: 20px;
             color: white;
-            font-size: 22px;
-            font-weight: bold;
             opacity: 0;
             transition: opacity 0.2s;
         }
 
-        .color-option.selected::after { opacity: 1; }
+        .swatch.selected svg { opacity: 1; }
 
-        .color-option.blue { background: linear-gradient(135deg, #7FB3D5, #A8D0E6); }
-        .color-option.green { background: linear-gradient(135deg, #6ABF9E, #8FD4B8); }
-        .color-option.purple { background: linear-gradient(135deg, #B39DDB, #D1C4E9); }
-        .color-option.orange { background: linear-gradient(135deg, #FFB74D, #FFD54F); }
-        .color-option.pink { background: linear-gradient(135deg, #F48FB1, #F8BBD9); }
-        .color-option.teal { background: linear-gradient(135deg, #5B9B9B, #7ABFBF); }
+        .swatch.blue { background: linear-gradient(135deg, #5B9BD5, #85B8E0); }
+        .swatch.green { background: linear-gradient(135deg, #34B477, #5DC992); }
+        .swatch.purple { background: linear-gradient(135deg, #9B7BD5, #B59BE5); }
+        .swatch.orange { background: linear-gradient(135deg, #E5A855, #F0C070); }
+        .swatch.pink { background: linear-gradient(135deg, #E57399, #F090B0); }
+        .swatch.teal { background: linear-gradient(135deg, #5B9B9B, #7ABFBF); }
 
-        .time-slots { display: flex; flex-direction: column; gap: 12px; }
+        .time-list { display: flex; flex-direction: column; gap: 10px; }
 
-        .time-slot-row {
+        .time-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             align-items: center;
         }
 
-        .time-slot-row input { flex: 1; }
+        .time-row input { flex: 1; }
 
         .time-remove {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+            border-radius: var(--radius-sm);
             border: none;
             background: var(--danger-light);
             color: var(--danger);
-            font-size: 26px;
             cursor: pointer;
             display: flex;
             align-items: center;
@@ -1179,61 +1282,64 @@
             transition: all 0.2s ease;
         }
 
+        .time-remove svg { width: 20px; height: 20px; }
+
         .time-remove:hover {
             background: var(--danger);
             color: white;
-            transform: scale(1.05);
         }
 
-        .add-time-btn {
-            padding: 18px;
+        .add-btn {
+            padding: 16px;
             background: transparent;
             border: 2px dashed var(--border);
             border-radius: var(--radius-sm);
             color: var(--text-secondary);
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
+            gap: 8px;
             font-family: inherit;
+            margin-top: 6px;
         }
 
-        .add-time-btn:hover {
+        .add-btn svg { width: 18px; height: 18px; }
+
+        .add-btn:hover {
             border-color: var(--primary);
             color: var(--primary);
-            background: var(--success-light);
+            background: var(--primary-10);
         }
 
-        .food-options {
+        .food-btns {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
         .food-btn {
-            padding: 12px 20px;
+            padding: 10px 16px;
             border: 2px solid var(--border);
-            border-radius: 25px;
+            border-radius: var(--radius-full);
             background: var(--card);
             cursor: pointer;
             transition: all 0.2s ease;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             color: var(--text-secondary);
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
             font-family: inherit;
         }
 
-        .food-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
+        .food-btn svg { width: 16px; height: 16px; }
+
+        .food-btn:hover { border-color: var(--primary); color: var(--primary); }
 
         .food-btn.selected {
             border-color: var(--primary);
@@ -1241,29 +1347,31 @@
             color: white;
         }
 
-        .refill-box {
-            padding: 24px;
+        .refill-area {
+            padding: 22px;
             background: linear-gradient(135deg, #FFFBF0 0%, #FFFDF5 100%);
             border: 2px solid #FFE082;
             border-radius: var(--radius-md);
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         .refill-title {
             display: flex;
             align-items: center;
             gap: 10px;
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
             color: #B8860B;
-            margin-bottom: 18px;
+            margin-bottom: 16px;
         }
+
+        .refill-title svg { width: 20px; height: 20px; }
 
         .modal-actions {
             display: flex;
-            gap: 14px;
-            margin-top: 36px;
-            padding-top: 28px;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
             border-top: 1px solid var(--border);
         }
 
@@ -1275,109 +1383,116 @@
             padding: 60px 30px;
         }
 
-        .empty-illustration {
-            font-size: 120px;
-            margin-bottom: 24px;
-            animation: emptyBounce 2s ease-in-out infinite;
+        .empty-art {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 24px;
+            background: linear-gradient(135deg, var(--primary-20), var(--primary-10));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: emptyPulse 2.5s ease-in-out infinite;
         }
 
-        @keyframes emptyBounce {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            25% { transform: translateY(-20px) rotate(-5deg); }
-            75% { transform: translateY(-10px) rotate(5deg); }
+        @keyframes emptyPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .empty-art svg {
+            width: 64px;
+            height: 64px;
+            color: var(--primary);
         }
 
         .empty-state h3 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: var(--text);
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .empty-state p {
-            font-size: 16px;
+            font-size: 15px;
             color: var(--text-secondary);
-            margin-bottom: 28px;
+            margin-bottom: 24px;
         }
 
         /* Calendar */
-        .calendar-header {
+        .cal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 24px;
-            padding: 22px;
+            margin-bottom: 20px;
+            padding: 20px;
             background: var(--card);
             border-radius: var(--radius-lg);
             border: 1px solid var(--border);
-            box-shadow: var(--shadow-sm);
         }
 
         .cal-nav {
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
 
         .cal-nav button {
-            width: 48px;
-            height: 48px;
-            border-radius: 14px;
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-sm);
             border: 1px solid var(--border);
             background: var(--card);
-            font-size: 22px;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.2s ease;
         }
+
+        .cal-nav button svg { width: 20px; height: 20px; }
 
         .cal-nav button:hover {
             background: var(--primary);
-            color: white;
             border-color: var(--primary);
+            color: white;
         }
 
         .cal-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 700;
-            color: var(--text);
         }
 
-        .calendar-grid {
+        .cal-grid {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
             gap: 8px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
-        .cal-day-header {
+        .cal-day-hdr {
             text-align: center;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 700;
             color: var(--text-muted);
-            padding: 12px 0;
+            padding: 10px 0;
             text-transform: uppercase;
         }
 
         .cal-day {
             aspect-ratio: 1;
-            border-radius: 16px;
+            border-radius: var(--radius-md);
             border: 2px solid var(--border);
             background: var(--card);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
             gap: 4px;
+            cursor: pointer;
+            transition: all 0.25s ease;
         }
 
-        .cal-day:hover {
-            border-color: var(--primary);
-            transform: scale(1.08);
-        }
+        .cal-day:hover { border-color: var(--primary); transform: scale(1.06); }
 
         .cal-day.today {
             border-color: var(--primary);
@@ -1385,20 +1500,13 @@
             color: white;
         }
 
-        .cal-day.selected {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: white;
-        }
+        .cal-day.selected { border-color: var(--primary); background: var(--primary-light); color: white; }
 
-        .cal-day .num {
-            font-size: 18px;
-            font-weight: 700;
-        }
+        .cal-day .num { font-size: 16px; font-weight: 700; }
 
         .cal-dot {
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
         }
 
@@ -1409,30 +1517,29 @@
         .day-detail {
             background: var(--card);
             border-radius: var(--radius-lg);
-            padding: 26px;
-            box-shadow: var(--shadow-md);
+            padding: 24px;
             border: 1px solid var(--border);
+            box-shadow: var(--shadow-md);
         }
 
         .day-detail h3 {
-            font-size: 22px;
+            font-size: 18px;
             font-weight: 700;
-            margin-bottom: 22px;
-            color: var(--text);
+            margin-bottom: 18px;
         }
 
         /* Stats */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 24px;
+            gap: 14px;
+            margin-bottom: 20px;
         }
 
         .stat-card {
             background: var(--card);
             border-radius: var(--radius-lg);
-            padding: 26px;
+            padding: 24px;
             border: 1px solid var(--border);
             text-align: center;
             transition: transform 0.3s ease;
@@ -1440,58 +1547,72 @@
 
         .stat-card:hover { transform: translateY(-4px); }
 
-        .stat-icon { font-size: 44px; margin-bottom: 12px; }
+        .stat-card-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 14px;
+        }
 
-        .stat-value {
-            font-size: 40px;
+        .stat-card-icon svg { width: 28px; height: 28px; }
+
+        .stat-card-icon.primary { background: var(--primary-light); color: var(--primary); }
+        .stat-card-icon.success { background: var(--success-light); color: var(--success); }
+        .stat-card-icon.warning { background: #FFF3E0; color: #FF9800; }
+        .stat-card-icon.info { background: var(--info-light); color: var(--info); }
+
+        .stat-card .stat-val {
+            font-size: 36px;
             font-weight: 800;
             color: var(--text);
             line-height: 1;
             margin-bottom: 6px;
         }
 
-        .stat-label {
-            font-size: 14px;
+        .stat-card .stat-lbl {
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
-        .stat-card.highlight {
+        .stat-card.full {
             background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             grid-column: span 2;
         }
 
-        .stat-card.highlight .stat-value,
-        .stat-card.highlight .stat-label { color: white; }
+        .stat-card.full .stat-val,
+        .stat-card.full .stat-lbl { color: white; }
 
         .stat-card.streak {
-            background: linear-gradient(135deg, #FFB74D 0%, #FFD54F 100%);
+            background: linear-gradient(135deg, #FF9800 0%, #FFB74D 100%);
             color: white;
             grid-column: span 2;
         }
 
-        .stat-card.streak .stat-value,
-        .stat-card.streak .stat-label { color: white; }
+        .stat-card.streak .stat-val,
+        .stat-card.streak .stat-lbl { color: white; }
 
-        .chart-card {
+        .chart-box {
             background: var(--card);
             border-radius: var(--radius-lg);
-            padding: 26px;
+            padding: 24px;
             border: 1px solid var(--border);
         }
 
         .chart-title {
-            font-size: 18px;
+            font-size: 15px;
             font-weight: 700;
-            margin-bottom: 22px;
-            color: var(--text);
+            margin-bottom: 20px;
         }
 
         .bar-chart {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            height: 140px;
+            height: 120px;
             gap: 10px;
         }
 
@@ -1500,15 +1621,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .bar {
             width: 100%;
-            border-radius: 10px;
+            border-radius: 8px;
             background: var(--background);
-            min-height: 20px;
-            transition: height 0.6s ease;
+            min-height: 16px;
             position: relative;
             overflow: hidden;
         }
@@ -1519,28 +1639,28 @@
             left: 0;
             right: 0;
             background: linear-gradient(to top, var(--primary), var(--primary-light));
-            border-radius: 10px;
+            border-radius: 8px;
             transition: height 0.6s ease;
         }
 
-        .bar-label {
-            font-size: 13px;
+        .bar-lbl {
+            font-size: 11px;
             font-weight: 600;
             color: var(--text-muted);
         }
 
-        /* Contacts */
-        .contact-row {
+        /* Contacts Form */
+        .contact-form-row {
             display: flex;
-            gap: 14px;
-            margin-bottom: 22px;
+            gap: 12px;
+            margin-bottom: 18px;
             align-items: flex-end;
         }
 
-        .contact-icon select {
-            width: 64px;
-            height: 56px;
-            font-size: 30px;
+        .contact-icon-select {
+            width: 56px;
+            height: 52px;
+            font-size: 26px;
             border: 2px solid var(--border);
             border-radius: var(--radius-sm);
             background: var(--card);
@@ -1552,71 +1672,71 @@
             flex: 1;
             display: grid;
             grid-template-columns: 2fr 1fr;
-            gap: 12px;
+            gap: 10px;
         }
 
         /* History */
-        .history-list { max-height: 500px; overflow-y: auto; }
+        .history-log { max-height: 450px; overflow-y: auto; }
 
-        .history-item {
+        .history-entry {
             display: flex;
             align-items: flex-start;
-            gap: 16px;
-            padding: 18px 0;
-            border-bottom: 1px solid var(--border);
+            gap: 14px;
+            padding: 16px 0;
+            border-bottom: 1px solid var(--border-light);
         }
 
         .history-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 14px;
+            width: 46px;
+            height: 46px;
+            border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 26px;
             flex-shrink: 0;
         }
 
-        .history-icon.taken { background: var(--success-light); }
-        .history-icon.missed { background: var(--danger-light); }
+        .history-icon svg { width: 22px; height: 22px; }
+
+        .history-icon.done { background: var(--success-light); color: var(--success); }
+        .history-icon.missed { background: var(--danger-light); color: var(--danger); }
 
         .history-content { flex: 1; }
 
         .history-med {
-            font-size: 17px;
+            font-size: 15px;
             font-weight: 700;
-            color: var(--text);
         }
 
-        .history-time {
-            font-size: 14px;
+        .history-dose {
+            font-size: 13px;
             color: var(--text-secondary);
         }
 
         .history-date {
-            font-size: 13px;
+            font-size: 12px;
             color: var(--text-muted);
         }
 
         /* Toast */
         .toast {
             position: fixed;
-            bottom: 120px;
+            bottom: 110px;
             left: 50%;
-            transform: translateX(-50%) translateY(100px);
+            transform: translateX(-50%) translateY(80px);
             background: var(--text);
             color: var(--card);
-            padding: 18px 32px;
-            border-radius: 18px;
-            font-size: 16px;
+            padding: 16px 28px;
+            border-radius: var(--radius-lg);
+            font-size: 14px;
             font-weight: 600;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-xl);
             z-index: 300;
             opacity: 0;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 12px;
             backdrop-filter: blur(10px);
         }
 
@@ -1625,147 +1745,216 @@
             transform: translateX(-50%) translateY(0);
         }
 
+        .toast svg { width: 20px; height: 20px; }
         .toast.success { background: var(--success); }
         .toast.warning { background: var(--warning); }
         .toast.error { background: var(--danger); }
 
-        .toast-icon { font-size: 22px; }
+        /* Confetti */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .confetti-piece {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            animation: confettiFall 3s ease-out forwards;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
 
         /* Responsive */
         @media (max-width: 480px) {
-            header { padding: 20px 0; }
-            .logo-icon { width: 50px; height: 50px; font-size: 26px; }
-            .logo-text h1 { font-size: 22px; }
-            .icon-btn { width: 44px; height: 44px; }
-            .progress-card { padding: 26px; }
-            .progress-big-number { font-size: 44px; }
-            .quick-stats { grid-template-columns: repeat(2, 1fr); }
-            .emergency-grid { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-            .emergency-card { padding: 16px 12px; }
-            .emergency-icon { width: 52px; height: 52px; font-size: 26px; }
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
             .form-row { grid-template-columns: 1fr; }
-            .contact-fields { grid-template-columns: 1fr; }
-            .fab { width: 62px; height: 62px; font-size: 32px; }
+            .contacts-grid { gap: 8px; }
+            .contact-card { padding: 14px 10px; }
+            .contact-avatar { width: 46px; height: 46px; }
+            .contact-avatar svg { width: 24px; height: 24px; }
+            .contact-name { font-size: 12px; }
+            .fab { width: 58px; height: 58px; }
+            .fab svg { width: 24px; height: 24px; }
             .fab-container { bottom: 24px; right: 24px; }
+            .hero-counter .big-num { font-size: 48px; }
             .stats-grid { grid-template-columns: 1fr; }
-            .stat-card.highlight,
-            .stat-card.streak { grid-column: span 1; }
+            .stat-card.full, .stat-card.streak { grid-column: span 1; }
+            .contact-fields { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="bg-blob bg-blob-1"></div>
-        <div class="bg-blob bg-blob-2"></div>
-        <div class="bg-blob bg-blob-3"></div>
+    <div class="bg-layer">
+        <div class="bg-shape bg-shape-1"></div>
+        <div class="bg-shape bg-shape-2"></div>
+        <div class="bg-shape bg-shape-3"></div>
     </div>
 
     <header>
         <div class="container">
-            <div class="header-inner">
-                <div class="logo">
-                    <div class="logo-icon">💊</div>
-                    <div class="logo-text">
+            <div class="header-main">
+                <div class="brand">
+                    <div class="brand-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+                    </div>
+                    <div class="brand-text">
                         <h1>MedMinder</h1>
-                        <span>Your daily companion</span>
+                        <span>Stay healthy, stay on track</span>
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn" onclick="toggleTheme()" title="Theme">🌙</button>
-                    <button class="icon-btn" onclick="openContactsModal()" title="Contacts">📞</button>
-                    <button class="icon-btn" onclick="openHistoryModal()" title="History">📋</button>
-                    <button class="icon-btn" onclick="printList()" title="Print">🖨️</button>
+                    <button class="icon-btn" onclick="toggleTheme()" title="Theme">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+                    </button>
+                    <button class="icon-btn" onclick="openContacts()" title="Contacts">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    </button>
+                    <button class="icon-btn" onclick="openHistory()" title="History">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 8v4l3 3"/><circle cx="12" cy="12" r="10"/></svg>
+                    </button>
+                    <button class="icon-btn" onclick="printList()" title="Print">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
     </header>
 
     <main class="container">
-        <div class="progress-hero">
-            <div class="progress-card">
-                <div class="progress-content">
-                    <div class="progress-header">
-                        <div>
-                            <div class="progress-greeting" id="greeting">Good Morning</div>
-                            <div class="progress-title" id="greetingMsg">Stay healthy today!</div>
-                        </div>
-                        <div class="progress-stats">
-                            <div class="progress-big-number"><span id="taken">0</span><span>/<span id="total">0</span></span></div>
-                            <div class="progress-sublabel">doses completed</div>
-                        </div>
+        <div class="hero-card">
+            <div class="bg-bg-pattern"></div>
+            <div class="hero-bg-pattern"></div>
+            <div class="hero-content">
+                <div class="hero-top">
+                    <div class="hero-greeting">
+                        <div class="greeting-text" id="greeting">Good Morning</div>
+                        <div class="greeting-name" id="greetingMsg">Ready to stay healthy?</div>
                     </div>
-                    <div class="progress-bar-container">
-                        <div class="progress-bar-fill" id="progressBar" style="width: 0%"></div>
+                    <div class="hero-counter">
+                        <div class="big-num"><span id="done">0</span><span class="total">/<span id="total">0</span></span></div>
+                        <div class="counter-label">doses today</div>
                     </div>
-                    <div class="progress-message">
-                        <span id="progressMsg">Add medications to track</span>
-                        <div class="progress-actions">
-                            <button onclick="switchViewById('stats')">📊</button>
-                            <button onclick="switchViewById('calendar')">📅</button>
-                        </div>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                </div>
+                <div class="hero-bottom">
+                    <div class="hero-status">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        <span id="status">Add medications to track</span>
                     </div>
-                    <div class="quick-stats">
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="statPending">0</div>
-                            <div class="quick-stat-label">Pending</div>
-                        </div>
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="statTaken">0</div>
-                            <div class="quick-stat-label">Taken</div>
-                        </div>
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="statStreak">0</div>
-                            <div class="quick-stat-label">Streak</div>
-                        </div>
-                        <div class="quick-stat">
-                            <div class="quick-stat-value" id="statRate">0%</div>
-                            <div class="quick-stat-label">Rate</div>
-                        </div>
+                    <div class="hero-quick-actions">
+                        <button class="hero-quick-btn" onclick="switchViewById('stats')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                            Stats
+                        </button>
+                        <button class="hero-quick-btn" onclick="switchViewById('calendar')">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            Week
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="emergency-section">
-            <div class="section-header">
-                <h3>⚡ Quick Emergency</h3>
-                <a href="#" onclick="openContactsModal(); return false;">Edit</a>
+        <div class="stats-row">
+            <div class="stat-tile">
+                <div class="stat-icon pending">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <div class="stat-num" id="statPending">0</div>
+                <div class="stat-lbl">Pending</div>
             </div>
-            <div class="emergency-grid">
-                <a href="#" class="emergency-card family" onclick="callContact('family')">
-                    <div class="emergency-icon" id="familyIcon">👨</div>
-                    <div class="emergency-name" id="familyName">Family</div>
-                    <div class="emergency-phone" id="familyPhone">Tap to add</div>
+            <div class="stat-tile">
+                <div class="stat-icon done">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="stat-num" id="statDone">0</div>
+                <div class="stat-lbl">Done</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-icon streak">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div class="stat-num" id="statStreak">0</div>
+                <div class="stat-lbl">Streak</div>
+            </div>
+            <div class="stat-tile">
+                <div class="stat-icon rate">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+                </div>
+                <div class="stat-num" id="statRate">0%</div>
+                <div class="stat-lbl">Rate</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <div class="section-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                    Emergency
+                </div>
+                <a href="#" class="section-link" onclick="openContacts(); return false;">Edit</a>
+            </div>
+            <div class="contacts-grid">
+                <a href="#" class="contact-card family" onclick="callContact('family')">
+                    <div class="contact-avatar family">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                    </div>
+                    <div class="contact-name" id="familyName">Family</div>
+                    <div class="contact-phone" id="familyPhone">Tap to add</div>
                 </a>
-                <a href="#" class="emergency-card doctor" onclick="callContact('doctor')">
-                    <div class="emergency-icon" id="doctorIcon">👨‍⚕️</div>
-                    <div class="emergency-name" id="doctorName">Doctor</div>
-                    <div class="emergency-phone" id="doctorPhone">Tap to add</div>
+                <a href="#" class="contact-card doctor" onclick="callContact('doctor')">
+                    <div class="contact-avatar doctor">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z"/><path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9"/><path d="M12 3v6"/></svg>
+                    </div>
+                    <div class="contact-name" id="doctorName">Doctor</div>
+                    <div class="contact-phone" id="doctorPhone">Tap to add</div>
                 </a>
-                <a href="#" class="emergency-card pharmacy" onclick="callContact('pharmacy')">
-                    <div class="emergency-icon" id="pharmacyIcon">🏥</div>
-                    <div class="emergency-name" id="pharmacyName">Pharmacy</div>
-                    <div class="emergency-phone" id="pharmacyPhone">Tap to add</div>
+                <a href="#" class="contact-card pharmacy" onclick="callContact('pharmacy')">
+                    <div class="contact-avatar pharmacy">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                    </div>
+                    <div class="contact-name" id="pharmacyName">Pharmacy</div>
+                    <div class="contact-phone" id="pharmacyPhone">Tap to add</div>
                 </a>
             </div>
         </div>
 
-        <nav class="nav-container">
+        <nav class="nav-wrapper">
             <div class="nav-tabs">
                 <button class="nav-tab active" onclick="switchView('time')" data-view="time">
-                    <span class="nav-tab-icon">🕐</span>
+                    <div class="nav-tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                    </div>
                     By Time
                 </button>
                 <button class="nav-tab" onclick="switchView('list')" data-view="list">
-                    <span class="nav-tab-icon">📝</span>
+                    <div class="nav-tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    </div>
                     List
                 </button>
                 <button class="nav-tab" onclick="switchView('calendar')" data-view="calendar">
-                    <span class="nav-tab-icon">📅</span>
+                    <div class="nav-tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                    </div>
                     Week
                 </button>
                 <button class="nav-tab" onclick="switchView('stats')" data-view="stats">
-                    <span class="nav-tab-icon">📊</span>
+                    <div class="nav-tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                    </div>
                     Stats
                 </button>
             </div>
@@ -1781,7 +1970,9 @@
 
     <div class="fab-container">
         <span class="fab-tooltip">Add Medication</span>
-        <button class="fab" onclick="openModal()">+</button>
+        <button class="fab" onclick="openModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
     </div>
 
     <!-- Medication Modal -->
@@ -1789,16 +1980,16 @@
         <div class="modal">
             <div class="modal-header">
                 <h2 id="modalTitle">Add Medication</h2>
-                <button class="modal-close" onclick="closeModal()">×</button>
+                <button class="modal-close" onclick="closeModal()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
             <form id="form" onsubmit="saveForm(event)">
                 <input type="hidden" id="editId">
-                
                 <div class="form-group">
-                    <label>Medication Name *</label>
+                    <label>Medication Name</label>
                     <input type="text" id="name" required placeholder="e.g., Aspirin">
                 </div>
-
                 <div class="form-row">
                     <div class="form-group">
                         <label>Dosage</label>
@@ -1814,62 +2005,70 @@
                         </select>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Color</label>
-                    <div class="color-picker">
-                        <div class="color-option blue selected" data-color="blue" onclick="selectColor(this)"></div>
-                        <div class="color-option green" data-color="green" onclick="selectColor(this)"></div>
-                        <div class="color-option purple" data-color="purple" onclick="selectColor(this)"></div>
-                        <div class="color-option orange" data-color="orange" onclick="selectColor(this)"></div>
-                        <div class="color-option pink" data-color="pink" onclick="selectColor(this)"></div>
-                        <div class="color-option teal" data-color="teal" onclick="selectColor(this)"></div>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Time(s)</label>
-                    <div class="time-slots" id="timeSlots">
-                        <div class="time-slot-row">
-                            <input type="time" value="08:00">
+                    <div class="color-swatches">
+                        <div class="swatch blue selected" data-color="blue" onclick="selectColor(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="swatch green" data-color="green" onclick="selectColor(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="swatch purple" data-color="purple" onclick="selectColor(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="swatch orange" data-color="orange" onclick="selectColor(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="swatch pink" data-color="pink" onclick="selectColor(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
+                        <div class="swatch teal" data-color="teal" onclick="selectColor(this)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
                         </div>
                     </div>
-                    <button type="button" class="add-time-btn" onclick="addTime()">
-                        + Add Another Time
+                </div>
+                <div class="form-group">
+                    <label>Time(s)</label>
+                    <div class="time-list" id="timeList">
+                        <div class="time-row"><input type="time" value="08:00"></div>
+                    </div>
+                    <button type="button" class="add-btn" onclick="addTime()">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                        Add Time
                     </button>
                 </div>
-
                 <div class="form-group">
                     <label>Take With Food</label>
-                    <div class="food-options">
-                        <button type="button" class="food-btn selected" data-food="none" onclick="selectFood(this)">🍽️ Any</button>
-                        <button type="button" class="food-btn" data-food="with" onclick="selectFood(this)">🥗 With Food</button>
-                        <button type="button" class="food-btn" data-food="empty" onclick="selectFood(this)">⏰ Empty Stomach</button>
+                    <div class="food-btns">
+                        <button type="button" class="food-btn selected" data-food="none" onclick="selectFood(this)">Any</button>
+                        <button type="button" class="food-btn" data-food="with" onclick="selectFood(this)">With Food</button>
+                        <button type="button" class="food-btn" data-food="empty" onclick="selectFood(this)">Empty Stomach</button>
                     </div>
                 </div>
-
                 <div class="form-group">
                     <label>Notes</label>
-                    <textarea id="notes" placeholder="e.g., Take with food, Avoid alcohol..."></textarea>
+                    <textarea id="notes" placeholder="e.g., Take with food..."></textarea>
                 </div>
-
-                <div class="refill-box">
-                    <div class="refill-title">💉 Refill Reminder</div>
+                <div class="refill-area">
+                    <div class="refill-title">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
+                        Refill Reminder
+                    </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label>Pills Left</label>
-                            <input type="number" id="pills" placeholder="e.g., 30" min="0">
+                            <input type="number" id="pills" placeholder="30" min="0">
                         </div>
                         <div class="form-group">
                             <label>Daily Dose</label>
-                            <input type="number" id="dailyDose" placeholder="e.g., 2" min="1">
+                            <input type="number" id="daily" placeholder="2" min="1">
                         </div>
                     </div>
                 </div>
-
                 <div class="modal-actions">
                     <button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">💾 Save</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
@@ -1880,54 +2079,35 @@
         <div class="modal">
             <div class="modal-header">
                 <h2>Emergency Contacts</h2>
-                <button class="modal-close" onclick="closeContactsModal()">×</button>
+                <button class="modal-close" onclick="closeContacts()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
-            <form id="contactsForm" onsubmit="saveContacts(event)">
-                <div class="contact-row">
-                    <div class="contact-icon">
-                        <select id="fIcon"><option>👨</option><option>👩</option><option>👨‍👩‍👧</option><option>👴</option><option>👵</option></select>
-                    </div>
+            <form onsubmit="saveContacts(event)">
+                <div class="contact-form-row">
+                    <select class="contact-icon-select" id="fIco"><option>👨</option><option>👩</option><option>👨‍👩‍👧</option><option>👴</option><option>👵</option></select>
                     <div class="contact-fields">
-                        <div class="form-group">
-                            <input type="text" id="fName" placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="fPhone" placeholder="Phone">
-                        </div>
+                        <div class="form-group"><input type="text" id="fName" placeholder="Name"></div>
+                        <div class="form-group"><input type="tel" id="fPhone" placeholder="Phone"></div>
                     </div>
                 </div>
-
-                <div class="contact-row">
-                    <div class="contact-icon">
-                        <select id="dIcon"><option>👨‍⚕️</option><option>👩‍⚕️</option><option>🩺</option></select>
-                    </div>
+                <div class="contact-form-row">
+                    <select class="contact-icon-select" id="dIco"><option>👨‍⚕️</option><option>👩‍⚕️</option><option>🩺</option></select>
                     <div class="contact-fields">
-                        <div class="form-group">
-                            <input type="text" id="dName" placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="dPhone" placeholder="Phone">
-                        </div>
+                        <div class="form-group"><input type="text" id="dName" placeholder="Name"></div>
+                        <div class="form-group"><input type="tel" id="dPhone" placeholder="Phone"></div>
                     </div>
                 </div>
-
-                <div class="contact-row">
-                    <div class="contact-icon">
-                        <select id="pIcon"><option>🏥</option><option>💊</option><option>🏪</option></select>
-                    </div>
+                <div class="contact-form-row">
+                    <select class="contact-icon-select" id="pIco"><option>🏥</option><option>💊</option><option>🏪</option></select>
                     <div class="contact-fields">
-                        <div class="form-group">
-                            <input type="text" id="pName" placeholder="Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="tel" id="pPhone" placeholder="Phone">
-                        </div>
+                        <div class="form-group"><input type="text" id="pName" placeholder="Name"></div>
+                        <div class="form-group"><input type="tel" id="pPhone" placeholder="Phone"></div>
                     </div>
                 </div>
-
                 <div class="modal-actions">
-                    <button type="button" class="btn btn-ghost" onclick="closeContactsModal()">Cancel</button>
-                    <button type="submit" class="btn btn-primary">💾 Save</button>
+                    <button type="button" class="btn btn-ghost" onclick="closeContacts()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
             </form>
         </div>
@@ -1938,25 +2118,27 @@
         <div class="modal">
             <div class="modal-header">
                 <h2>History</h2>
-                <button class="modal-close" onclick="closeHistoryModal()">×</button>
+                <button class="modal-close" onclick="closeHistory()">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
             </div>
-            <div class="history-list" id="historyList">
+            <div class="history-log" id="historyLog">
                 <p style="text-align: center; color: var(--text-muted); padding: 60px;">No history yet</p>
             </div>
             <div class="modal-actions">
                 <button class="btn btn-danger" onclick="clearHistory()" style="flex: 1;">Clear All</button>
-                <button class="btn btn-primary" onclick="closeHistoryModal()" style="flex: 1;">Close</button>
+                <button class="btn btn-primary" onclick="closeHistory()" style="flex: 1;">Close</button>
             </div>
         </div>
     </div>
 
-    <!-- Celebration -->
-    <div class="celebration" id="celebration"></div>
+    <!-- Confetti -->
+    <div class="confetti-container" id="confetti"></div>
 
     <!-- Toast -->
     <div class="toast" id="toast">
-        <span class="toast-icon">✓</span>
-        <span class="toast-text" id="toastText">Saved!</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+        <span id="toastMsg">Saved!</span>
     </div>
 
     <script>
@@ -1971,10 +2153,10 @@
         let selectedDate = new Date();
 
         const times = [
-            { id: 'morning', label: 'Morning', icon: '🌅', start: 6, end: 12 },
-            { id: 'afternoon', label: 'Afternoon', icon: '☀️', start: 12, end: 17 },
-            { id: 'evening', label: 'Evening', icon: '🌆', start: 17, end: 21 },
-            { id: 'night', label: 'Night', icon: '🌙', start: 21, end: 24 }
+            { id: 'morning', label: 'Morning', start: 6, end: 12 },
+            { id: 'afternoon', label: 'Afternoon', start: 12, end: 17 },
+            { id: 'evening', label: 'Evening', start: 17, end: 21 },
+            { id: 'night', label: 'Night', start: 21, end: 24 }
         ];
 
         const freqLabels = { daily: 'Daily', twice: '2x Daily', weekly: 'Weekly', asneeded: 'As Needed' };
@@ -1989,9 +2171,7 @@
             history = JSON.parse(localStorage.getItem('m_history') || '[]');
             streak = parseInt(localStorage.getItem('m_streak') || '0');
             if (!taken[getToday()]) taken[getToday()] = {};
-            if (localStorage.getItem('m_theme')) {
-                document.documentElement.setAttribute('data-theme', localStorage.getItem('m_theme'));
-            }
+            if (localStorage.getItem('m_theme')) document.documentElement.setAttribute('data-theme', localStorage.getItem('m_theme'));
         }
 
         function save() {
@@ -2014,7 +2194,7 @@
             return 'night';
         }
 
-        function overdue(t) {
+        function isOverdue(t) {
             const n = new Date(), [h, m] = t.split(':').map(Number);
             const mt = new Date(); mt.setHours(h, m, 0, 0);
             return (n - mt) / 60000 > 0 && (n - mt) / 60000 < 240;
@@ -2062,11 +2242,16 @@
                 const done = sectionMeds.filter(m => m.times.every(t => taken[today]?.[`${m.id}-${t}`])).length;
                 
                 html += `
-                    <div class="time-section">
+                    <div class="time-block">
                         <div class="time-header">
-                            <div class="time-icon">${section.icon}</div>
-                            <span class="time-label">${section.label}</span>
-                            <span class="time-count">${done}/${sectionMeds.length} ✓</span>
+                            <div class="time-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div class="time-info">
+                                <div class="time-name">${section.label}</div>
+                                <div class="time-meta">${section.start % 12 || 12}:00 ${section.start >= 12 ? 'PM' : 'AM'} - ${section.end % 12 || 12}:00 ${section.end >= 12 ? 'PM' : 'AM'}</div>
+                            </div>
+                            <div class="time-badge">${done}/${sectionMeds.length}</div>
                         </div>
                         ${sectionMeds.map(m => renderCard(m, today)).join('')}
                     </div>
@@ -2078,7 +2263,6 @@
         function renderList() {
             const c = document.getElementById('list-view');
             if (!meds.length) { c.innerHTML = renderEmpty(); return; }
-            
             const today = getToday();
             const sorted = [...meds].sort((a, b) => (a.times[0] || '23:59').localeCompare(b.times[0] || '23:59'));
             c.innerHTML = sorted.map(m => renderCard(m, today)).join('');
@@ -2091,16 +2275,20 @@
             start.setDate(start.getDate() - start.getDay());
 
             let html = `
-                <div class="calendar-header">
+                <div class="cal-header">
                     <div class="cal-nav">
-                        <button onclick="navigateWeek(-1)">←</button>
-                        <button onclick="navigateWeek(1)">→</button>
+                        <button onclick="navigateWeek(-1)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                        </button>
+                        <button onclick="navigateWeek(1)">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
                     </div>
                     <span class="cal-title">${fmtDate(start)} - ${fmtDate(new Date(start.getTime() + 6 * 86400000))}</span>
                     <button class="btn btn-small btn-ghost" onclick="goToToday()">Today</button>
                 </div>
-                <div class="calendar-grid">
-                    ${['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => `<div class="cal-day-header">${d}</div>`).join('')}
+                <div class="cal-grid">
+                    ${['S', 'M', 'T', 'W', 'T', 'F', 'S'].map(d => `<div class="cal-day-hdr">${d}</div>`).join('')}
             `;
 
             for (let i = 0; i < 7; i++) {
@@ -2161,36 +2349,44 @@
 
             c.innerHTML = `
                 <div class="stats-grid">
-                    <div class="stat-card highlight">
-                        <div class="stat-icon">🎯</div>
-                        <div class="stat-value">${total ? Math.round((doneCount / total) * 100) : 0}%</div>
-                        <div class="stat-label">Overall Adherence</div>
+                    <div class="stat-card full">
+                        <div class="stat-card-icon primary">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                        </div>
+                        <div class="stat-val">${total ? Math.round((doneCount / total) * 100) : 0}%</div>
+                        <div class="stat-lbl">Overall Adherence</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">✅</div>
-                        <div class="stat-value">${doneCount}</div>
-                        <div class="stat-label">Doses Taken</div>
+                        <div class="stat-card-icon success">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                        </div>
+                        <div class="stat-val">${doneCount}</div>
+                        <div class="stat-lbl">Doses Taken</div>
                     </div>
                     <div class="stat-card">
-                        <div class="stat-icon">💊</div>
-                        <div class="stat-value">${meds.length}</div>
-                        <div class="stat-label">Medications</div>
+                        <div class="stat-card-icon info">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+                        </div>
+                        <div class="stat-val">${meds.length}</div>
+                        <div class="stat-lbl">Medications</div>
                     </div>
                     <div class="stat-card streak">
-                        <div class="stat-icon">🔥</div>
-                        <div class="stat-value">${streak}</div>
-                        <div class="stat-label">Day Streak - Keep going!</div>
+                        <div class="stat-card-icon" style="background: rgba(255,255,255,0.2); color: white;">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                        </div>
+                        <div class="stat-val">${streak}</div>
+                        <div class="stat-lbl">Day Streak - Keep going!</div>
                     </div>
                 </div>
-                <div class="chart-card">
-                    <div class="chart-title">📈 This Week</div>
+                <div class="chart-box">
+                    <div class="chart-title">This Week</div>
                     <div class="bar-chart">
                         ${weekly.map(w => `
                             <div class="bar-item">
-                                <div class="bar" style="height: 120px;">
+                                <div class="bar" style="height: 100px;">
                                     <div class="bar-fill" style="height: ${Math.max(w.pct, 5)}%;"></div>
                                 </div>
-                                <span class="bar-label">${w.label}</span>
+                                <span class="bar-lbl">${w.label}</span>
                             </div>
                         `).join('')}
                     </div>
@@ -2203,57 +2399,56 @@
             const anyDone = m.times.some(t => taken[dk]?.[`${m.id}-${t}`]);
             
             let cls = 'med-card';
-            if (allDone) cls += ' completed';
-            else if (dk === getToday() && m.times.some(t => overdue(t))) cls += ' overdue';
+            if (allDone) cls += ' done';
+            else if (dk === getToday() && m.times.some(t => isOverdue(t))) cls += ' overdue';
 
-            const food = m.food && m.food !== 'none' ? `<span class="med-tag food">${foodLabels[m.food]}</span>` : '';
-            const lowStock = m.pills && m.daily && m.pills <= m.daily * 7 ? `<span class="med-tag low">⚠️ ${m.pills} left</span>` : '';
+            const food = m.food && m.food !== 'none' ? `<span class="med-badge food">${foodLabels[m.food]}</span>` : '';
+            const low = m.pills && m.daily && m.pills <= m.daily * 7 ? `<span class="med-badge low">${m.pills} left</span>` : '';
 
             return `
                 <div class="${cls}" style="animation-delay: ${Math.random() * 0.2}s">
-                    <div class="med-header">
-                        <div class="med-icon-wrap">
-                            <div class="med-icon ${m.color || 'blue'}">💊</div>
+                    <div class="med-top">
+                        <div class="med-pill ${m.color || 'blue'}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+                            ${allDone ? '<div class="med-check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg></div>' : ''}
                         </div>
                         <div class="med-details">
-                            <div class="med-name">${m.name}</div>
-                            <div class="med-dosage">${m.dosage || 'As directed'}</div>
-                            <div class="med-tags">
-                                <span class="med-tag freq">${freqLabels[m.frequency] || 'Daily'}</span>
+                            <div class="med-title">${m.name}</div>
+                            <div class="med-dose">${m.dosage || 'As directed'}</div>
+                            <div class="med-badges">
+                                <span class="med-badge freq">${freqLabels[m.frequency] || 'Daily'}</span>
                                 ${food}
-                                ${lowStock}
+                                ${low}
                             </div>
                         </div>
                     </div>
-                    ${m.notes ? `<div class="med-notes"><span class="med-notes-icon">📝</span>${m.notes}</div>` : ''}
-                    <div class="med-times-list">
+                    ${m.notes ? `<div class="med-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>${m.notes}</div>` : ''}
+                    <div class="med-doses">
                         ${m.times.map(t => {
                             const done = taken[dk]?.[`${m.id}-${t}`];
-                            const isOver = !done && overdue(t);
+                            const isOver = !done && isOverdue(t);
                             return `
-                                <div class="med-time-row">
-                                    <div class="med-time-info">
-                                        <div class="med-time-icon">🕐</div>
-                                        <div>
-                                            <div class="med-time-text">${fmtTime(t)}</div>
-                                            <div class="med-time-status ${isOver ? 'overdue' : ''}">${done ? 'Taken' : isOver ? 'Overdue' : 'Pending'}</div>
+                                <div class="dose-row">
+                                    <div class="dose-info">
+                                        <div class="dose-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+                                        <div class="dose-text">
+                                            <div class="time">${fmtTime(t)}</div>
+                                            <div class="status ${isOver ? 'overdue' : ''}">${done ? 'Taken' : isOver ? 'Overdue' : 'Pending'}</div>
                                         </div>
                                     </div>
                                     ${done ? `
                                         <div style="display: flex; align-items: center; gap: 8px;">
-                                            <span style="color: var(--success); font-size: 20px;">✓</span>
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" style="width: 20px; height: 20px;"><polyline points="20 6 9 17 4 12"/></svg>
                                             <button class="btn btn-undo" onclick="undo('${m.id}', '${t}', '${dk}')">Undo</button>
                                         </div>
-                                    ` : `
-                                        <button class="btn btn-mark" onclick="mark('${m.id}', '${t}')">✓ Mark</button>
-                                    `}
+                                    ` : `<button class="btn btn-done" onclick="mark('${m.id}', '${t}')">Mark</button>`}
                                 </div>
                             `;
                         }).join('')}
                     </div>
                     <div class="med-actions">
-                        <button class="btn btn-ghost btn-small" onclick="edit('${m.id}')">✏️ Edit</button>
-                        <button class="btn btn-danger btn-small" onclick="deleteM('${m.id}')">🗑️ Delete</button>
+                        <button class="btn btn-ghost btn-small" onclick="edit('${m.id}')">Edit</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteM('${m.id}')">Delete</button>
                     </div>
                 </div>
             `;
@@ -2262,10 +2457,12 @@
         function renderEmpty() {
             return `
                 <div class="empty-state">
-                    <div class="empty-illustration">💊</div>
+                    <div class="empty-art">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>
+                    </div>
                     <h3>No Medications Yet</h3>
                     <p>Add your first medication to start tracking</p>
-                    <button class="btn btn-primary" onclick="openModal()">+ Add Medication</button>
+                    <button class="btn btn-primary" onclick="openModal()">Add Medication</button>
                 </div>
             `;
         }
@@ -2273,34 +2470,24 @@
         function updateProgress() {
             const today = getToday();
             let total = 0, done = 0, pending = 0;
-            
-            meds.forEach(m => {
-                m.times.forEach(t => {
-                    total++;
-                    if (taken[today]?.[`${m.id}-${t}`]) done++;
-                    else pending++;
-                });
-            });
+            meds.forEach(m => { m.times.forEach(t => { total++; if (taken[today]?.[`${m.id}-${t}`]) done++; else pending++; }); });
 
-            document.getElementById('taken').textContent = done;
+            document.getElementById('done').textContent = done;
             document.getElementById('total').textContent = total;
             document.getElementById('progressBar').style.width = `${total ? (done / total) * 100 : 0}%`;
-            document.getElementById('progressMsg').textContent = !total ? 'Add medications to track' : done === total && total > 0 ? '🎉 All done for today!' : `${pending} dose${pending > 1 ? 's' : ''} remaining`;
+            document.getElementById('status').textContent = !total ? 'Add medications to track' : done === total && total > 0 ? 'All done for today!' : `${pending} dose${pending > 1 ? 's' : ''} remaining`;
             document.getElementById('statPending').textContent = pending;
-            document.getElementById('statTaken').textContent = done;
+            document.getElementById('statDone').textContent = done;
             document.getElementById('statStreak').textContent = streak;
             document.getElementById('statRate').textContent = `${total ? Math.round((done / total) * 100) : 0}%`;
             document.getElementById('greeting').textContent = getGreeting();
         }
 
         function updateContacts() {
-            [['family', 'Family', 'family', 'familyIcon', 'familyName', 'familyPhone'],
-             ['doctor', 'Doctor', 'doctor', 'doctorIcon', 'doctorName', 'doctorPhone'],
-             ['pharmacy', 'Pharmacy', 'pharmacy', 'pharmacyIcon', 'pharmacyName', 'pharmacyPhone']].forEach(([type, def, key, iconId, nameId, phoneId]) => {
+            [['family', 'Family', 'family'], ['doctor', 'Doctor', 'doctor'], ['pharmacy', 'Pharmacy', 'pharmacy']].forEach(([type, def, key]) => {
                 const c = contacts[type] || {};
-                document.getElementById(nameId).textContent = c.name || def;
-                document.getElementById(phoneId).textContent = c.phone ? c.phone : 'Tap to add';
-                if (c.icon) document.getElementById(iconId).textContent = c.icon;
+                document.getElementById(`${type}Name`).textContent = c.name || def;
+                document.getElementById(`${type}Phone`).textContent = c.phone ? c.phone : 'Tap to add';
             });
         }
 
@@ -2311,7 +2498,7 @@
             
             const m = meds.find(x => x.id === id);
             if (m) {
-                history.unshift({ id: Date.now(), med: m.name, dosage: m.dosage, time, date: today, action: 'taken' });
+                history.unshift({ id: Date.now(), med: m.name, dosage: m.dosage, time, date: today, action: 'done' });
                 if (history.length > 200) history = history.slice(0, 200);
                 if (m.pills) m.pills = Math.max(0, m.pills - 1);
             }
@@ -2344,24 +2531,22 @@
         }
 
         function celebrate() {
-            const el = document.getElementById('celebration');
-            const colors = ['#5B9B9B', '#34B477', '#FFD54F', '#FF8A65', '#B39DDB'];
-            
-            for (let i = 0; i < 50; i++) {
-                const conf = document.createElement('div');
-                conf.className = 'confetti';
-                conf.style.left = Math.random() * 100 + '%';
-                conf.style.background = colors[Math.floor(Math.random() * colors.length)];
-                conf.style.animationDelay = Math.random() * 0.5 + 's';
-                conf.style.animationDuration = (2 + Math.random() * 2) + 's';
-                el.appendChild(conf);
+            const el = document.getElementById('confetti');
+            const colors = ['#5B9B9B', '#34B477', '#FF9800', '#E57399', '#9B7BD5'];
+            for (let i = 0; i < 60; i++) {
+                const p = document.createElement('div');
+                p.className = 'confetti-piece';
+                p.style.left = Math.random() * 100 + '%';
+                p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                p.style.animationDelay = Math.random() * 0.5 + 's';
+                p.style.animationDuration = (2 + Math.random() * 2) + 's';
+                el.appendChild(p);
             }
-            
             setTimeout(() => el.innerHTML = '', 4000);
         }
 
         function selectColor(el) {
-            document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
+            document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
             el.classList.add('selected');
             selectedColor = el.dataset.color;
         }
@@ -2376,9 +2561,9 @@
             const modal = document.getElementById('modal');
             const title = document.getElementById('modalTitle');
             
-            document.getElementById('timeSlots').innerHTML = '<div class="time-slot-row"><input type="time" value="08:00"></div>';
-            document.querySelectorAll('.color-option').forEach(o => o.classList.remove('selected'));
-            document.querySelector('.color-option.blue').classList.add('selected');
+            document.getElementById('timeList').innerHTML = '<div class="time-row"><input type="time" value="08:00"></div>';
+            document.querySelectorAll('.swatch').forEach(s => s.classList.remove('selected'));
+            document.querySelector('.swatch.blue').classList.add('selected');
             document.querySelectorAll('.food-btn').forEach(b => b.classList.remove('selected'));
             document.querySelector('.food-btn').classList.add('selected');
             selectedColor = 'blue';
@@ -2394,17 +2579,19 @@
                     document.getElementById('frequency').value = m.frequency || 'daily';
                     document.getElementById('notes').value = m.notes || '';
                     document.getElementById('pills').value = m.pills || '';
-                    document.getElementById('dailyDose').value = m.daily || '';
+                    document.getElementById('daily').value = m.daily || '';
                     
                     selectedColor = m.color || 'blue';
                     selectedFood = m.food || 'none';
-                    document.querySelectorAll('.color-option').forEach(o => { o.classList.remove('selected'); if (o.dataset.color === selectedColor) o.classList.add('selected'); });
+                    document.querySelectorAll('.swatch').forEach(s => { s.classList.remove('selected'); if (s.dataset.color === selectedColor) s.classList.add('selected'); });
                     document.querySelectorAll('.food-btn').forEach(b => { b.classList.remove('selected'); if (b.dataset.food === selectedFood) b.classList.add('selected'); });
                     
-                    document.getElementById('timeSlots').innerHTML = m.times.map(t => `
-                        <div class="time-slot-row">
+                    document.getElementById('timeList').innerHTML = m.times.map(t => `
+                        <div class="time-row">
                             <input type="time" value="${t}">
-                            <button type="button" class="time-remove" onclick="this.parentElement.remove()">×</button>
+                            <button type="button" class="time-remove" onclick="this.parentElement.remove()">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                            </button>
                         </div>
                     `).join('');
                 }
@@ -2421,11 +2608,11 @@
         function closeModal() { document.getElementById('modal').classList.remove('active'); }
 
         function addTime() {
-            const c = document.getElementById('timeSlots');
-            if (c.querySelectorAll('.time-slot-row').length >= 6) return;
+            const c = document.getElementById('timeList');
+            if (c.querySelectorAll('.time-row').length >= 6) return;
             const row = document.createElement('div');
-            row.className = 'time-slot-row';
-            row.innerHTML = '<input type="time" value="12:00"><button type="button" class="time-remove" onclick="this.parentElement.remove()">×</button>';
+            row.className = 'time-row';
+            row.innerHTML = `<input type="time" value="12:00"><button type="button" class="time-remove" onclick="this.parentElement.remove()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>`;
             c.appendChild(row);
         }
 
@@ -2437,8 +2624,8 @@
             const frequency = document.getElementById('frequency').value;
             const notes = document.getElementById('notes').value.trim();
             const pills = document.getElementById('pills').value;
-            const daily = document.getElementById('dailyDose').value;
-            const times = Array.from(document.querySelectorAll('#timeSlots input')).map(i => i.value).filter(Boolean);
+            const daily = document.getElementById('daily').value;
+            const times = Array.from(document.querySelectorAll('#timeList input')).map(i => i.value).filter(Boolean);
 
             if (!name || !times.length) { alert('Name and at least one time required'); return; }
 
@@ -2463,48 +2650,50 @@
             }
         }
 
-        function openContactsModal() {
+        function openContacts() {
             const m = document.getElementById('contactsModal');
-            [['f', 'family'], ['d', 'doctor'], ['p', 'pharmacy']].forEach(([prefix, type]) => {
-                document.getElementById(`${prefix}Name`).value = contacts[type]?.name || '';
-                document.getElementById(`${prefix}Phone`).value = contacts[type]?.phone || '';
-                document.getElementById(`${prefix}Icon`).value = contacts[type]?.icon || (type === 'family' ? '👨' : type === 'doctor' ? '👨‍⚕️' : '🏥');
+            [['f', 'family'], ['d', 'doctor'], ['p', 'pharmacy']].forEach(([p, type]) => {
+                document.getElementById(`${p}Name`).value = contacts[type]?.name || '';
+                document.getElementById(`${p}Phone`).value = contacts[type]?.phone || '';
+                document.getElementById(`${p}Ico`).value = contacts[type]?.icon || (type === 'family' ? '👨' : type === 'doctor' ? '👨‍⚕️' : '🏥');
             });
             m.classList.add('active');
         }
 
-        function closeContactsModal() { document.getElementById('contactsModal').classList.remove('active'); }
+        function closeContacts() { document.getElementById('contactsModal').classList.remove('active'); }
 
         function saveContacts(e) {
             e.preventDefault();
-            [['f', 'family'], ['d', 'doctor'], ['p', 'pharmacy']].forEach(([prefix, type]) => {
-                contacts[type] = { name: document.getElementById(`${prefix}Name`).value, phone: document.getElementById(`${prefix}Phone`).value, icon: document.getElementById(`${prefix}Icon`).value };
+            [['f', 'family'], ['d', 'doctor'], ['p', 'pharmacy']].forEach(([p, type]) => {
+                contacts[type] = { name: document.getElementById(`${p}Name`).value, phone: document.getElementById(`${p}Phone`).value, icon: document.getElementById(`${p}Ico`).value };
             });
             save();
             updateContacts();
-            closeContactsModal();
+            closeContacts();
             showToast('Contacts saved!', 'success');
         }
 
         function callContact(type) {
             const c = contacts[type];
             if (c?.phone) window.location.href = `tel:${c.phone.replace(/\D/g, '')}`;
-            else openContactsModal();
+            else openContacts();
         }
 
-        function openHistoryModal() {
+        function openHistory() {
             const m = document.getElementById('historyModal');
-            const l = document.getElementById('historyList');
+            const l = document.getElementById('historyLog');
             
             if (!history.length) {
                 l.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 60px;">No history yet</p>';
             } else {
                 l.innerHTML = history.slice(0, 50).map(h => `
-                    <div class="history-item">
-                        <div class="history-icon ${h.action === 'taken' ? 'taken' : 'missed'}">${h.action === 'taken' ? '✓' : '×'}</div>
+                    <div class="history-entry">
+                        <div class="history-icon ${h.action === 'done' ? 'done' : 'missed'}">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                        </div>
                         <div class="history-content">
-                            <div class="history-med">${h.med} ${h.dosage ? `(${h.dosage})` : ''}</div>
-                            <div class="history-time">${fmtTime(h.time)}</div>
+                            <div class="history-med">${h.med}</div>
+                            <div class="history-dose">${h.dosage || ''} at ${fmtTime(h.time)}</div>
                             <div class="history-date">${new Date(h.date).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
                         </div>
                     </div>
@@ -2513,22 +2702,22 @@
             m.classList.add('active');
         }
 
-        function closeHistoryModal() { document.getElementById('historyModal').classList.remove('active'); }
+        function closeHistory() { document.getElementById('historyModal').classList.remove('active'); }
 
         function clearHistory() {
-            if (confirm('Clear all history?')) { history = []; save(); openHistoryModal(); }
+            if (confirm('Clear all history?')) { history = []; save(); openHistory(); }
         }
 
         function showToast(msg, type = '') {
             const t = document.getElementById('toast');
-            document.getElementById('toastText').textContent = msg;
+            document.getElementById('toastMsg').textContent = msg;
             t.className = `toast ${type} show`;
             setTimeout(() => t.classList.remove('show'), 3000);
         }
 
         function printList() {
             const w = window.open('', '_blank');
-            w.document.write(`<!DOCTYPE html><html><head><title>My Medications</title><style>body{font-family:Arial;padding:40px;max-width:800px;margin:0 auto}h1{color:#5B9B9B}.med{border:1px solid #ddd;padding:20px;margin-bottom:16px;border-radius:8px}.name{font-size:20px;font-weight:bold}</style></head><body><h1>💊 My Medications</h1><p>${new Date().toLocaleDateString()}</p>${meds.map(m => `<div class="med"><div class="name">${m.name}</div><div>${m.dosage || ''}</div><div>Times: ${m.times.map(fmtTime).join(', ')}</div>${m.notes ? `<div>Notes: ${m.notes}</div>` : ''}</div>`).join('')}</body></html>`);
+            w.document.write(`<!DOCTYPE html><html><head><title>My Medications</title><style>body{font-family:Arial;padding:40px;max-width:800px;margin:0 auto}h1{color:#5B9B9B}.m{border:1px solid #ddd;padding:20px;margin-bottom:16px;border-radius:8px}.n{font-size:20px;font-weight:bold}</style></head><body><h1>My Medications</h1><p>${new Date().toLocaleDateString()}</p>${meds.map(m => `<div class="m"><div class="n">${m.name}</div><div>${m.dosage || ''}</div><div>Times: ${m.times.map(fmtTime).join(', ')}</div>${m.notes ? `<div>Notes: ${m.notes}</div>` : ''}</div>`).join('')}</body></html>`);
             w.document.close();
             w.print();
         }
