@@ -1,17 +1,26 @@
 {
-  "name": "MedMinder - Medication Tracker",
+  "name": "MedMinder",
   "short_name": "MedMinder",
-  "description": "A calming medication reminder app designed for elderly users",
-  "start_url": "/index.html",
+  "description": "A calming medication tracker for elderly users",
+  "start_url": "/",
   "display": "standalone",
-  "background_color": "#F5F9F8",
-  "theme_color": "#4A9B9B",
+  "background_color": "#0a0f1e",
+  "theme_color": "#0a0f1e",
   "orientation": "portrait-primary",
   "icons": [
     {
-      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%234A9B9B' width='100' height='100' rx='20'/><text y='.9em' x='50%' text-anchor='middle' font-size='70'>💊</text></svg>",
-      "sizes": "any",
-      "type": "image/svg+xml"
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect fill='%230a0f1e' width='512' height='512' rx='96'/><circle cx='256' cy='256' r='140' fill='none' stroke='%237eb89a' stroke-width='24'/><path d='M180 180 L332 332 M332 180 L180 332' stroke='%237eb89a' stroke-width='24' stroke-linecap='round'/></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%230a0f1e' width='192' height='192' rx='32'/><circle cx='96' cy='96' r='52' fill='none' stroke='%237eb89a' stroke-width='10'/><path d='M68 68 L124 124 M124 68 L68 124' stroke='%237eb89a' stroke-width='10' stroke-linecap='round'/></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     }
-  ]
+  ],
+  "categories": ["health", "medical", "lifestyle"],
+  "lang": "en-US"
 }
