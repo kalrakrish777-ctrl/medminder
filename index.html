@@ -1109,98 +1109,162 @@
             set: (k, v) => localStorage.setItem(`mm_${k}`, JSON.stringify(v))
         };
 
-        // AI Client - Smart local AI with knowledge base
+        // AI Client - Smart conversational AI
         const aiClient = {
             async chat(apiKey, messages) {
                 const lastMsg = messages[messages.length - 1].content;
                 const lower = lastMsg.toLowerCase();
-                await new Promise(r => setTimeout(r, 400 + Math.random() * 600));
+                await new Promise(r => setTimeout(r, 300 + Math.random() * 500));
                 
-                // Extract the question topic
-                const qa = {
-                    'what is': {
-                        r: "A medication is a drug used to treat, cure, or prevent illness. Medications come in many forms: pills, liquids, injections, patches, and more. Always follow your doctor's instructions when taking them.",
-                        a: "Aspirin is a common pain reliever and blood thinner. It's used to reduce fever, pain, and inflammation. Some people take it daily for heart health. Always consult your doctor before starting.",
-                        p: "Paracetamol (acetaminophen) is a common pain reliever and fever reducer. It's generally safe when taken as directed, but overdose can cause serious liver damage.",
-                        v: "Vitamins are supplements that provide nutrients your body needs. They don't replace a healthy diet but can help fill nutritional gaps. Common ones include Vitamin D, B12, and Vitamin C.",
-                        i: "Ibuprofen is an anti-inflammatory pain reliever (NSAID). It helps with pain, fever, and inflammation. Take with food to avoid stomach upset. Don't use with other NSAIDs without doctor approval.",
-                        m: "Metformin is a common diabetes medication that helps control blood sugar. It's usually taken with meals. Side effects may include nausea, but many people tolerate it well."
-                    },
-                    'why take': {
-                        any: "Medications are prescribed to treat conditions, manage symptoms, prevent complications, or improve quality of life. Even if you feel fine, some medications work best when taken consistently as directed."
-                    },
-                    'when take': {
-                        any: "Take medications at the same time each day for best results. Check your prescription label or ask your pharmacist if you're unsure about timing with food or other medications."
-                    },
-                    'missed dose': {
-                        any: "If you miss a dose, take it when you remember. If it's almost time for your next dose, skip the missed one and continue normally. Never double up doses unless your doctor specifically says to."
-                    },
-                    'side effect': {
-                        any: "Side effects vary by medication. Common ones include nausea, dizziness, headache, or drowsiness. If you experience severe reactions, contact your doctor immediately or go to urgent care."
-                    },
-                    'food': {
-                        any: "Some medications interact with certain foods. Grapefruit can affect many medications. Alcohol can intensify side effects. Ask your pharmacist about food interactions with your specific medications."
-                    },
-                    'store': {
-                        any: "Store medications at room temperature, away from moisture and heat. Keep them in their original containers. Check expiration dates and safely dispose of old medications."
-                    },
-                    'stop': {
-                        any: "Never stop taking a medication without consulting your doctor first. Even if you feel better, stopping early can cause symptoms to return or worsen."
-                    },
-                    'doctor': {
-                        any: "Always keep your doctor informed about all medications you're taking, including over-the-counter drugs and supplements. They can check for interactions and adjust dosages."
-                    },
-                    'generic': {
-                        any: "Generic medications contain the same active ingredients as brand-name versions and work the same way. They're often less expensive and are just as safe and effective."
-                    }
-                };
+                const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
                 
-                // Find matching topic
-                for (const [key, answers] of Object.entries(qa)) {
-                    if (lower.includes(key)) {
-                        if (answers[lower.split(key)[1]?.trim().split(' ')[0]]) {
-                            return answers[lower.split(key)[1]?.trim().split(' ')[0]];
-                        }
-                        return answers.any;
+                // Side effects
+                if (/side effect/i.test(lastMsg)) {
+                    const meds = lastMsg.match(/ibuprofen|aspirin|paracetamol|acetaminophen|metformin|lisinopril|amlodipine|omeprazole|atorvastatin|levothyroxine|metoprolol|gabapentin|sertraline|escitalopram|losartan/i);
+                    if (meds) {
+                        const m = meds[0].toLowerCase();
+                        if (m === 'ibuprofen') return pick([
+                            "Ibuprofen side effects can include stomach upset, nausea, dizziness, and headache. Taking it with food can help reduce stomach issues. In rare cases, it may cause stomach ulcers or kidney problems with long-term use.",
+                            "Common side effects of ibuprofen: upset stomach, heartburn, drowsiness, or mild headache. If you experience severe stomach pain, blood in stool, or difficulty breathing, seek medical help.",
+                            "Ibuprofen is an NSAID. Side effects may include nausea, indigestion, or dizziness. It can also increase blood pressure in some people. Always take with food and stay hydrated."
+                        ]);
+                        if (m === 'aspirin') return pick([
+                            "Aspirin can cause stomach irritation, easy bruising, and bleeding. Some people also experience ringing in the ears. If you're on blood thinners, be extra careful and discuss with your doctor.",
+                            "Side effects of aspirin include stomach discomfort, heartburn, and nausea. Low-dose aspirin for heart health is generally well-tolerated, but watch for unusual bruising or bleeding."
+                        ]);
+                        if (m === 'metformin') return pick([
+                            "Metformin side effects often include nausea, stomach cramps, and diarrhea - usually temporary. Taking it with meals helps. Rarely, it can cause vitamin B12 deficiency or lactic acidosis.",
+                            "Common metformin effects: digestive issues like nausea, diarrhea, and loss of appetite. These usually improve over time. Long-term use may require monitoring of B12 levels."
+                        ]);
                     }
+                    return pick([
+                        "Side effects depend on the specific medication. Common ones include nausea, dizziness, headache, or drowsiness. Severe reactions like difficulty breathing or swelling need immediate medical attention.",
+                        "Most medications can cause side effects. Common ones are mild (nausea, dizziness) but serious ones need prompt medical attention. Always read the information that comes with your prescription.",
+                        "Side effects vary by medication. Some are temporary and go away as your body adjusts. Others may need medical attention. When starting a new medication, pay attention to how you feel."
+                    ]);
                 }
                 
-                // Default responses by intent
+                // Storage
+                if (/store|keep|shelf.life|expire|temperature|humid/i.test(lastMsg)) {
+                    return pick([
+                        "Store medications at room temperature (68-77°F) unless directed otherwise. Keep them away from moisture, heat, and direct sunlight. Bathrooms can be too humid. Always keep in original containers.",
+                        "Most meds should be stored in a cool, dry place. Avoid the bathroom due to humidity. Some medications need refrigeration. Check labels and keep all drugs away from children and pets.",
+                        "Proper storage keeps medications effective. Room temperature, away from moisture and heat is best. Never use expired medications - they may not work and could be harmful."
+                    ]);
+                }
+                
+                // Missed dose
+                if (/miss|forgot|skip|forget/i.test(lastMsg)) {
+                    return pick([
+                        "If you miss a dose: take it when you remember, unless it's almost time for your next dose. Then skip it and continue as normal. Never double up - that can be dangerous.",
+                        "Take the missed dose if you remember within a few hours. If it's close to your next scheduled dose, skip it. Don't take extra to make up for it. Set phone reminders to help remember.",
+                        "What to do depends on the medication. For most: take it if you remember soon, skip if it's almost time for the next dose. Some medications have specific instructions - check with your pharmacist."
+                    ]);
+                }
+                
+                // Alcohol
+                if (/alcohol|drink|wine|beer/i.test(lastMsg)) {
+                    return pick([
+                        "Mixing alcohol with medications can be risky. It may increase side effects like drowsiness, cause dangerous reactions, or make the medication less effective. Ask your doctor about your specific meds.",
+                        "Alcohol can interact with many drugs - some combinations are dangerous. It may increase drowsiness, affect liver processing, or reduce effectiveness. When in doubt, avoid or limit alcohol.",
+                        "Many medications warn against alcohol. It can amplify side effects, interfere with how drugs work, or cause unexpected reactions. Your pharmacist can tell you about your specific medications."
+                    ]);
+                }
+                
+                // General questions
                 if (/^(hi|hello|hey)/.test(lower)) {
-                    return "Hello! I'm your medication assistant. I can answer questions about medications, dosing, side effects, and general health. What would you like to know?";
-                }
-                if (/how are you|how do you do/.test(lower)) {
-                    return "I'm doing well, thank you for asking! I'm here and ready to help with any medication questions you have.";
-                }
-                if (/thank|thanks/.test(lower)) {
-                    return "You're welcome! Taking care of your health is important. Let me know if you have any other questions!";
-                }
-                if (/help/.test(lower)) {
-                    return "I can help with:\n• Medication information\n• Dosage questions\n• Side effects\n• Drug interactions\n• Storage tips\n• When to take meds\nJust ask me anything!";
-                }
-                if (/sleep|insomnia|trouble sleeping/.test(lower)) {
-                    return "Good sleep habits help medications work better. Try: consistent bedtime, avoid screens before sleep, limit caffeine, and keep your bedroom cool and dark. Some medications may affect sleep - ask your doctor.";
-                }
-                if (/exercise|workout|physical/.test(lower)) {
-                    return "Light to moderate exercise is generally good for most people. Some medications may affect your ability to exercise (dizziness, energy levels). Stay hydrated and listen to your body.";
-                }
-                if (/alcohol|drink/.test(lower)) {
-                    return "Alcohol can interact with many medications and increase side effects. It's best to avoid alcohol or limit it while on medication. Ask your doctor about your specific situation.";
-                }
-                if (/pregnant|pregnancy/.test(lower)) {
-                    return "If you're pregnant or planning pregnancy, discuss all medications with your doctor. Some are safe, others aren't. Never stop prescribed medication without medical advice.";
-                }
-                if (/child|kid|baby|infant/.test(lower)) {
-                    return "Children's dosages are based on weight and age. Never give a child adult medication without specific dosing instructions. Always consult their pediatrician.";
-                }
-                if (/expensive|cost|price|cheap/.test(lower)) {
-                    return "To save on medications: ask about generics, check discount programs, compare pharmacy prices, and ask your doctor about alternative medications that might be less expensive.";
-                }
-                if (/natural|herbal|supplement/.test(lower)) {
-                    return "Herbal supplements can interact with prescription medications. Always tell your doctor about any supplements you take. 'Natural' doesn't always mean safe or effective.";
+                    return "Hi there! I can answer questions about medications, side effects, interactions, storage, and general health. What would you like to know?";
                 }
                 
-                return "That's a good question! For specific medical advice, please consult your doctor or pharmacist who knows your health history. I can help with general medication information if you have other questions!";
+                if (/how are you|how do you do/.test(lower)) {
+                    return "I'm here and ready to help! Ask me anything about medications or your health.";
+                }
+                
+                if (/thank|thanks/.test(lower)) {
+                    return "You're welcome! Take care of yourself.";
+                }
+                
+                if (/help|capabilities|what can you do/i.test(lastMsg)) {
+                    return "I can help with:\n• Medication information & side effects\n• Dosage and timing advice\n• Drug interactions\n• Storage tips\n• What to do if you miss a dose\n• General health questions\n\nJust ask!";
+                }
+                
+                // Dosage
+                if (/dosage|dose|how much|how many/i.test(lastMsg)) {
+                    return "Dosage depends on your condition, age, weight, and other factors. Always follow the prescription label or your doctor's instructions. Never adjust your dose without consulting them first.";
+                }
+                
+                // Interactions
+                if (/interact|cross|conflict|with.*other/i.test(lastMsg)) {
+                    return "Drug interactions can change how medications work or increase side effects. Always tell your doctor about ALL medications you're taking, including supplements and over-the-counter drugs.";
+                }
+                
+                // Generic
+                if (/generic|brand.name/i.test(lastMsg)) {
+                    return "Generic medications are just as safe and effective as brand names but usually cost less. They contain the same active ingredients and must meet the same standards.";
+                }
+                
+                // Pregnancy
+                if (/pregnant|pregnancy|baby|child/i.test(lastMsg)) {
+                    return "Always consult your doctor about medications during pregnancy or for children. Some medications are safe, others aren't. Never stop prescribed medication without medical advice.";
+                }
+                
+                // Over the counter
+                if (/over the counter|otc|without prescription/i.test(lastMsg)) {
+                    return "Over-the-counter doesn't mean risk-free. Always read labels, check for interactions with your other medications, and ask the pharmacist if you're unsure.";
+                }
+                
+                // Supplements
+                if (/vitamin|supplement|herbal|natural/i.test(lastMsg)) {
+                    return "Supplements can interact with prescription medications. Some can increase effects (risking overdose) or decrease them. Tell your doctor about all supplements you're taking.";
+                }
+                
+                // Antibiotics
+                if (/antibiotic|antibacterial|bacteria|infection/i.test(lastMsg)) {
+                    return "Antibiotics treat bacterial infections, not viruses like colds or flu. Always finish the full course even if you feel better. Never save or share antibiotics.";
+                }
+                
+                // Pain
+                if (/pain|headache|migraine|back pain/i.test(lastMsg)) {
+                    return "For mild pain, options include acetaminophen, ibuprofen, or naproxen. Each has different considerations. For severe or chronic pain, see your doctor to find the right approach.";
+                }
+                
+                // Blood pressure
+                if (/blood pressure|hypertension|high bp/i.test(lastMsg)) {
+                    return "High blood pressure often has no symptoms. Medications like lisinopril or amlodipine can help, along with diet changes and exercise. Regular monitoring is important.";
+                }
+                
+                // Diabetes
+                if (/blood sugar|diabetes|glucose|insulin/i.test(lastMsg)) {
+                    return "Managing diabetes involves medication, diet, and exercise. Metformin is common for type 2 diabetes. Monitor your blood sugar as directed and attend regular check-ups.";
+                }
+                
+                // Thyroid
+                if (/thyroid|hypothyroid|hyperthyroid|levothyroxine/i.test(lastMsg)) {
+                    return "Thyroid medications like levothyroxine are usually taken on an empty stomach in the morning. Take it consistently at the same time daily and wait before eating or taking other meds.";
+                }
+                
+                // Morning vs evening
+                if (/morning|evening|night|bedtime|before|after.*eat/i.test(lastMsg)) {
+                    return "Timing matters! Some meds work best in the morning, others at night. Take with food or on empty stomach as directed. Ask your pharmacist if the timing isn't clear.";
+                }
+                
+                // Refill
+                if (/refill|run out|empty|prescription.*renew/i.test(lastMsg)) {
+                    return "Don't wait until you're out! Request refills a week before you run out. Call your pharmacy or use their app. Plan ahead for holidays and weekends.";
+                }
+                
+                // Dispose
+                if (/dispose|throw away|expired|safe.*discard/i.test(lastMsg)) {
+                    return "Don't flush most medications. Use pharmacy take-back programs or mix with coffee grounds in a sealed bag before throwing away. Remove personal info from prescription bottles.";
+                }
+                
+                // Travel
+                if (/travel|fly|airplane|hotel|vacation/i.test(lastMsg)) {
+                    return "When traveling, keep medications in original bottles. Bring copies of prescriptions. Pack in carry-on for flights. Check destination laws for controlled substances.";
+                }
+                
+                // General fallback
+                return "That's a great question! For specific medical advice, talk to your doctor or pharmacist who knows your health history. Is there something else I can help with?";
             }
         };
 
@@ -1454,10 +1518,10 @@ Keep responses friendly, warm, and helpful.`;
                         </div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
                             {[
-                                'What are side effects of ibuprofen?',
-                                'How should I store my medications?',
-                                'What should I do if I miss a dose?',
-                                'Can I drink alcohol with my meds?'
+                                'What is metformin?',
+                                'Should I take vitamins?',
+                                'How do I dispose of old meds?',
+                                'Can I travel with my meds?'
                             ].map((prompt, i) => (
                                 <button
                                     key={i}
