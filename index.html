@@ -1666,7 +1666,15 @@ Keep responses friendly, warm, and helpful.`;
                 setMeds(storage.get('meds', []));
                 setTaken(storage.get('taken', {}));
                 setHistory(storage.get('history', []));
-                setContacts(storage.get('contacts', []));
+                const savedContacts = storage.get('contacts', []);
+                if (Array.isArray(savedContacts)) {
+                    setContacts(savedContacts);
+                } else {
+                    const converted = Object.entries(savedContacts || {})
+                        .filter(([_, v]) => v && v.name)
+                        .map(([label, v]) => ({ id: Date.now().toString() + label, name: v.name, label, phone: v.phone || '' }));
+                    setContacts(converted);
+                }
             }, []);
 
             useEffect(() => { storage.set('meds', meds); }, [meds]);
