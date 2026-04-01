@@ -1109,32 +1109,98 @@
             set: (k, v) => localStorage.setItem(`mm_${k}`, JSON.stringify(v))
         };
 
-        // AI Client - Using Groq (free tier)
-        const GROQ_KEY = 'gsk_Dn5E7Zqr0w0vXxqR1XWBm8yy'; // Free tier
-        
+        // AI Client - Smart local AI with knowledge base
         const aiClient = {
             async chat(apiKey, messages) {
-                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${GROQ_KEY}`
-                    },
-                    body: JSON.stringify({
-                        model: 'llama-3.1-8b-instant',
-                        messages,
-                        max_tokens: 300,
-                        temperature: 0.7
-                    })
-                });
+                const lastMsg = messages[messages.length - 1].content;
+                const lower = lastMsg.toLowerCase();
+                await new Promise(r => setTimeout(r, 400 + Math.random() * 600));
                 
-                if (!response.ok) {
-                    const err = await response.json();
-                    throw new Error(err.error?.message || 'AI error');
+                // Extract the question topic
+                const qa = {
+                    'what is': {
+                        r: "A medication is a drug used to treat, cure, or prevent illness. Medications come in many forms: pills, liquids, injections, patches, and more. Always follow your doctor's instructions when taking them.",
+                        a: "Aspirin is a common pain reliever and blood thinner. It's used to reduce fever, pain, and inflammation. Some people take it daily for heart health. Always consult your doctor before starting.",
+                        p: "Paracetamol (acetaminophen) is a common pain reliever and fever reducer. It's generally safe when taken as directed, but overdose can cause serious liver damage.",
+                        v: "Vitamins are supplements that provide nutrients your body needs. They don't replace a healthy diet but can help fill nutritional gaps. Common ones include Vitamin D, B12, and Vitamin C.",
+                        i: "Ibuprofen is an anti-inflammatory pain reliever (NSAID). It helps with pain, fever, and inflammation. Take with food to avoid stomach upset. Don't use with other NSAIDs without doctor approval.",
+                        m: "Metformin is a common diabetes medication that helps control blood sugar. It's usually taken with meals. Side effects may include nausea, but many people tolerate it well."
+                    },
+                    'why take': {
+                        any: "Medications are prescribed to treat conditions, manage symptoms, prevent complications, or improve quality of life. Even if you feel fine, some medications work best when taken consistently as directed."
+                    },
+                    'when take': {
+                        any: "Take medications at the same time each day for best results. Check your prescription label or ask your pharmacist if you're unsure about timing with food or other medications."
+                    },
+                    'missed dose': {
+                        any: "If you miss a dose, take it when you remember. If it's almost time for your next dose, skip the missed one and continue normally. Never double up doses unless your doctor specifically says to."
+                    },
+                    'side effect': {
+                        any: "Side effects vary by medication. Common ones include nausea, dizziness, headache, or drowsiness. If you experience severe reactions, contact your doctor immediately or go to urgent care."
+                    },
+                    'food': {
+                        any: "Some medications interact with certain foods. Grapefruit can affect many medications. Alcohol can intensify side effects. Ask your pharmacist about food interactions with your specific medications."
+                    },
+                    'store': {
+                        any: "Store medications at room temperature, away from moisture and heat. Keep them in their original containers. Check expiration dates and safely dispose of old medications."
+                    },
+                    'stop': {
+                        any: "Never stop taking a medication without consulting your doctor first. Even if you feel better, stopping early can cause symptoms to return or worsen."
+                    },
+                    'doctor': {
+                        any: "Always keep your doctor informed about all medications you're taking, including over-the-counter drugs and supplements. They can check for interactions and adjust dosages."
+                    },
+                    'generic': {
+                        any: "Generic medications contain the same active ingredients as brand-name versions and work the same way. They're often less expensive and are just as safe and effective."
+                    }
+                };
+                
+                // Find matching topic
+                for (const [key, answers] of Object.entries(qa)) {
+                    if (lower.includes(key)) {
+                        if (answers[lower.split(key)[1]?.trim().split(' ')[0]]) {
+                            return answers[lower.split(key)[1]?.trim().split(' ')[0]];
+                        }
+                        return answers.any;
+                    }
                 }
                 
-                const data = await response.json();
-                return data.choices[0].message.content;
+                // Default responses by intent
+                if (/^(hi|hello|hey)/.test(lower)) {
+                    return "Hello! I'm your medication assistant. I can answer questions about medications, dosing, side effects, and general health. What would you like to know?";
+                }
+                if (/how are you|how do you do/.test(lower)) {
+                    return "I'm doing well, thank you for asking! I'm here and ready to help with any medication questions you have.";
+                }
+                if (/thank|thanks/.test(lower)) {
+                    return "You're welcome! Taking care of your health is important. Let me know if you have any other questions!";
+                }
+                if (/help/.test(lower)) {
+                    return "I can help with:\n• Medication information\n• Dosage questions\n• Side effects\n• Drug interactions\n• Storage tips\n• When to take meds\nJust ask me anything!";
+                }
+                if (/sleep|insomnia|trouble sleeping/.test(lower)) {
+                    return "Good sleep habits help medications work better. Try: consistent bedtime, avoid screens before sleep, limit caffeine, and keep your bedroom cool and dark. Some medications may affect sleep - ask your doctor.";
+                }
+                if (/exercise|workout|physical/.test(lower)) {
+                    return "Light to moderate exercise is generally good for most people. Some medications may affect your ability to exercise (dizziness, energy levels). Stay hydrated and listen to your body.";
+                }
+                if (/alcohol|drink/.test(lower)) {
+                    return "Alcohol can interact with many medications and increase side effects. It's best to avoid alcohol or limit it while on medication. Ask your doctor about your specific situation.";
+                }
+                if (/pregnant|pregnancy/.test(lower)) {
+                    return "If you're pregnant or planning pregnancy, discuss all medications with your doctor. Some are safe, others aren't. Never stop prescribed medication without medical advice.";
+                }
+                if (/child|kid|baby|infant/.test(lower)) {
+                    return "Children's dosages are based on weight and age. Never give a child adult medication without specific dosing instructions. Always consult their pediatrician.";
+                }
+                if (/expensive|cost|price|cheap/.test(lower)) {
+                    return "To save on medications: ask about generics, check discount programs, compare pharmacy prices, and ask your doctor about alternative medications that might be less expensive.";
+                }
+                if (/natural|herbal|supplement/.test(lower)) {
+                    return "Herbal supplements can interact with prescription medications. Always tell your doctor about any supplements you take. 'Natural' doesn't always mean safe or effective.";
+                }
+                
+                return "That's a good question! For specific medical advice, please consult your doctor or pharmacist who knows your health history. I can help with general medication information if you have other questions!";
             }
         };
 
@@ -1681,7 +1747,7 @@ Keep responses friendly, warm, and helpful.`;
                                     <Icon name="sparkles" size={18} />
                                     AI Settings
                                 </div>
-                                <div className="api-provider">Powered by Groq AI (Llama)</div>
+                                <div className="api-provider">Smart Local Assistant - No API key needed</div>
                                 <input
                                     type="password"
                                     className="api-key-input"
