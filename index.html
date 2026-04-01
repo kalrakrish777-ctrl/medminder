@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#0a0f1e">
-    <meta name="description" content="MedMinder - A calming medication tracker">
+    <meta name="description" content="MedMinder - Your calming medication companion">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>MedMinder</title>
@@ -26,109 +26,114 @@
             --accent-amber: #e8a97e;
             --accent-rose: #c97b84;
             --accent-blue: #7aa3c8;
-            --text-xs: 12px;
-            --text-sm: 14px;
-            --text-base: 16px;
-            --text-lg: 18px;
-            --text-xl: 22px;
-            --text-2xl: 28px;
-            --text-display: 38px;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html, body, #root {
-            height: 100%;
-            overflow: hidden;
-        }
-
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { height: 100%; }
         body {
-            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: var(--text-base);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 16px;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
 
-        .serif {
-            font-family: 'Instrument Serif', Georgia, serif;
+        #root { height: 100%; display: flex; flex-direction: column; }
+
+        #three-bg {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
         }
 
         .app {
             position: relative;
+            z-index: 1;
             height: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        #three-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-        }
-
-        .content {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 24px 20px 100px;
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
         /* Header */
         .header {
-            margin-bottom: 32px;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
         }
 
-        .date {
-            font-family: 'Instrument Serif', serif;
-            font-size: var(--text-display);
-            line-height: 1.2;
-            margin-bottom: 4px;
-        }
-
-        .subtitle {
-            color: var(--text-secondary);
-            font-size: var(--text-base);
-        }
-
-        /* Progress Ring */
-        .progress-section {
+        .logo {
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: 40px;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
-        .progress-ring-container {
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: var(--accent-green);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            stroke: var(--bg-primary);
+        }
+
+        .logo-text {
+            font-family: 'Instrument Serif', serif;
+            font-size: 28px;
+            color: var(--text-primary);
+        }
+
+        .tagline {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        /* Content */
+        .content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px 20px 100px;
+        }
+
+        /* Page Title */
+        .page-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 32px;
+            margin-bottom: 24px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        /* Progress Ring */
+        .progress-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 32px 0;
+        }
+
+        .progress-ring-wrapper {
             position: relative;
-            width: 160px;
-            height: 160px;
+            width: 180px;
+            height: 180px;
         }
 
         .progress-ring {
@@ -138,155 +143,44 @@
         .progress-ring-bg {
             fill: none;
             stroke: var(--border-subtle);
-            stroke-width: 8;
+            stroke-width: 10;
         }
 
         .progress-ring-fill {
             fill: none;
             stroke: var(--accent-green);
-            stroke-width: 8;
+            stroke-width: 10;
             stroke-linecap: round;
             transition: stroke-dashoffset 0.6s ease;
         }
 
-        .progress-text {
+        .progress-center {
             position: absolute;
-            top: 50%;
-            left: 50%;
+            top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             text-align: center;
         }
 
         .progress-percent {
             font-family: 'Instrument Serif', serif;
-            font-size: var(--text-2xl);
-            line-height: 1;
+            font-size: 42px;
         }
 
         .progress-label {
-            font-size: var(--text-xs);
             color: var(--text-tertiary);
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
 
-        /* Medication Groups */
-        .med-group {
-            margin-bottom: 32px;
-        }
-
-        .med-group-header {
-            font-size: var(--text-xs);
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-bottom: 12px;
-            padding-left: 4px;
-        }
-
-        .med-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 12px;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .med-card::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            background: var(--med-color, var(--accent-blue));
-        }
-
-        .med-card.taken {
-            opacity: 0.5;
-            background: rgba(126, 184, 154, 0.05);
-        }
-
-        .med-card.taken .med-name {
-            text-decoration: line-through;
-            text-decoration-color: var(--text-tertiary);
-        }
-
-        .med-card-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .med-info {
-            flex: 1;
-        }
-
-        .med-name {
-            font-size: var(--text-lg);
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .med-dosage {
-            font-size: var(--text-sm);
+        .progress-summary {
             color: var(--text-secondary);
+            margin-top: 16px;
+            font-size: 15px;
         }
 
-        .med-tags {
-            display: flex;
-            gap: 8px;
-            margin-top: 12px;
-            flex-wrap: wrap;
-        }
-
-        .med-tag {
-            font-size: var(--text-xs);
-            padding: 4px 10px;
-            border-radius: 20px;
-            background: var(--bg-surface-hover);
-            color: var(--text-secondary);
-        }
-
-        .mark-btn {
-            background: transparent;
-            border: 2px solid var(--accent-green);
-            color: var(--accent-green);
-            padding: 8px 20px;
-            border-radius: 24px;
-            font-size: var(--text-sm);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .mark-btn:hover {
-            background: var(--accent-green);
-            color: var(--bg-primary);
-        }
-
-        .med-card.taken .mark-btn {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-            opacity: 0.7;
-        }
-
-        .med-card.taken .mark-btn::before {
-            content: '';
-        }
-
-        .check-icon {
-            display: inline-block;
-            margin-right: 6px;
-        }
-
-        /* Stats Row */
-        .stats-row {
+        /* Stats */
+        .stats-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 12px;
@@ -303,32 +197,148 @@
 
         .stat-value {
             font-family: 'Instrument Serif', serif;
-            font-size: var(--text-2xl);
-            margin-bottom: 4px;
+            font-size: 32px;
+            color: var(--accent-green);
         }
 
         .stat-label {
-            font-size: var(--text-xs);
             color: var(--text-tertiary);
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
+            margin-top: 4px;
         }
+
+        /* Med Group */
+        .med-section {
+            margin-bottom: 32px;
+        }
+
+        .med-section-title {
+            color: var(--text-tertiary);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .med-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .med-card::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            border-radius: 4px 0 0 4px;
+        }
+
+        .med-color-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .med-info { flex: 1; }
+        .med-name { font-weight: 600; font-size: 17px; }
+        .med-dosage { color: var(--text-secondary); font-size: 14px; }
+        .med-time { color: var(--text-tertiary); font-size: 13px; margin-top: 4px; }
+
+        .med-card.done {
+            opacity: 0.5;
+        }
+        .med-card.done .med-name {
+            text-decoration: line-through;
+            text-decoration-color: var(--text-tertiary);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 24px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--accent-green);
+            color: var(--accent-green);
+        }
+
+        .btn-outline:hover {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .btn-small {
+            padding: 8px 16px;
+            font-size: 13px;
+        }
+
+        /* List Items */
+        .list-item {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 16px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .list-item-info { flex: 1; }
+        .list-item-title { font-weight: 600; font-size: 16px; }
+        .list-item-subtitle { color: var(--text-secondary); font-size: 14px; }
+
+        .icon-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+        }
+        .icon-btn:hover {
+            background: var(--bg-surface-hover);
+            color: var(--text-primary);
+        }
+        .icon-btn svg { width: 20px; height: 20px; }
 
         /* Bottom Nav */
         .bottom-nav {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background: var(--bg-primary);
             border-top: 1px solid var(--border-subtle);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0 24px;
+            padding: 12px 0 28px;
             z-index: 100;
         }
 
-        .nav-item {
+        .nav-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -336,31 +346,31 @@
             background: transparent;
             border: none;
             color: var(--text-tertiary);
-            font-size: var(--text-xs);
+            font-size: 11px;
             cursor: pointer;
-            padding: 8px 20px;
+            padding: 8px 16px;
             position: relative;
             font-family: inherit;
             transition: color 0.3s ease;
         }
 
-        .nav-item.active {
+        .nav-btn.active {
             color: var(--text-primary);
         }
 
-        .nav-item.active::after {
+        .nav-btn.active::after {
             content: '';
             position: absolute;
-            bottom: 0;
+            bottom: -4px;
             left: 50%;
             transform: translateX(-50%);
             width: 24px;
-            height: 2px;
+            height: 3px;
             background: var(--accent-green);
-            border-radius: 1px;
+            border-radius: 2px;
         }
 
-        .nav-icon {
+        .nav-btn svg {
             width: 24px;
             height: 24px;
         }
@@ -380,35 +390,23 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 20px rgba(126, 184, 154, 0.3);
             z-index: 50;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 20px rgba(126, 184, 154, 0.3);
         }
-
-        .fab:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 24px rgba(126, 184, 154, 0.4);
-        }
-
-        .fab svg {
-            width: 28px;
-            height: 28px;
-        }
+        .fab:hover { transform: scale(1.05); }
+        .fab svg { width: 28px; height: 28px; }
 
         /* Bottom Sheet */
         .sheet-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            inset: 0;
             background: rgba(0,0,0,0.5);
             z-index: 200;
             opacity: 0;
             pointer-events: none;
             transition: opacity 0.3s ease;
         }
-
         .sheet-overlay.active {
             opacity: 1;
             pointer-events: auto;
@@ -416,11 +414,9 @@
 
         .bottom-sheet {
             position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
+            bottom: 0; left: 0; right: 0;
             background: var(--bg-primary);
-            border-top: 1px solid var(--border-medium);
+            border: 1px solid var(--border-medium);
             border-radius: 24px 24px 0 0;
             padding: 24px 20px 40px;
             z-index: 201;
@@ -429,10 +425,7 @@
             max-height: 85vh;
             overflow-y: auto;
         }
-
-        .bottom-sheet.active {
-            transform: translateY(0);
-        }
+        .bottom-sheet.active { transform: translateY(0); }
 
         .sheet-handle {
             width: 40px;
@@ -444,21 +437,18 @@
 
         .sheet-title {
             font-family: 'Instrument Serif', serif;
-            font-size: var(--text-xl);
+            font-size: 24px;
             margin-bottom: 24px;
         }
 
-        .form-group {
-            margin-bottom: 20px;
-        }
-
+        /* Form */
+        .form-group { margin-bottom: 20px; }
         .form-label {
             display: block;
-            font-size: var(--text-sm);
+            font-size: 13px;
             color: var(--text-secondary);
             margin-bottom: 8px;
         }
-
         .form-input {
             width: 100%;
             padding: 14px 16px;
@@ -466,116 +456,61 @@
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
             color: var(--text-primary);
-            font-size: var(--text-base);
+            font-size: 16px;
             font-family: inherit;
-            transition: border-color 0.3s ease;
         }
-
         .form-input:focus {
             outline: none;
             border-color: var(--accent-green);
         }
+        .form-input::placeholder { color: var(--text-tertiary); }
 
-        .form-input::placeholder {
-            color: var(--text-tertiary);
-        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .form-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-
-        .color-swatches {
-            display: flex;
-            gap: 12px;
-        }
-
+        .color-swatches { display: flex; gap: 12px; flex-wrap: wrap; }
         .swatch {
             width: 40px;
             height: 40px;
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
-            transition: border-color 0.3s ease, transform 0.3s ease;
+            transition: border-color 0.3s ease;
         }
+        .swatch.selected { border-color: var(--text-primary); }
 
-        .swatch:hover {
-            transform: scale(1.1);
-        }
-
-        .swatch.selected {
-            border-color: var(--text-primary);
-        }
-
-        .swatch-blue { background: var(--accent-blue); }
-        .swatch-green { background: var(--accent-green); }
-        .swatch-amber { background: var(--accent-amber); }
-        .swatch-rose { background: var(--accent-rose); }
-        .swatch-purple { background: #9b8dc4; }
-        .swatch-teal { background: #6bb3b3; }
-
-        .times-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-        }
-
-        .time-chip {
+        .times-list { display: flex; flex-direction: column; gap: 8px; }
+        .time-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 14px;
+            padding: 12px;
             background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 20px;
-            font-size: var(--text-sm);
+            border-radius: 12px;
         }
-
-        .time-chip input {
-            width: 70px;
+        .time-row input {
+            flex: 1;
             background: transparent;
             border: none;
             color: var(--text-primary);
-            font-size: var(--text-sm);
+            font-size: 16px;
             font-family: inherit;
         }
-
-        .time-chip input:focus {
-            outline: none;
-        }
-
-        .remove-time {
-            background: transparent;
-            border: none;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            padding: 0;
-            display: flex;
-        }
+        .time-row input:focus { outline: none; }
 
         .add-time-btn {
-            background: var(--bg-surface);
+            background: transparent;
             border: 1px dashed var(--border-medium);
             color: var(--text-secondary);
-            padding: 10px 16px;
-            border-radius: 20px;
-            font-size: var(--text-sm);
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 8px;
             font-family: inherit;
         }
 
-        .add-time-btn:hover {
-            border-color: var(--accent-green);
-            color: var(--accent-green);
-        }
-
-        .food-toggle {
-            display: flex;
-            gap: 8px;
-        }
-
+        .food-btns { display: flex; gap: 8px; }
         .food-btn {
             flex: 1;
             padding: 12px;
@@ -583,338 +518,18 @@
             border: 1px solid var(--border-subtle);
             border-radius: 12px;
             color: var(--text-secondary);
-            font-size: var(--text-sm);
+            font-size: 13px;
             cursor: pointer;
-            transition: all 0.3s ease;
             font-family: inherit;
         }
-
         .food-btn.selected {
             border-color: var(--accent-green);
             color: var(--accent-green);
-            background: rgba(126, 184, 154, 0.1);
         }
 
-        textarea.form-input {
-            min-height: 100px;
-            resize: vertical;
-        }
+        textarea.form-input { min-height: 100px; resize: vertical; }
 
-        .btn-primary {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent-green);
-            border: none;
-            border-radius: 12px;
-            color: var(--bg-primary);
-            font-size: var(--text-base);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: inherit;
-        }
-
-        .btn-primary:hover {
-            background: #8ec4a5;
-        }
-
-        .btn-secondary {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-        }
-
-        /* Medications Screen */
-        .med-list {
-            margin-top: 16px;
-        }
-
-        .med-list-item {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px;
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            margin-bottom: 12px;
-            position: relative;
-        }
-
-        .med-list-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
-            width: 3px;
-            border-radius: 3px 0 0 3px;
-            background: var(--med-color, var(--accent-blue));
-        }
-
-        .med-list-color {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            margin-left: 8px;
-        }
-
-        .med-list-info {
-            flex: 1;
-        }
-
-        .med-list-name {
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .med-list-dosage {
-            font-size: var(--text-sm);
-            color: var(--text-secondary);
-        }
-
-        .med-list-times {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-top: 8px;
-        }
-
-        .time-badge {
-            font-size: var(--text-xs);
-            padding: 4px 8px;
-            background: var(--bg-surface-hover);
-            border-radius: 12px;
-            color: var(--text-secondary);
-        }
-
-        .med-list-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .icon-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-tertiary);
-            cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-
-        .icon-btn:hover {
-            background: var(--bg-surface-hover);
-            color: var(--text-primary);
-        }
-
-        .icon-btn svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Progress Screen */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .stat-grid-item {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .chart-container {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 24px;
-        }
-
-        .chart-title {
-            font-size: var(--text-sm);
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-        }
-
-        .bar-chart {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            height: 120px;
-            gap: 8px;
-        }
-
-        .bar-day {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .bar {
-            width: 100%;
-            max-width: 32px;
-            border-radius: 4px 4px 0 0;
-            transition: height 0.4s ease;
-        }
-
-        .bar-label {
-            font-size: var(--text-xs);
-            color: var(--text-tertiary);
-        }
-
-        .history-list {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .history-title {
-            font-size: var(--text-sm);
-            color: var(--text-secondary);
-            padding: 16px 20px;
-            border-bottom: 1px solid var(--border-subtle);
-        }
-
-        .history-item {
-            padding: 14px 20px;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-        }
-
-        .history-item.missed {
-            border-left: 3px solid var(--accent-rose);
-            background: rgba(201, 123, 132, 0.05);
-        }
-
-        .history-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .history-icon.taken {
-            background: rgba(126, 184, 154, 0.2);
-            color: var(--accent-green);
-        }
-
-        .history-icon.missed {
-            background: rgba(201, 123, 132, 0.2);
-            color: var(--accent-rose);
-        }
-
-        .history-info {
-            flex: 1;
-        }
-
-        .history-med {
-            font-weight: 500;
-            font-size: var(--text-sm);
-        }
-
-        .history-time {
-            font-size: var(--text-xs);
-            color: var(--text-tertiary);
-        }
-
-        .history-date {
-            font-size: var(--text-xs);
-            color: var(--text-tertiary);
-        }
-
-        /* Contacts Screen */
-        .contact-card {
-            background: var(--bg-surface);
-            border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 24px;
-            margin-bottom: 16px;
-        }
-
-        .contact-role {
-            font-size: var(--text-xs);
-            color: var(--text-tertiary);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            margin-bottom: 8px;
-        }
-
-        .contact-name {
-            font-size: var(--text-xl);
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .contact-phone {
-            font-size: var(--text-base);
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-        }
-
-        .contact-actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .contact-btn {
-            flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: var(--text-sm);
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-family: inherit;
-        }
-
-        .call-btn {
-            background: var(--accent-green);
-            border: none;
-            color: var(--bg-primary);
-        }
-
-        .call-btn:hover {
-            background: #8ec4a5;
-        }
-
-        .edit-contact-btn {
-            background: transparent;
-            border: 1px solid var(--border-medium);
-            color: var(--text-secondary);
-        }
-
-        .edit-contact-btn:hover {
-            background: var(--bg-surface-hover);
-        }
-
-        .edit-contact-form {
-            margin-top: 16px;
-            padding-top: 16px;
-            border-top: 1px solid var(--border-subtle);
-        }
+        .btn-full { width: 100%; }
 
         /* Toast */
         .toast {
@@ -927,62 +542,102 @@
             border-radius: 12px;
             padding: 16px 20px;
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
             z-index: 300;
-            transform: translateY(120%);
+            transform: translateY(150%);
             transition: transform 0.3s ease;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
         }
-
-        .toast.show {
-            transform: translateY(0);
-        }
-
-        .toast-message {
-            font-size: var(--text-sm);
-        }
-
+        .toast.show { transform: translateY(0); }
+        .toast-msg { font-size: 14px; }
         .toast-undo {
             background: transparent;
             border: none;
             color: var(--accent-green);
-            font-size: var(--text-sm);
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
         }
 
         /* Empty State */
-        .empty-state {
+        .empty {
             text-align: center;
             padding: 48px 24px;
             color: var(--text-tertiary);
         }
-
         .empty-icon {
             width: 64px;
             height: 64px;
             margin: 0 auto 16px;
-            opacity: 0.5;
+            opacity: 0.4;
         }
+        .empty-text { font-size: 15px; }
 
-        .empty-text {
-            font-size: var(--text-base);
+        /* Contact Card */
+        .contact-role {
+            font-size: 11px;
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 8px;
         }
+        .contact-name { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+        .contact-phone { color: var(--text-secondary); margin-bottom: 16px; }
+        .contact-actions { display: flex; gap: 12px; }
+        .contact-btn {
+            flex: 1;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: inherit;
+        }
+        .contact-btn.call { background: var(--accent-green); border: none; color: var(--bg-primary); }
+        .contact-btn.edit { background: transparent; border: 1px solid var(--border-medium); color: var(--text-secondary); }
+        .contact-btn svg { width: 18px; height: 18px; }
 
-        /* Edit Form (reuses sheet styles) */
-        .delete-btn {
-            background: rgba(201, 123, 132, 0.1);
-            border: 1px solid var(--accent-rose);
-            color: var(--accent-rose);
-            margin-top: 12px;
+        /* Bar Chart */
+        .chart-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
         }
+        .chart-title { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
+        .bar-chart { display: flex; justify-content: space-between; align-items: flex-end; height: 120px; gap: 8px; }
+        .bar-day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .bar { width: 100%; max-width: 32px; border-radius: 4px 4px 0 0; transition: height 0.4s ease; }
+        .bar-label { font-size: 11px; color: var(--text-tertiary); }
 
-        .delete-btn:hover {
-            background: var(--accent-rose);
-            color: var(--bg-primary);
+        /* History */
+        .history-item {
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
+        .history-item:last-child { border-bottom: none; }
+        .history-icon {
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .history-icon.taken { background: rgba(126, 184, 154, 0.2); color: var(--accent-green); }
+        .history-icon.missed { background: rgba(201, 123, 132, 0.2); color: var(--accent-rose); }
+        .history-info { flex: 1; }
+        .history-name { font-size: 14px; font-weight: 500; }
+        .history-time { font-size: 12px; color: var(--text-tertiary); }
+        .history-date { font-size: 12px; color: var(--text-tertiary); }
     </style>
 </head>
 <body>
@@ -997,101 +652,40 @@
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
-                navigator.serviceWorker.register('/sw.js')
-                    .then(reg => console.log('Service Worker registered'))
-                    .catch(err => console.log('Service Worker registration failed:', err));
+                navigator.serviceWorker.register('/sw.js').catch(() => {});
             });
         }
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect, useReducer, useCallback, useRef } = React;
+        const { useState, useEffect, useRef } = React;
 
-        // SVG Icons as components
-        const Icons = {
-            home: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-                    <polyline points="9 22 9 12 15 12 15 22"/>
-                </svg>
-            ),
-            pill: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
-                    <path d="m8.5 8.5 7 7"/>
-                </svg>
-            ),
-            chart: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="20" x2="18" y2="10"/>
-                    <line x1="12" y1="20" x2="12" y2="4"/>
-                    <line x1="6" y1="20" x2="6" y2="14"/>
-                </svg>
-            ),
-            phone: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
-                </svg>
-            ),
-            plus: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"/>
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-            ),
-            check: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                </svg>
-            ),
-            x: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-            ),
-            edit: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
-                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
-                </svg>
-            ),
-            trash: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                </svg>
-            ),
-            calendar: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-                    <line x1="16" y1="2" x2="16" y2="6"/>
-                    <line x1="8" y1="2" x2="8" y2="6"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-            ),
-            clock: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10"/>
-                    <polyline points="12 6 12 12 16 14"/>
-                </svg>
-            ),
-            flame: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
-                </svg>
-            ),
-            droplet: (
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
-                </svg>
-            )
+        // Icons
+        const Icon = ({ name }) => {
+            const icons = {
+                home: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+                pill: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>,
+                chart: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+                phone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+                plus: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+                check: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>,
+                x: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+                edit: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+                flame: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
+                calendar: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+                trash: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            };
+            return icons[name] || null;
         };
 
-        // Three.js Background Component
+        // Three.js Background
         function ThreeBackground() {
+            const canvasRef = useRef(null);
+            
             useEffect(() => {
-                const canvas = document.getElementById('three-bg');
+                const canvas = canvasRef.current;
+                if (!canvas) return;
+                
                 const scene = new THREE.Scene();
                 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
                 const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
@@ -1100,50 +694,38 @@
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
                 const particles = [];
-                const particleCount = 180;
                 const geometry = new THREE.SphereGeometry(0.6, 16, 16);
-                const material = new THREE.MeshBasicMaterial({ 
-                    color: 0xffffff, 
-                    transparent: true, 
-                    opacity: 0.06 
-                });
+                const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.06 });
 
-                for (let i = 0; i < particleCount; i++) {
+                for (let i = 0; i < 150; i++) {
                     const particle = new THREE.Mesh(geometry, material);
                     particle.position.set(
                         (Math.random() - 0.5) * 50,
                         (Math.random() - 0.5) * 50,
                         (Math.random() - 0.5) * 20
                     );
-                    particle.userData.velocity = {
-                        x: (Math.random() - 0.5) * 0.002,
-                        y: (Math.random() - 0.5) * 0.002,
-                        z: (Math.random() - 0.5) * 0.001
+                    particle.userData.vel = {
+                        x: (Math.random() - 0.5) * 0.003,
+                        y: (Math.random() - 0.5) * 0.003
                     };
                     scene.add(particle);
                     particles.push(particle);
                 }
 
                 camera.position.z = 15;
-
                 let animating = true;
 
-                function animate() {
+                const animate = () => {
                     if (!animating) return;
                     requestAnimationFrame(animate);
-                    
                     particles.forEach(p => {
-                        p.position.x += p.userData.velocity.x;
-                        p.position.y += p.userData.velocity.y;
-                        p.position.z += p.userData.velocity.z;
-
-                        if (Math.abs(p.position.x) > 25) p.userData.velocity.x *= -1;
-                        if (Math.abs(p.position.y) > 25) p.userData.velocity.y *= -1;
-                        if (Math.abs(p.position.z) > 10) p.userData.velocity.z *= -1;
+                        p.position.x += p.userData.vel.x;
+                        p.position.y += p.userData.vel.y;
+                        if (Math.abs(p.position.x) > 25) p.userData.vel.x *= -1;
+                        if (Math.abs(p.position.y) > 25) p.userData.vel.y *= -1;
                     });
-
                     renderer.render(scene, camera);
-                }
+                };
 
                 animate();
 
@@ -1162,631 +744,426 @@
                 };
             }, []);
 
-            return null;
+            return <canvas ref={canvasRef} id="three-bg" />;
         }
 
-        // Storage helpers
-        const storage = {
-            get: (key, defaultValue) => {
-                try {
-                    const item = localStorage.getItem(`medminder_${key}`);
-                    return item ? JSON.parse(item) : defaultValue;
-                } catch {
-                    return defaultValue;
-                }
-            },
-            set: (key, value) => {
-                localStorage.setItem(`medminder_${key}`, JSON.stringify(value));
-            }
-        };
-
-        // Initial empty state
-        const initialMeds = [];
-
-        const initialContacts = {
-            family: { name: '', phone: '' },
-            doctor: { name: '', phone: '' },
-            pharmacy: { name: '', phone: '' }
-        };
-
-        // Time utilities
+        // Helpers
         const getToday = () => new Date().toISOString().split('T')[0];
-        
-        const formatDate = (date) => {
-            return date.toLocaleDateString('en-US', { 
-                weekday: 'long', 
-                month: 'long', 
-                day: 'numeric' 
-            });
-        };
-
-        const getTimeOfDay = (time) => {
-            const hour = parseInt(time.split(':')[0]);
-            if (hour >= 5 && hour < 12) return 'morning';
-            if (hour >= 12 && hour < 17) return 'afternoon';
-            if (hour >= 17 && hour < 21) return 'evening';
+        const formatDate = () => new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+        const getTimeOfDay = (h) => {
+            if (h >= 5 && h < 12) return 'morning';
+            if (h >= 12 && h < 17) return 'afternoon';
+            if (h >= 17 && h < 21) return 'evening';
             return 'night';
         };
-
-        const formatTime = (time) => {
-            const [h, m] = time.split(':');
+        const formatTime = (t) => {
+            const [h, m] = t.split(':');
             const hour = parseInt(h);
-            const ampm = hour >= 12 ? 'PM' : 'AM';
-            const hour12 = hour % 12 || 12;
-            return `${hour12}:${m} ${ampm}`;
+            return `${hour % 12 || 12}:${m} ${hour >= 12 ? 'PM' : 'AM'}`;
         };
 
-        const timeToMinutes = (time) => {
-            const [h, m] = time.split(':').map(Number);
-            return h * 60 + m;
+        // Storage
+        const storage = {
+            get: (k, d) => { try { const v = localStorage.getItem(`mm_${k}`); return v ? JSON.parse(v) : d; } catch { return d; } },
+            set: (k, v) => localStorage.setItem(`mm_${k}`, JSON.stringify(v))
         };
 
-        // Reducer for medications
-        const medsReducer = (state, action) => {
-            switch (action.type) {
-                case 'LOAD':
-                    return { ...state, meds: action.payload.meds || [], taken: action.payload.taken || {} };
-                case 'ADD':
-                    return { ...state, meds: [...state.meds, action.payload] };
-                case 'UPDATE':
-                    return { ...state, meds: state.meds.map(m => m.id === action.payload.id ? action.payload : m) };
-                case 'DELETE':
-                    return { ...state, meds: state.meds.filter(m => m.id !== action.payload) };
-                case 'MARK_TAKEN':
-                    return { ...state, taken: { ...state.taken, [action.payload]: true } };
-                default:
-                    return state;
-            }
-        };
-
-        // Main App Component
+        // Main App
         function App() {
-            const [view, setView] = useState('dashboard');
-            const [meds, dispatchMeds] = useReducer(medsReducer, { meds: [], taken: {}, missed: {} });
-            const [contacts, setContacts] = useState(initialContacts);
+            const [page, setPage] = useState('home');
+            const [meds, setMeds] = useState([]);
+            const [taken, setTaken] = useState({});
             const [history, setHistory] = useState([]);
-            const [sheetOpen, setSheetOpen] = useState(false);
-            const [editingMed, setEditingMed] = useState(null);
-            const [editingContact, setEditingContact] = useState(null);
+            const [contacts, setContacts] = useState({ family: {}, doctor: {}, pharmacy: {} });
+            const [sheet, setSheet] = useState(null);
             const [toast, setToast] = useState(null);
-            const [undoTimer, setUndoTimer] = useState(null);
+            const [undoKey, setUndoKey] = useState(null);
+            const undoTimer = useRef(null);
 
-            // Load data on mount
+            // Load data
             useEffect(() => {
-                const savedMeds = storage.get('meds', initialMeds);
-                const savedTaken = storage.get('taken', {});
-                const savedHistory = storage.get('history', []);
-                const savedContacts = storage.get('contacts', initialContacts);
-                
-                dispatchMeds({ type: 'LOAD', payload: { meds: savedMeds, taken: savedTaken, missed: {} } });
-                setHistory(savedHistory);
-                setContacts(savedContacts);
+                setMeds(storage.get('meds', []));
+                setTaken(storage.get('taken', {}));
+                setHistory(storage.get('history', []));
+                setContacts(storage.get('contacts', { family: {}, doctor: {}, pharmacy: {} }));
             }, []);
 
-            // Save data on change
-            useEffect(() => {
-                if (meds.meds) {
-                    storage.set('meds', meds.meds);
-                    storage.set('taken', meds.taken);
-                }
-            }, [meds]);
+            // Save data
+            useEffect(() => { storage.set('meds', meds); }, [meds]);
+            useEffect(() => { storage.set('taken', taken); }, [taken]);
+            useEffect(() => { storage.set('history', history); }, [history]);
+            useEffect(() => { storage.set('contacts', contacts); }, [contacts]);
 
-            useEffect(() => {
-                storage.set('history', history);
-            }, [history]);
-
-            useEffect(() => {
-                storage.set('contacts', contacts);
-            }, [contacts]);
-
-            // Calculate today's stats
-            const today = getToday();
-            const takenToday = Object.keys(meds.taken?.[today] || {}).length;
-            const totalToday = meds.meds?.reduce((sum, m) => sum + m.times.length, 0) || 0;
-            const adherencePercent = totalToday > 0 ? Math.round((takenToday / totalToday) * 100) : 0;
-
-            // Calculate streak
-            const calculateStreak = () => {
-                let streak = 0;
-                let date = new Date();
-                for (let i = 0; i < 365; i++) {
-                    const dateStr = date.toISOString().split('T')[0];
-                    const dayTaken = meds.meds?.reduce((sum, m) => sum + m.times.length, 0) || 0;
-                    const dayDone = Object.keys(meds.taken?.[dateStr] || {}).length;
-                    if (dayTaken > 0 && dayDone >= dayTaken) {
-                        streak++;
-                    } else if (dayTaken > 0) {
-                        break;
-                    }
-                    date.setDate(date.getDate() - 1);
-                }
-                return streak;
-            };
-
-            const streak = calculateStreak();
-
-            // Mark medication taken
+            // Mark taken
             const markTaken = (medId, time) => {
                 const key = `${medId}-${time}`;
-                const newTaken = { ...meds.taken, [today]: { ...(meds.taken[today] || {}), [key]: true } };
-                dispatchMeds({ type: 'MARK_TAKEN', payload: key });
-                
-                const med = meds.meds.find(m => m.id === medId);
+                const today = getToday();
+                setTaken(prev => ({
+                    ...prev,
+                    [today]: { ...(prev[today] || {}), [key]: true }
+                }));
+                const med = meds.find(m => m.id === medId);
                 if (med) {
-                    const entry = {
+                    setHistory(prev => [{
                         id: Date.now(),
-                        medId,
                         name: med.name,
-                        dosage: med.dosage,
                         time,
                         date: today,
                         action: 'taken'
-                    };
-                    setHistory(prev => [entry, ...prev].slice(0, 100));
+                    }, ...prev].slice(0, 100));
                 }
-
-                // Show toast with undo
-                clearTimeout(undoTimer);
-                setToast({ message: `${med?.name} marked as taken`, key, medId, time });
-                const timer = setTimeout(() => setToast(null), 5000);
-                setUndoTimer(timer);
+                clearTimeout(undoTimer.current);
+                setToast(`${med?.name} marked as taken`);
+                setUndoKey(key);
+                undoTimer.current = setTimeout(() => {
+                    setToast(null);
+                    setUndoKey(null);
+                }, 5000);
             };
 
-            // Undo mark taken
-            const undoTaken = (key) => {
-                const newTaken = { ...meds.taken };
-                if (newTaken[today]) {
-                    delete newTaken[today][key];
-                }
-                dispatchMeds({ type: 'LOAD', payload: { meds: meds.meds, taken: newTaken } });
-                setHistory(prev => prev.filter(h => !(h.key === key && h.date === today)));
+            // Undo
+            const undoTaken = () => {
+                const today = getToday();
+                setTaken(prev => {
+                    const day = { ...(prev[today] || {}) };
+                    delete day[undoKey];
+                    return { ...prev, [today]: day };
+                });
+                setHistory(prev => prev.filter(h => !(h.date === today)));
                 setToast(null);
-                clearTimeout(undoTimer);
+                setUndoKey(null);
             };
 
-            // Group meds by time of day
-            const groupMedsByTime = () => {
+            // Delete med
+            const deleteMed = (id) => {
+                if (confirm('Remove this medication?')) {
+                    setMeds(prev => prev.filter(m => m.id !== id));
+                }
+            };
+
+            // Get today's stats
+            const today = getToday();
+            const todayMeds = meds.flatMap(m => m.times.map(t => ({ ...m, currentTime: t })));
+            const takenToday = Object.keys(taken[today] || {}).length;
+            const totalToday = todayMeds.length;
+            const percent = totalToday > 0 ? Math.round((takenToday / totalToday) * 100) : 0;
+
+            // Group meds
+            const groupMeds = () => {
                 const groups = { morning: [], afternoon: [], evening: [], night: [] };
-                meds.meds?.forEach(med => {
-                    med.times.forEach(time => {
-                        const tod = getTimeOfDay(time);
-                        groups[tod].push({ ...med, currentTime: time });
+                meds.forEach(m => {
+                    m.times.forEach(t => {
+                        const h = parseInt(t.split(':')[0]);
+                        groups[getTimeOfDay(h)].push({ ...m, currentTime: t });
                     });
                 });
                 return groups;
             };
 
-            const medGroups = groupMedsByTime();
-
-            // Open sheet for add/edit
-            const openSheet = (med = null) => {
-                setEditingMed(med);
-                setSheetOpen(true);
-            };
-
-            const closeSheet = () => {
-                setSheetOpen(false);
-                setEditingMed(null);
-            };
-
-            // Save medication
-            const saveMed = (formData) => {
-                if (editingMed) {
-                    const updated = meds.meds.map(m => m.id === editingMed.id ? { ...m, ...formData } : m);
-                    dispatchMeds({ type: 'UPDATE', payload: { ...editingMed, ...formData } });
-                } else {
-                    const newMed = { ...formData, id: Date.now().toString() };
-                    dispatchMeds({ type: 'ADD', payload: newMed });
-                }
-                closeSheet();
-            };
-
-            // Delete medication
-            const deleteMed = (id) => {
-                if (confirm('Remove this medication?')) {
-                    dispatchMeds({ type: 'DELETE', payload: id });
-                    closeSheet();
-                }
-            };
-
-            // Save contact
-            const saveContact = (role, data) => {
-                setContacts(prev => ({ ...prev, [role]: data }));
-                setEditingContact(null);
-            };
-
-            // Progress data for chart
+            // Weekly data
             const getWeeklyData = () => {
                 const days = [];
                 for (let i = 6; i >= 0; i--) {
-                    const date = new Date();
-                    date.setDate(date.getDate() - i);
-                    const dateStr = date.toISOString().split('T')[0];
-                    const dayMeds = meds.meds?.reduce((sum, m) => sum + m.times.length, 0) || 0;
-                    const dayTaken = Object.keys(meds.taken?.[dateStr] || {}).length;
-                    const rate = dayMeds > 0 ? Math.round((dayTaken / dayMeds) * 100) : 0;
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const ds = d.toISOString().split('T')[0];
+                    const total = meds.flatMap(m => m.times).length;
+                    const done = Object.keys(taken[ds] || {}).length;
                     days.push({
-                        label: date.toLocaleDateString('en-US', { weekday: 'short' }).slice(0, 2),
-                        rate,
-                        date: dateStr
+                        label: d.toLocaleDateString('en-US', { weekday: 'short' }).slice(0, 2),
+                        rate: total > 0 ? Math.round((done / total) * 100) : 0
                     });
                 }
                 return days;
             };
 
+            // Render pages
+            const renderHome = () => (
+                <div>
+                    <h2 className="page-title">{formatDate()}</h2>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
+                        {takenToday} of {totalToday} medications taken
+                    </p>
+
+                    <div className="card">
+                        <div className="progress-container">
+                            <div className="progress-ring-wrapper">
+                                <svg className="progress-ring" width="180" height="180">
+                                    <circle className="progress-ring-bg" cx="90" cy="90" r="75" />
+                                    <circle
+                                        className="progress-ring-fill"
+                                        cx="90" cy="90" r="75"
+                                        strokeDasharray={`${2 * Math.PI * 75}`}
+                                        strokeDashoffset={`${2 * Math.PI * 75 * (1 - percent / 100)}`}
+                                    />
+                                </svg>
+                                <div className="progress-center">
+                                    <div className="progress-percent">{percent}%</div>
+                                    <div className="progress-label">Today</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {Object.entries(groupMeds()).map(([period, items]) => 
+                        items.length > 0 && (
+                            <div className="med-section" key={period}>
+                                <div className="med-section-title">{period}</div>
+                                {items.map(med => {
+                                    const key = `${med.id}-${med.currentTime}`;
+                                    const isTaken = taken[today]?.[key];
+                                    return (
+                                        <div className={`med-card ${isTaken ? 'done' : ''}`} key={key}>
+                                            <div className="med-color-dot" style={{ background: `var(--accent-${med.color || 'blue'})` }} />
+                                            <div className="med-info">
+                                                <div className="med-name">{med.name}</div>
+                                                <div className="med-dosage">{med.dosage}</div>
+                                                <div className="med-time">{formatTime(med.currentTime)}</div>
+                                            </div>
+                                            <button className="btn btn-outline btn-small" onClick={() => !isTaken && markTaken(med.id, med.currentTime)}>
+                                                {isTaken ? <Icon name="check" /> : 'Take'}
+                                            </button>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        )
+                    )}
+
+                    {meds.length === 0 && (
+                        <div className="empty">
+                            <div className="empty-icon"><Icon name="pill" /></div>
+                            <p className="empty-text">No medications yet. Add your first one.</p>
+                        </div>
+                    )}
+
+                    <div className="stats-grid">
+                        <div className="stat-card">
+                            <div className="stat-value">0</div>
+                            <div className="stat-label">Day Streak</div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-value">{percent}%</div>
+                            <div className="stat-label">This Week</div>
+                        </div>
+                    </div>
+                </div>
+            );
+
+            const renderMeds = () => (
+                <div>
+                    <h2 className="page-title">Medications</h2>
+                    
+                    {meds.length === 0 ? (
+                        <div className="empty">
+                            <div className="empty-icon"><Icon name="pill" /></div>
+                            <p className="empty-text">No medications added yet</p>
+                        </div>
+                    ) : (
+                        meds.map(med => (
+                            <div className="list-item" key={med.id}>
+                                <div className="med-color-dot" style={{ background: `var(--accent-${med.color || 'blue'})`, width: '8px', height: '40px', borderRadius: '4px' }} />
+                                <div className="list-item-info">
+                                    <div className="list-item-title">{med.name}</div>
+                                    <div className="list-item-subtitle">{med.dosage}</div>
+                                </div>
+                                <button className="icon-btn" onClick={() => setSheet({ type: 'edit', med })}>
+                                    <Icon name="edit" />
+                                </button>
+                            </div>
+                        ))
+                    )}
+                </div>
+            );
+
+            const renderProgress = () => (
+                <div>
+                    <h2 className="page-title">Progress</h2>
+
+                    <div className="stats-grid">
+                        <div className="stat-card">
+                            <div className="stat-value">0</div>
+                            <div className="stat-label">Day Streak</div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-value">{percent}%</div>
+                            <div className="stat-label">This Week</div>
+                        </div>
+                    </div>
+
+                    <div className="chart-card" style={{ marginTop: '24px' }}>
+                        <div className="chart-title">Weekly Overview</div>
+                        <div className="bar-chart">
+                            {getWeeklyData().map((d, i) => (
+                                <div className="bar-day" key={i}>
+                                    <div className="bar" style={{
+                                        height: `${Math.max(d.rate, 5)}%`,
+                                        background: d.rate >= 80 ? 'var(--accent-green)' : d.rate >= 60 ? 'var(--accent-amber)' : 'var(--accent-rose)'
+                                    }} />
+                                    <div className="bar-label">{d.label}</div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+                    <h3 style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>Recent History</h3>
+                    {history.slice(0, 20).map(h => (
+                        <div className="history-item" key={h.id}>
+                            <div className={`history-icon ${h.action}`}>
+                                <Icon name={h.action === 'taken' ? 'check' : 'x'} />
+                            </div>
+                            <div className="history-info">
+                                <div className="history-name">{h.name}</div>
+                                <div className="history-time">{formatTime(h.time)}</div>
+                            </div>
+                            <div className="history-date">{new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
+                        </div>
+                    ))}
+                    {history.length === 0 && <div className="empty"><p className="empty-text">No history yet</p></div>}
+                </div>
+            );
+
+            const renderContacts = () => (
+                <div>
+                    <h2 className="page-title">Contacts</h2>
+                    
+                    {['family', 'doctor', 'pharmacy'].map(role => (
+                        <div className="card" key={role}>
+                            <div className="contact-role">{role}</div>
+                            <div className="contact-name">{contacts[role]?.name || 'Not set'}</div>
+                            <div className="contact-phone">{contacts[role]?.phone || 'Tap edit to add'}</div>
+                            <div className="contact-actions">
+                                <button className="contact-btn call" onClick={() => {
+                                    const phone = contacts[role]?.phone;
+                                    if (phone) window.location.href = `tel:${phone.replace(/\D/g, '')}`;
+                                }}>
+                                    <Icon name="phone" /> Call
+                                </button>
+                                <button className="contact-btn edit" onClick={() => setSheet({ type: 'contact', role })}>
+                                    <Icon name="edit" /> Edit
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            );
+
             return (
                 <div className="app">
                     <ThreeBackground />
-                    <div className="content">
-                        {/* Dashboard */}
-                        <div className={`screen ${view === 'dashboard' ? 'active' : ''}`}>
-                            <div className="header">
-                                <h1 className="date serif">{formatDate(new Date())}</h1>
-                                <p className="subtitle">{takenToday} of {totalToday} medications taken today</p>
+                    
+                    <header className="header">
+                        <div className="logo">
+                            <div className="logo-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
+                                    <path d="m8.5 8.5 7 7"/>
+                                </svg>
                             </div>
-
-                            <div className="progress-section">
-                                <div className="progress-ring-container">
-                                    <svg className="progress-ring" width="160" height="160">
-                                        <circle className="progress-ring-bg" cx="80" cy="80" r="70"/>
-                                        <circle 
-                                            className="progress-ring-fill" 
-                                            cx="80" cy="80" r="70"
-                                            strokeDasharray={`${2 * Math.PI * 70}`}
-                                            strokeDashoffset={`${2 * Math.PI * 70 * (1 - adherencePercent / 100)}`}
-                                        />
-                                    </svg>
-                                    <div className="progress-text">
-                                        <div className="progress-percent serif">{adherencePercent}%</div>
-                                        <div className="progress-label">Today</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {['morning', 'afternoon', 'evening', 'night'].map(timeOfDay => (
-                                medGroups[timeOfDay].length > 0 && (
-                                    <div className="med-group" key={timeOfDay}>
-                                        <div className="med-group-header">{timeOfDay}</div>
-                                        {medGroups[timeOfDay].map(med => {
-                                            const key = `${med.id}-${med.currentTime}`;
-                                            const isTaken = meds.taken?.[today]?.[key];
-                                            return (
-                                                <div className={`med-card ${isTaken ? 'taken' : ''}`} key={key}>
-                                                    <div className="med-card-header">
-                                                        <div className="med-info">
-                                                            <div className="med-name">{med.name}</div>
-                                                            <div className="med-dosage">{med.dosage}</div>
-                                                        </div>
-                                                        <button className="mark-btn" onClick={() => !isTaken && markTaken(med.id, med.currentTime)}>
-                                                            {isTaken ? (
-                                                                <><span className="check-icon">{Icons.check}</span>Taken</>
-                                                            ) : 'Mark taken'}
-                                                        </button>
-                                                    </div>
-                                                    {med.food !== 'none' && (
-                                                        <div className="med-tags">
-                                                            <span className="med-tag">
-                                                                {med.food === 'with' ? 'With food' : 'Empty stomach'}
-                                                            </span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                )
-                            ))}
-
-                            <div className="stats-row">
-                                <div className="stat-card">
-                                    <div className="stat-value serif">{streak}</div>
-                                    <div className="stat-label">Day Streak</div>
-                                </div>
-                                <div className="stat-card">
-                                    <div className="stat-value serif">{adherencePercent}%</div>
-                                    <div className="stat-label">This Week</div>
-                                </div>
-                            </div>
+                            <span className="logo-text">MedMinder</span>
                         </div>
+                        <p className="tagline">Your calming medication companion</p>
+                    </header>
 
-                        {/* Medications Screen */}
-                        <div className={`screen ${view === 'medications' ? 'active' : ''}`}>
-                            <div className="header">
-                                <h1 className="date serif">Medications</h1>
-                                <p className="subtitle">{meds.meds?.length || 0} tracked medications</p>
-                            </div>
-
-                            {meds.meds?.length === 0 ? (
-                                <div className="empty-state">
-                                    <div className="empty-icon">{Icons.pill}</div>
-                                    <p className="empty-text">No medications added yet</p>
-                                </div>
-                            ) : (
-                                <div className="med-list">
-                                    {meds.meds.map(med => (
-                                        <div className="med-list-item" key={med.id} style={{ '--med-color': `var(--accent-${med.color})` }}>
-                                            <div className="med-list-color" style={{ background: `var(--accent-${med.color})` }}></div>
-                                            <div className="med-list-info">
-                                                <div className="med-list-name">{med.name}</div>
-                                                <div className="med-list-dosage">{med.dosage}</div>
-                                                <div className="med-list-times">
-                                                    {med.times.map(t => (
-                                                        <span className="time-badge" key={t}>{formatTime(t)}</span>
-                                                    ))}
-                                                    {med.food !== 'none' && (
-                                                        <span className="med-tag">{med.food === 'with' ? 'With food' : 'Empty'}</span>
-                                                    )}
-                                                </div>
-                                            </div>
-                                            <div className="med-list-actions">
-                                                <button className="icon-btn" onClick={() => openSheet(med)}>
-                                                    {Icons.edit}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-                        </div>
-
-                        {/* Progress Screen */}
-                        <div className={`screen ${view === 'progress' ? 'active' : ''}`}>
-                            <div className="header">
-                                <h1 className="date serif">Progress</h1>
-                                <p className="subtitle">Your medication adherence</p>
-                            </div>
-
-                            <div className="stats-grid">
-                                <div className="stat-grid-item">
-                                    <div className="stat-value serif">{streak}</div>
-                                    <div className="stat-label">Streak</div>
-                                </div>
-                                <div className="stat-grid-item">
-                                    <div className="stat-value serif">{adherencePercent}%</div>
-                                    <div className="stat-label">This Week</div>
-                                </div>
-                                <div className="stat-grid-item">
-                                    <div className="stat-value serif">{history.length}</div>
-                                    <div className="stat-label">Total</div>
-                                </div>
-                            </div>
-
-                            <div className="chart-container">
-                                <div className="chart-title">Weekly Overview</div>
-                                <div className="bar-chart">
-                                    {getWeeklyData().map((day, i) => (
-                                        <div className="bar-day" key={i}>
-                                            <div 
-                                                className="bar" 
-                                                style={{ 
-                                                    height: `${Math.max(day.rate, 5)}%`,
-                                                    background: day.rate >= 80 ? 'var(--accent-green)' : 
-                                                               day.rate >= 60 ? 'var(--accent-amber)' : 
-                                                               'var(--accent-rose)'
-                                                }}
-                                            ></div>
-                                            <div className="bar-label">{day.label}</div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            <div className="history-list">
-                                <div className="history-title">Recent History</div>
-                                {history.slice(0, 20).map(entry => (
-                                    <div className={`history-item ${entry.action === 'missed' ? 'missed' : ''}`} key={entry.id}>
-                                        <div className={`history-icon ${entry.action}`}>
-                                            {entry.action === 'taken' ? Icons.check : Icons.x}
-                                        </div>
-                                        <div className="history-info">
-                                            <div className="history-med">{entry.name}</div>
-                                            <div className="history-time">{formatTime(entry.time)}</div>
-                                        </div>
-                                        <div className="history-date">
-                                            {new Date(entry.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                                        </div>
-                                    </div>
-                                ))}
-                                {history.length === 0 && (
-                                    <div className="empty-state">
-                                        <p className="empty-text">No history yet</p>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-
-                        {/* Contacts Screen */}
-                        <div className={`screen ${view === 'contacts' ? 'active' : ''}`}>
-                            <div className="header">
-                                <h1 className="date serif">Contacts</h1>
-                                <p className="subtitle">Emergency contacts</p>
-                            </div>
-
-                            {['family', 'doctor', 'pharmacy'].map(role => (
-                                <div className="contact-card" key={role}>
-                                    <div className="contact-role">{role}</div>
-                                    {editingContact === role ? (
-                                        <div className="edit-contact-form">
-                                            <div className="form-group">
-                                                <input 
-                                                    type="text" 
-                                                    className="form-input" 
-                                                    placeholder="Name"
-                                                    id={`${role}-name`}
-                                                    defaultValue={contacts[role]?.name || ''}
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <input 
-                                                    type="tel" 
-                                                    className="form-input" 
-                                                    placeholder="Phone number"
-                                                    id={`${role}-phone`}
-                                                    defaultValue={contacts[role]?.phone || ''}
-                                                />
-                                            </div>
-                                            <div style={{ display: 'flex', gap: '12px' }}>
-                                                <button 
-                                                    className="btn-primary btn-secondary" 
-                                                    style={{ flex: 1 }}
-                                                    onClick={() => setEditingContact(null)}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button 
-                                                    className="btn-primary" 
-                                                    style={{ flex: 1 }}
-                                                    onClick={() => saveContact(role, {
-                                                        name: document.getElementById(`${role}-name`).value,
-                                                        phone: document.getElementById(`${role}-phone`).value
-                                                    })}
-                                                >
-                                                    Save
-                                                </button>
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <>
-                                            <div className="contact-name">{contacts[role]?.name || 'Not set'}</div>
-                                            <div className="contact-phone">{contacts[role]?.phone || 'Tap to add'}</div>
-                                            <div className="contact-actions">
-                                                <button 
-                                                    className="contact-btn call-btn"
-                                                    onClick={() => contacts[role]?.phone && (window.location.href = `tel:${contacts[role].phone.replace(/\D/g, '')}`)}
-                                                >
-                                                    {Icons.phone}
-                                                    Call
-                                                </button>
-                                                <button 
-                                                    className="contact-btn edit-contact-btn"
-                                                    onClick={() => setEditingContact(role)}
-                                                >
-                                                    {Icons.edit}
-                                                </button>
-                                            </div>
-                                        </>
-                                    )}
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Bottom Sheet */}
-                    <div className={`sheet-overlay ${sheetOpen ? 'active' : ''}`} onClick={closeSheet}></div>
-                    <div className={`bottom-sheet ${sheetOpen ? 'active' : ''}`}>
-                        <div className="sheet-handle"></div>
-                        <h2 className="sheet-title serif">{editingMed ? 'Edit Medication' : 'Add Medication'}</h2>
-                        <MedForm 
-                            med={editingMed} 
-                            onSave={saveMed} 
-                            onDelete={editingMed ? () => deleteMed(editingMed.id) : null}
-                            onCancel={closeSheet}
-                        />
-                    </div>
-
-                    {/* FAB */}
-                    <button className="fab" onClick={() => openSheet(null)}>
-                        {Icons.plus}
-                    </button>
+                    <main className="content">
+                        {page === 'home' && renderHome()}
+                        {page === 'meds' && renderMeds()}
+                        {page === 'progress' && renderProgress()}
+                        {page === 'contacts' && renderContacts()}
+                    </main>
 
                     {/* Bottom Nav */}
                     <nav className="bottom-nav">
-                        <button className={`nav-item ${view === 'dashboard' ? 'active' : ''}`} onClick={() => setView('dashboard')}>
-                            <span className="nav-icon">{Icons.home}</span>
-                            Home
+                        <button className={`nav-btn ${page === 'home' ? 'active' : ''}`} onClick={() => setPage('home')}>
+                            <Icon name="home" /> Home
                         </button>
-                        <button className={`nav-item ${view === 'medications' ? 'active' : ''}`} onClick={() => setView('medications')}>
-                            <span className="nav-icon">{Icons.pill}</span>
-                            Meds
+                        <button className={`nav-btn ${page === 'meds' ? 'active' : ''}`} onClick={() => setPage('meds')}>
+                            <Icon name="pill" /> Meds
                         </button>
-                        <button className={`nav-item ${view === 'progress' ? 'active' : ''}`} onClick={() => setView('progress')}>
-                            <span className="nav-icon">{Icons.chart}</span>
-                            Progress
+                        <button className={`nav-btn ${page === 'progress' ? 'active' : ''}`} onClick={() => setPage('progress')}>
+                            <Icon name="chart" /> Progress
                         </button>
-                        <button className={`nav-item ${view === 'contacts' ? 'active' : ''}`} onClick={() => setView('contacts')}>
-                            <span className="nav-icon">{Icons.phone}</span>
-                            Contacts
+                        <button className={`nav-btn ${page === 'contacts' ? 'active' : ''}`} onClick={() => setPage('contacts')}>
+                            <Icon name="phone" /> Contacts
                         </button>
                     </nav>
 
+                    {/* FAB */}
+                    <button className="fab" onClick={() => setSheet({ type: 'add' })}>
+                        <Icon name="plus" />
+                    </button>
+
+                    {/* Bottom Sheet */}
+                    <div className={`sheet-overlay ${sheet ? 'active' : ''}`} onClick={() => setSheet(null)} />
+                    <div className={`bottom-sheet ${sheet ? 'active' : ''}`}>
+                        <div className="sheet-handle" />
+                        <h3 className="sheet-title">{sheet?.type === 'add' ? 'Add Medication' : sheet?.type === 'edit' ? 'Edit Medication' : 'Edit Contact'}</h3>
+                        
+                        {(sheet?.type === 'add' || sheet?.type === 'edit') && (
+                            <MedForm
+                                med={sheet?.type === 'edit' ? sheet.med : null}
+                                onSave={(data) => {
+                                    if (sheet?.type === 'edit') {
+                                        setMeds(prev => prev.map(m => m.id === sheet.med.id ? { ...m, ...data } : m));
+                                    } else {
+                                        setMeds(prev => [...prev, { ...data, id: Date.now().toString() }]);
+                                    }
+                                    setSheet(null);
+                                }}
+                                onDelete={sheet?.type === 'edit' ? () => { deleteMed(sheet.med.id); setSheet(null); } : null}
+                            />
+                        )}
+                        
+                        {sheet?.type === 'contact' && (
+                            <ContactForm
+                                role={sheet.role}
+                                data={contacts[sheet.role]}
+                                onSave={(data) => {
+                                    setContacts(prev => ({ ...prev, [sheet.role]: data }));
+                                    setSheet(null);
+                                }}
+                                onCancel={() => setSheet(null)}
+                            />
+                        )}
+                    </div>
+
                     {/* Toast */}
                     <div className={`toast ${toast ? 'show' : ''}`}>
-                        <span className="toast-message">{toast?.message}</span>
-                        <button className="toast-undo" onClick={() => undoTaken(toast?.key)}>Undo</button>
+                        <span className="toast-msg">{toast}</span>
+                        <button className="toast-undo" onClick={undoTaken}>Undo</button>
                     </div>
                 </div>
             );
         }
 
-        // Medication Form Component
-        function MedForm({ med, onSave, onDelete, onCancel }) {
+        // Med Form
+        function MedForm({ med, onSave, onDelete }) {
             const [form, setForm] = useState({
                 name: med?.name || '',
                 dosage: med?.dosage || '',
                 color: med?.color || 'blue',
                 times: med?.times || ['08:00'],
                 food: med?.food || 'none',
-                notes: med?.notes || '',
-                refill: med?.refill || ''
+                notes: med?.notes || ''
             });
 
-            const handleSubmit = (e) => {
-                e.preventDefault();
-                if (!form.name.trim()) return;
-                onSave(form);
-            };
-
-            const addTime = () => {
-                if (form.times.length < 6) {
-                    setForm(prev => ({ ...prev, times: [...prev.times, '12:00'] }));
-                }
-            };
-
-            const removeTime = (index) => {
-                setForm(prev => ({ ...prev, times: prev.times.filter((_, i) => i !== index) }));
-            };
-
-            const updateTime = (index, value) => {
-                setForm(prev => ({
-                    ...prev,
-                    times: prev.times.map((t, i) => i === index ? value : t)
-                }));
-            };
-
             return (
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={(e) => { e.preventDefault(); onSave(form); }}>
                     <div className="form-group">
                         <label className="form-label">Name</label>
-                        <input 
-                            type="text" 
-                            className="form-input" 
-                            placeholder="e.g., Lisinopril"
-                            value={form.name}
-                            onChange={(e) => setForm(prev => ({ ...prev, name: e.target.value }))}
-                            required
-                        />
+                        <input className="form-input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g., Aspirin" required />
                     </div>
 
                     <div className="form-row">
                         <div className="form-group">
                             <label className="form-label">Dosage</label>
-                            <input 
-                                type="text" 
-                                className="form-input" 
-                                placeholder="e.g., 10mg"
-                                value={form.dosage}
-                                onChange={(e) => setForm(prev => ({ ...prev, dosage: e.target.value }))}
-                            />
+                            <input className="form-input" value={form.dosage} onChange={e => setForm(f => ({ ...f, dosage: e.target.value }))} placeholder="e.g., 100mg" />
                         </div>
                         <div className="form-group">
                             <label className="form-label">Color</label>
                             <div className="color-swatches">
-                                {['blue', 'green', 'amber', 'rose', 'purple', 'teal'].map(color => (
-                                    <div 
-                                        key={color}
-                                        className={`swatch swatch-${color} ${form.color === color ? 'selected' : ''}`}
-                                        onClick={() => setForm(prev => ({ ...prev, color }))}
-                                    ></div>
+                                {['blue', 'green', 'amber', 'rose', 'purple', 'teal'].map(c => (
+                                    <div key={c} className={`swatch swatch-${c} ${form.color === c ? 'selected' : ''}`} onClick={() => setForm(f => ({ ...f, color: c }))} />
                                 ))}
                             </div>
                         </div>
@@ -1794,92 +1171,65 @@
 
                     <div className="form-group">
                         <label className="form-label">Times</label>
-                        <div className="times-container">
-                            {form.times.map((time, i) => (
-                                <div className="time-chip" key={i}>
-                                    <input 
-                                        type="time" 
-                                        value={time}
-                                        onChange={(e) => updateTime(i, e.target.value)}
-                                    />
-                                    {form.times.length > 1 && (
-                                        <button type="button" className="remove-time" onClick={() => removeTime(i)}>
-                                            {Icons.x}
-                                        </button>
-                                    )}
+                        <div className="times-list">
+                            {form.times.map((t, i) => (
+                                <div className="time-row" key={i}>
+                                    <input type="time" value={t} onChange={e => {
+                                        const times = [...form.times];
+                                        times[i] = e.target.value;
+                                        setForm(f => ({ ...f, times }));
+                                    }} />
+                                    {form.times.length > 1 && <button type="button" className="icon-btn" onClick={() => setForm(f => ({ ...f, times: f.times.filter((_, j) => j !== i) }))}><Icon name="x" /></button>}
                                 </div>
                             ))}
-                            {form.times.length < 6 && (
-                                <button type="button" className="add-time-btn" onClick={addTime}>
-                                    + Add time
-                                </button>
-                            )}
                         </div>
+                        {form.times.length < 6 && <button type="button" className="add-time-btn" onClick={() => setForm(f => ({ ...f, times: [...f.times, '12:00'] }))}>+ Add time</button>}
                     </div>
 
                     <div className="form-group">
                         <label className="form-label">Take with food</label>
-                        <div className="food-toggle">
-                            <button 
-                                type="button"
-                                className={`food-btn ${form.food === 'none' ? 'selected' : ''}`}
-                                onClick={() => setForm(prev => ({ ...prev, food: 'none' }))}
-                            >
-                                Any
-                            </button>
-                            <button 
-                                type="button"
-                                className={`food-btn ${form.food === 'with' ? 'selected' : ''}`}
-                                onClick={() => setForm(prev => ({ ...prev, food: 'with' }))}
-                            >
-                                With food
-                            </button>
-                            <button 
-                                type="button"
-                                className={`food-btn ${form.food === 'empty' ? 'selected' : ''}`}
-                                onClick={() => setForm(prev => ({ ...prev, food: 'empty' }))}
-                            >
-                                Empty stomach
-                            </button>
+                        <div className="food-btns">
+                            {[['none', 'Any'], ['with', 'With food'], ['empty', 'Empty']].map(([v, l]) => (
+                                <button key={v} type="button" className={`food-btn ${form.food === v ? 'selected' : ''}`} onClick={() => setForm(f => ({ ...f, food: v }))}>{l}</button>
+                            ))}
                         </div>
                     </div>
 
                     <div className="form-group">
                         <label className="form-label">Notes</label>
-                        <textarea 
-                            className="form-input" 
-                            placeholder="Optional notes..."
-                            value={form.notes}
-                            onChange={(e) => setForm(prev => ({ ...prev, notes: e.target.value }))}
-                        ></textarea>
+                        <textarea className="form-input" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional notes..." />
                     </div>
 
-                    <div className="form-group">
-                        <label className="form-label">Pills remaining</label>
-                        <input 
-                            type="number" 
-                            className="form-input" 
-                            placeholder="e.g., 30"
-                            min="0"
-                            value={form.refill}
-                            onChange={(e) => setForm(prev => ({ ...prev, refill: e.target.value }))}
-                        />
-                    </div>
-
-                    <button type="submit" className="btn-primary">
-                        {med ? 'Save Changes' : 'Add Medication'}
-                    </button>
-
-                    {onDelete && (
-                        <button type="button" className="btn-primary delete-btn" onClick={onDelete}>
-                            Remove Medication
-                        </button>
-                    )}
+                    <button type="submit" className="btn btn-primary btn-full">{med ? 'Save Changes' : 'Add Medication'}</button>
+                    {onDelete && <button type="button" className="btn btn-outline btn-full" style={{ marginTop: '12px', color: 'var(--accent-rose)', borderColor: 'var(--accent-rose)' }} onClick={onDelete}>Delete Medication</button>}
                 </form>
             );
         }
 
-        // Render app
+        // Contact Form
+        function ContactForm({ role, data, onSave, onCancel }) {
+            const [name, setName] = useState(data?.name || '');
+            const [phone, setPhone] = useState(data?.phone || '');
+            
+            return (
+                <form onSubmit={(e) => { e.preventDefault(); onSave({ name, phone }); }}>
+                    <div className="form-group">
+                        <label className="form-label">Name</label>
+                        <input className="form-input" value={name} onChange={e => setName(e.target.value)} placeholder="Contact name" />
+                    </div>
+                    <div className="form-group">
+                        <label className="form-label">Phone</label>
+                        <input className="form-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" />
+                    </div>
+                    <div style={{ display: 'flex', gap: '12px' }}>
+                        <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={onCancel}>Cancel</button>
+                        <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Save</button>
+                    </div>
+                </form>
+            );
+        }
+
+        // Render
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
