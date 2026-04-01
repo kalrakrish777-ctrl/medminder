@@ -1112,7 +1112,7 @@
         // AI Client
         const aiClient = {
             async chat(apiKey, messages) {
-                const response = await fetch('https://hypereal.tech/api/v1/chat/completions', {
+                const response = await fetch('https://api.hypereal.cloud/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1179,6 +1179,14 @@ Keep responses friendly, warm, and helpful.`;
             useEffect(() => { storage.set('history', history); }, [history]);
             useEffect(() => { storage.set('contacts', contacts); }, [contacts]);
             useEffect(() => { storage.set('apiKey', apiKey); }, [apiKey]);
+            
+            // Initialize API key if not set
+            useEffect(() => {
+                const saved = storage.get('apiKey', '');
+                if (!saved) {
+                    storage.set('apiKey', 'ck_47da0216d12dc4b87e08c5d21c452ffbc27fc904ec18c931eac0195239420211');
+                }
+            }, []);
 
             const markTaken = useCallback((medId, time) => {
                 const key = `${medId}-${time}`;
