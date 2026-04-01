@@ -38,6 +38,21 @@
             --radius-full: 999px;
         }
 
+        [data-theme="light"] {
+            --bg-primary: #f5f3f0;
+            --bg-surface: rgba(255,255,255,0.9);
+            --bg-surface-hover: rgba(0,0,0,0.04);
+            --border-subtle: rgba(0,0,0,0.08);
+            --border-medium: rgba(0,0,0,0.15);
+            --text-primary: #1a1a2e;
+            --text-secondary: rgba(26,26,46,0.6);
+            --text-tertiary: rgba(26,26,46,0.35);
+            --accent-green-dim: rgba(126,184,154,0.2);
+            --accent-amber-dim: rgba(232,169,126,0.15);
+            --accent-rose-dim: rgba(201,123,132,0.15);
+            --accent-blue-dim: rgba(122,163,200,0.15);
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html, body { height: 100%; overflow: hidden; }
         body {
@@ -956,6 +971,338 @@
 
         .api-status-dot.connected { background: var(--accent-green); }
         .api-status-dot.disconnected { background: var(--accent-rose); }
+
+        /* Settings Panel */
+        .settings-group {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .settings-group-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .settings-group-header svg { width: 16px; height: 16px; opacity: 0.7; }
+
+        .settings-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .settings-row:last-child { border-bottom: none; }
+
+        .settings-label {
+            font-size: 15px;
+            color: var(--text-primary);
+        }
+
+        .settings-desc {
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 2px;
+        }
+
+        /* Toggle Switch */
+        .toggle {
+            position: relative;
+            width: 50px;
+            height: 28px;
+            flex-shrink: 0;
+        }
+
+        .toggle input { opacity: 0; width: 0; height: 0; }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: var(--border-medium);
+            border-radius: var(--radius-full);
+            transition: 0.3s;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 22px;
+            width: 22px;
+            left: 3px;
+            bottom: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+
+        .toggle input:checked + .toggle-slider { background: var(--accent-green); }
+        .toggle input:checked + .toggle-slider:before { transform: translateX(22px); }
+
+        /* Select Dropdown */
+        .settings-select {
+            padding: 8px 12px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        .settings-select:focus { outline: none; border-color: var(--accent-green); }
+
+        /* Settings Buttons */
+        .settings-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+            padding: 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .settings-btn:hover { background: var(--bg-surface-hover); }
+        .settings-btn svg { width: 18px; height: 18px; }
+
+        .settings-btn.danger {
+            border-color: var(--accent-rose);
+            color: var(--accent-rose);
+        }
+
+        .settings-btn.danger:hover { background: var(--accent-rose-dim); }
+
+        /* Theme Buttons */
+        .theme-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .theme-btn {
+            padding: 8px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .theme-btn.active {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: var(--bg-primary);
+        }
+
+        .theme-btn:hover:not(.active) { background: var(--bg-surface-hover); }
+
+        /* Contact Cards - Unlimited List */
+        .contact-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .contact-card-new {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.2s;
+        }
+
+        .contact-card-new:hover { background: var(--bg-surface-hover); }
+
+        .contact-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--accent-blue-dim);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-blue);
+            font-weight: 600;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .contact-info { flex: 1; min-width: 0; }
+
+        .contact-name-new {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .contact-label {
+            font-size: 12px;
+            color: var(--accent-purple);
+            text-transform: capitalize;
+        }
+
+        .contact-phone-new {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .contact-card-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .contact-call-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent-green-dim);
+            border: none;
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contact-call-btn:hover { background: var(--accent-green); color: var(--bg-primary); }
+        .contact-call-btn svg { width: 20px; height: 20px; }
+
+        .contact-delete-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent-rose-dim);
+            border: none;
+            color: var(--accent-rose);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .contact-delete-btn:hover { background: var(--accent-rose); color: white; }
+        .contact-delete-btn svg { width: 18px; height: 18px; }
+
+        .add-contact-btn {
+            background: var(--bg-surface);
+            border: 2px dashed var(--border-medium);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: var(--text-secondary);
+            font-size: 15px;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s;
+            width: 100%;
+        }
+
+        .add-contact-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+        .add-contact-btn svg { width: 22px; height: 22px; }
+
+        /* Contact Form */
+        .contact-form { display: flex; flex-direction: column; gap: 16px; }
+
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .form-input {
+            padding: 12px 14px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            color: var(--text-primary);
+            font-size: 15px;
+            font-family: inherit;
+        }
+
+        .form-input:focus { outline: none; border-color: var(--accent-green); }
+        .form-input::placeholder { color: var(--text-tertiary); }
+
+        /* About Section */
+        .about-section {
+            text-align: center;
+            padding: 24px 16px;
+        }
+
+        .about-logo {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--accent-green), #5a9a7a);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+        }
+
+        .about-logo svg { width: 32px; height: 32px; stroke: var(--bg-primary); }
+
+        .about-name {
+            font-family: 'Instrument Serif', serif;
+            font-size: 24px;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .about-version {
+            font-size: 13px;
+            color: var(--text-tertiary);
+        }
+
+        /* Version Tag */
+        .version-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            color: var(--text-tertiary);
+            margin-top: 12px;
+        }
     </style>
 </head>
 <body>
@@ -999,7 +1346,16 @@
                 sparkles: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/><path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/></svg>,
                 send: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>,
                 settings: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>,
-                robot: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+                robot: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>,
+                bell: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
+                download: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>,
+                upload: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>,
+                trash2: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>,
+                monitor: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>,
+                calendar: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+                info: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>,
+                user: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+                shield: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             };
             return icons[name] || null;
         };
@@ -1289,26 +1645,28 @@ Keep responses friendly, warm, and helpful.`;
             const [meds, setMeds] = useState([]);
             const [taken, setTaken] = useState({});
             const [history, setHistory] = useState([]);
-            const [contacts, setContacts] = useState({ family: {}, doctor: {}, pharmacy: {} });
+            const [contacts, setContacts] = useState([]);
             const [sheet, setSheet] = useState(null);
             const [toast, setToast] = useState(null);
             const [undoKey, setUndoKey] = useState(null);
-            const [apiKey, setApiKey] = useState(() => storage.get('apiKey', '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'));
+            const [apiKey, setApiKey] = useState(() => storage.get('apiKey', ''));
             const [aiTyping, setAiTyping] = useState(false);
             const [aiResponse, setAiResponse] = useState(null);
             const [aiInput, setAiInput] = useState('');
+            
+            // Settings state
+            const [theme, setTheme] = useState(() => storage.get('theme', 'system'));
+            const [notifications, setNotifications] = useState(() => storage.get('notifications', false));
+            const [notificationSound, setNotificationSound] = useState(() => storage.get('notificationSound', true));
+            const [weekStartsOn, setWeekStartsOn] = useState(() => storage.get('weekStartsOn', 0));
+            
             const undoTimer = useRef(null);
 
             useEffect(() => {
                 setMeds(storage.get('meds', []));
                 setTaken(storage.get('taken', {}));
                 setHistory(storage.get('history', []));
-                setContacts(storage.get('contacts', { family: {}, doctor: {}, pharmacy: {} }));
-                const savedKey = storage.get('apiKey', '');
-                if (!savedKey) {
-                    storage.set('apiKey', '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');
-                    setApiKey('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');
-                }
+                setContacts(storage.get('contacts', []));
             }, []);
 
             useEffect(() => { storage.set('meds', meds); }, [meds]);
@@ -1316,6 +1674,29 @@ Keep responses friendly, warm, and helpful.`;
             useEffect(() => { storage.set('history', history); }, [history]);
             useEffect(() => { storage.set('contacts', contacts); }, [contacts]);
             useEffect(() => { storage.set('apiKey', apiKey); }, [apiKey]);
+            useEffect(() => { storage.set('theme', theme); applyTheme(theme); }, [theme]);
+            useEffect(() => { storage.set('notifications', notifications); }, [notifications]);
+            useEffect(() => { storage.set('notificationSound', notificationSound); }, [notificationSound]);
+            useEffect(() => { storage.set('weekStartsOn', weekStartsOn); }, [weekStartsOn]);
+
+            // Apply theme
+            const applyTheme = (t) => {
+                if (t === 'system') {
+                    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                    document.documentElement.setAttribute('data-theme', prefersDark ? '' : 'light');
+                } else {
+                    document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : '');
+                }
+            };
+
+            // Listen for system theme changes
+            useEffect(() => {
+                const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+                const handleChange = () => { if (theme === 'system') applyTheme('system'); };
+                mediaQuery.addEventListener('change', handleChange);
+                applyTheme(theme);
+                return () => mediaQuery.removeEventListener('change', handleChange);
+            }, [theme]);
 
             const markTaken = useCallback((medId, time) => {
                 const key = `${medId}-${time}`;
@@ -1742,27 +2123,42 @@ Keep responses friendly, warm, and helpful.`;
                 <div className="page" key="contacts">
                     <div className="page-header">
                         <h1 className="page-title">Contacts</h1>
-                        <p className="page-subtitle">Emergency contacts</p>
+                        <p className="page-subtitle">{contacts.length} contact{contacts.length !== 1 ? 's' : ''}</p>
                     </div>
 
-                    {['family', 'doctor', 'pharmacy'].map(role => (
-                        <div className="contact-card" key={role}>
-                            <div className="contact-role">{role}</div>
-                            <div className="contact-name">{contacts[role]?.name || 'Not set'}</div>
-                            <div className="contact-phone">{contacts[role]?.phone || 'Tap edit to add'}</div>
-                            <div className="contact-actions">
-                                <button className="contact-btn call" onClick={() => {
-                                    const phone = contacts[role]?.phone;
-                                    if (phone) window.location.href = `tel:${phone.replace(/\D/g, '')}`;
-                                }}>
-                                    <Icon name="phone" size={18} /> Call
-                                </button>
-                                <button className="contact-btn edit" onClick={() => setSheet({ type: 'contact', role })}>
-                                    <Icon name="edit" size={18} /> Edit
-                                </button>
+                    <div className="contact-list">
+                        {contacts.map(contact => (
+                            <div className="contact-card-new" key={contact.id}>
+                                <div className="contact-avatar">
+                                    {contact.name.charAt(0).toUpperCase()}
+                                </div>
+                                <div className="contact-info">
+                                    <div className="contact-name-new">{contact.name}</div>
+                                    <div className="contact-label">{contact.label}</div>
+                                    <div className="contact-phone-new">{contact.phone}</div>
+                                </div>
+                                <div className="contact-card-actions">
+                                    <button className="contact-call-btn" onClick={() => {
+                                        window.location.href = `tel:${contact.phone.replace(/\D/g, '')}`;
+                                    }}>
+                                        <Icon name="phone" />
+                                    </button>
+                                    <button className="contact-delete-btn" onClick={() => {
+                                        if (confirm('Delete this contact?')) {
+                                            setContacts(prev => prev.filter(c => c.id !== contact.id));
+                                        }
+                                    }}>
+                                        <Icon name="trash" />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+
+                        <button className="add-contact-btn" onClick={() => setSheet({ type: 'addContact' })}>
+                            <Icon name="plus" />
+                            Add Contact
+                        </button>
+                    </div>
                 </div>
             );
 
@@ -1822,30 +2218,216 @@ Keep responses friendly, warm, and helpful.`;
                             {sheet?.type === 'add' ? 'Add Medication' : 
                              sheet?.type === 'edit' ? 'Edit Medication' : 
                              sheet?.type === 'contact' ? 'Edit Contact' :
+                             sheet?.type === 'addContact' ? 'Add Contact' :
                              sheet?.type === 'settings' ? 'Settings' : ''}
                         </h3>
                         
                         {sheet?.type === 'settings' && (
-                            <div className="settings-section">
-                                <div className="settings-title">
-                                    <Icon name="sparkles" size={18} />
-                                    AI Settings
+                            <div>
+                                {/* Appearance */}
+                                <div className="settings-group">
+                                    <div className="settings-group-header">
+                                        <Icon name="sparkles" />
+                                        Appearance
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">Theme</div>
+                                            <div className="settings-desc">Choose your preferred theme</div>
+                                        </div>
+                                        <div className="theme-btns">
+                                            <button className={`theme-btn ${theme === 'dark' ? 'active' : ''}`} onClick={() => setTheme('dark')}>
+                                                <Icon name="moon" size={14} />
+                                            </button>
+                                            <button className={`theme-btn ${theme === 'light' ? 'active' : ''}`} onClick={() => setTheme('light')}>
+                                                <Icon name="sun" size={14} />
+                                            </button>
+                                            <button className={`theme-btn ${theme === 'system' ? 'active' : ''}`} onClick={() => setTheme('system')}>
+                                                <Icon name="monitor" size={14} />
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="api-provider">Smart Local Assistant - No API key needed</div>
-                                <input
-                                    type="password"
-                                    className="api-key-input"
-                                    placeholder="Enter your API key..."
-                                    value={apiKey}
-                                    onChange={(e) => setApiKey(e.target.value)}
-                                />
-                                <div className="api-status">
-                                    <span className={`api-status-dot ${apiKey ? 'connected' : 'disconnected'}`}></span>
-                                    {apiKey ? 'API key configured' : 'No API key configured'}
+
+                                {/* Notifications */}
+                                <div className="settings-group">
+                                    <div className="settings-group-header">
+                                        <Icon name="bell" />
+                                        Notifications
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">Enable Notifications</div>
+                                            <div className="settings-desc">Get reminders for your medications</div>
+                                        </div>
+                                        <label className="toggle">
+                                            <input type="checkbox" checked={notifications} onChange={(e) => {
+                                                setNotifications(e.target.checked);
+                                                if (e.target.checked && 'Notification' in window) {
+                                                    Notification.requestPermission();
+                                                }
+                                            }} />
+                                            <span className="toggle-slider"></span>
+                                        </label>
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">Notification Sound</div>
+                                            <div className="settings-desc">Play sound with reminders</div>
+                                        </div>
+                                        <label className="toggle">
+                                            <input type="checkbox" checked={notificationSound} onChange={(e) => setNotificationSound(e.target.checked)} />
+                                            <span className="toggle-slider"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                                <p style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 12 }}>
-                                    Basic AI assistant included. Add your own API key in Settings to enable more features.
-                                </p>
+
+                                {/* Calendar */}
+                                <div className="settings-group">
+                                    <div className="settings-group-header">
+                                        <Icon name="calendar" />
+                                        Calendar
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">Week Starts On</div>
+                                        </div>
+                                        <select className="settings-select" value={weekStartsOn} onChange={(e) => setWeekStartsOn(Number(e.target.value))}>
+                                            <option value={0}>Sunday</option>
+                                            <option value={1}>Monday</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {/* AI */}
+                                <div className="settings-group">
+                                    <div className="settings-group-header">
+                                        <Icon name="robot" />
+                                        AI Assistant
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">Built-in AI</div>
+                                            <div className="settings-desc">No API key required</div>
+                                        </div>
+                                        <span style={{ color: 'var(--accent-green)', fontSize: 13 }}>Active</span>
+                                    </div>
+                                </div>
+
+                                {/* Data */}
+                                <div className="settings-group">
+                                    <div className="settings-group-header">
+                                        <Icon name="shield" />
+                                        Data
+                                    </div>
+                                    <div className="settings-row" style={{ flexDirection: 'column', alignItems: 'stretch', gap: 10 }}>
+                                        <button className="settings-btn" onClick={() => {
+                                            const data = JSON.stringify({ meds, taken, history, contacts }, null, 2);
+                                            const blob = new Blob([data], { type: 'application/json' });
+                                            const url = URL.createObjectURL(blob);
+                                            const a = document.createElement('a');
+                                            a.href = url;
+                                            a.download = `medminder-backup-${new Date().toISOString().split('T')[0]}.json`;
+                                            a.click();
+                                            URL.revokeObjectURL(url);
+                                            setToast('Data exported!');
+                                        }}>
+                                            <Icon name="download" /> Export Data
+                                        </button>
+                                        <button className="settings-btn" onClick={() => {
+                                            const input = document.createElement('input');
+                                            input.type = 'file';
+                                            input.accept = '.json';
+                                            input.onchange = (e) => {
+                                                const file = e.target.files[0];
+                                                if (file) {
+                                                    const reader = new FileReader();
+                                                    reader.onload = (ev) => {
+                                                        try {
+                                                            const data = JSON.parse(ev.target.result);
+                                                            if (data.meds) setMeds(data.meds);
+                                                            if (data.taken) setTaken(data.taken);
+                                                            if (data.history) setHistory(data.history);
+                                                            if (data.contacts) setContacts(data.contacts);
+                                                            setToast('Data imported successfully!');
+                                                        } catch (err) {
+                                                            setToast('Failed to import data');
+                                                        }
+                                                    };
+                                                    reader.readAsText(file);
+                                                }
+                                            };
+                                            input.click();
+                                        }}>
+                                            <Icon name="upload" /> Import Data
+                                        </button>
+                                        <button className="settings-btn danger" onClick={() => {
+                                            if (confirm('This will delete all your medications, history, and contacts. Are you sure?')) {
+                                                if (confirm('This cannot be undone. Really delete everything?')) {
+                                                    setMeds([]);
+                                                    setTaken({});
+                                                    setHistory([]);
+                                                    setContacts([]);
+                                                    setToast('All data cleared');
+                                                }
+                                            }
+                                        }}>
+                                            <Icon name="trash2" /> Clear All Data
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* About */}
+                                <div className="settings-group">
+                                    <div className="settings-group-header">
+                                        <Icon name="info" />
+                                        About
+                                    </div>
+                                    <div className="about-section">
+                                        <div className="about-logo">
+                                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                                <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
+                                                <path d="m8.5 8.5 7 7"/>
+                                            </svg>
+                                        </div>
+                                        <div className="about-name">MedMinder</div>
+                                        <div className="about-version">Version 1.0.0</div>
+                                        <div className="version-tag">
+                                            <Icon name="shield" size={12} />
+                                            Your calming medication companion
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {sheet?.type === 'addContact' && (
+                            <div className="contact-form">
+                                <div className="form-group">
+                                    <label className="form-label">Name</label>
+                                    <input className="form-input" id="contact-name" placeholder="e.g., Mom, Dr. Smith" />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Label</label>
+                                    <input className="form-input" id="contact-label" placeholder="e.g., Family, Doctor" />
+                                </div>
+                                <div className="form-group">
+                                    <label className="form-label">Phone Number</label>
+                                    <input className="form-input" id="contact-phone" type="tel" placeholder="e.g., (555) 123-4567" />
+                                </div>
+                                <button className="btn btn-primary" style={{ marginTop: 8 }} onClick={() => {
+                                    const name = document.getElementById('contact-name').value.trim();
+                                    const label = document.getElementById('contact-label').value.trim() || 'Contact';
+                                    const phone = document.getElementById('contact-phone').value.trim();
+                                    if (name && phone) {
+                                        setContacts(prev => [...prev, { id: Date.now().toString(), name, label, phone }]);
+                                        setSheet(null);
+                                    } else {
+                                        setToast('Please enter name and phone number');
+                                    }
+                                }}>
+                                    Add Contact
+                                </button>
                             </div>
                         )}
                         
@@ -1858,14 +2440,6 @@ Keep responses friendly, warm, and helpful.`;
                                     setSheet(null);
                                 }}
                                 onDelete={sheet?.type === 'edit' ? () => { deleteMed(sheet.med.id); setSheet(null); } : null}
-                            />
-                        )}
-                        
-                        {sheet?.type === 'contact' && (
-                            <ContactForm
-                                data={contacts[sheet.role]}
-                                onSave={(data) => { setContacts(prev => ({ ...prev, [sheet.role]: data })); setSheet(null); }}
-                                onCancel={() => setSheet(null)}
                             />
                         )}
                     </div>
@@ -1952,29 +2526,6 @@ Keep responses friendly, warm, and helpful.`;
 
                     <button type="submit" className="btn btn-primary">{med ? 'Save Changes' : 'Add Medication'}</button>
                     {onDelete && <button type="button" className="btn btn-danger" onClick={onDelete}><Icon name="trash" size={18} /> Delete Medication</button>}
-                </form>
-            );
-        }
-
-        // Contact Form
-        function ContactForm({ data, onSave, onCancel }) {
-            const [name, setName] = useState(data?.name || '');
-            const [phone, setPhone] = useState(data?.phone || '');
-            
-            return (
-                <form onSubmit={(e) => { e.preventDefault(); onSave({ name, phone }); }}>
-                    <div className="form-group">
-                        <label className="form-label">Name</label>
-                        <input className="form-input" value={name} onChange={e => setName(e.target.value)} placeholder="Contact name" />
-                    </div>
-                    <div className="form-group">
-                        <label className="form-label">Phone</label>
-                        <input className="form-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" />
-                    </div>
-                    <div style={{ display: 'flex', gap: 12 }}>
-                        <button type="button" className="btn btn-outline" onClick={onCancel} style={{ flex: 1 }}>Cancel</button>
-                        <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Save</button>
-                    </div>
                 </form>
             );
         }
