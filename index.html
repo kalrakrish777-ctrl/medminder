@@ -1180,59 +1180,8 @@
             }
         };
 
-        // Initial demo data
-        const initialMeds = [
-            {
-                id: '1',
-                name: 'Lisinopril',
-                dosage: '10mg',
-                color: 'blue',
-                times: ['08:00'],
-                food: 'none',
-                notes: '',
-                refill: 30
-            },
-            {
-                id: '2',
-                name: 'Metformin',
-                dosage: '500mg',
-                color: 'green',
-                times: ['08:00', '20:00'],
-                food: 'with',
-                notes: 'Take with breakfast and dinner',
-                refill: 60
-            },
-            {
-                id: '3',
-                name: 'Atorvastatin',
-                dosage: '20mg',
-                color: 'amber',
-                times: ['21:00'],
-                food: 'none',
-                notes: 'Take at bedtime',
-                refill: 30
-            },
-            {
-                id: '4',
-                name: 'Aspirin',
-                dosage: '81mg',
-                color: 'rose',
-                times: ['08:00'],
-                food: 'with',
-                notes: '',
-                refill: 90
-            },
-            {
-                id: '5',
-                name: 'Vitamin D',
-                dosage: '1000IU',
-                color: 'teal',
-                times: ['08:00'],
-                food: 'with',
-                notes: '',
-                refill: 120
-            }
-        ];
+        // Initial empty state
+        const initialMeds = [];
 
         const initialContacts = {
             family: { name: '', phone: '' },
@@ -1276,17 +1225,15 @@
         const medsReducer = (state, action) => {
             switch (action.type) {
                 case 'LOAD':
-                    return action.payload;
+                    return { ...state, meds: action.payload.meds || [], taken: action.payload.taken || {} };
                 case 'ADD':
-                    return [...state, action.payload];
+                    return { ...state, meds: [...state.meds, action.payload] };
                 case 'UPDATE':
-                    return state.map(m => m.id === action.payload.id ? action.payload : m);
+                    return { ...state, meds: state.meds.map(m => m.id === action.payload.id ? action.payload : m) };
                 case 'DELETE':
-                    return state.filter(m => m.id !== action.payload);
+                    return { ...state, meds: state.meds.filter(m => m.id !== action.payload) };
                 case 'MARK_TAKEN':
                     return { ...state, taken: { ...state.taken, [action.payload]: true } };
-                case 'MARK_MISSED':
-                    return { ...state, missed: { ...state.missed, [action.payload]: true } };
                 default:
                     return state;
             }
@@ -1318,7 +1265,7 @@
 
             // Save data on change
             useEffect(() => {
-                if (meds.msds) {
+                if (meds.meds) {
                     storage.set('meds', meds.meds);
                     storage.set('taken', meds.taken);
                 }
@@ -1361,8 +1308,8 @@
             // Mark medication taken
             const markTaken = (medId, time) => {
                 const key = `${medId}-${time}`;
-                const newTaken = { ...meds.taken, [today]: { ...meds.taken[today], [key]: true } };
-                dispatchMeds({ type: 'LOAD', payload: { ...meds, taken: newTaken } });
+                const newTaken = { ...meds.taken, [today]: { ...(meds.taken[today] || {}), [key]: true } };
+                dispatchMeds({ type: 'MARK_TAKEN', payload: key });
                 
                 const med = meds.meds.find(m => m.id === medId);
                 if (med) {
@@ -1391,7 +1338,7 @@
                 if (newTaken[today]) {
                     delete newTaken[today][key];
                 }
-                dispatchMeds({ type: 'LOAD', payload: { ...meds, taken: newTaken } });
+                dispatchMeds({ type: 'LOAD', payload: { meds: meds.meds, taken: newTaken } });
                 setHistory(prev => prev.filter(h => !(h.key === key && h.date === today)));
                 setToast(null);
                 clearTimeout(undoTimer);
@@ -1426,10 +1373,10 @@
             const saveMed = (formData) => {
                 if (editingMed) {
                     const updated = meds.meds.map(m => m.id === editingMed.id ? { ...m, ...formData } : m);
-                    dispatchMeds({ type: 'LOAD', payload: { ...meds, meds: updated } });
+                    dispatchMeds({ type: 'UPDATE', payload: { ...editingMed, ...formData } });
                 } else {
                     const newMed = { ...formData, id: Date.now().toString() };
-                    dispatchMeds({ type: 'LOAD', payload: { ...meds, meds: [...meds.meds, newMed] } });
+                    dispatchMeds({ type: 'ADD', payload: newMed });
                 }
                 closeSheet();
             };
@@ -1437,7 +1384,7 @@
             // Delete medication
             const deleteMed = (id) => {
                 if (confirm('Remove this medication?')) {
-                    dispatchMeds({ type: 'LOAD', payload: { ...meds, meds: meds.meds.filter(m => m.id !== id) } });
+                    dispatchMeds({ type: 'DELETE', payload: id });
                     closeSheet();
                 }
             };
