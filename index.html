@@ -1174,6 +1174,11 @@ Keep responses friendly, warm, and helpful.`;
                 setTaken(storage.get('taken', {}));
                 setHistory(storage.get('history', []));
                 setContacts(storage.get('contacts', { family: {}, doctor: {}, pharmacy: {} }));
+                const savedKey = storage.get('apiKey', '');
+                if (!savedKey) {
+                    storage.set('apiKey', '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');
+                    setApiKey('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');
+                }
             }, []);
 
             useEffect(() => { storage.set('meds', meds); }, [meds]);
