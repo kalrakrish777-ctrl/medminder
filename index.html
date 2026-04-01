@@ -1437,7 +1437,7 @@ Keep responses friendly, warm, and helpful.`;
                         <div className="ai-input-row">
                             <textarea
                                 className="ai-input"
-                                placeholder="Add my evening vitamins, or ask anything..."
+                                placeholder="Ask about medications..."
                                 value={aiInput}
                                 onChange={(e) => setAiInput(e.target.value)}
                                 onKeyDown={(e) => {
@@ -1448,15 +1448,35 @@ Keep responses friendly, warm, and helpful.`;
                                 }}
                                 rows={1}
                             />
-                            <button className="ai-send-btn" onClick={handleAiSend} disabled={!apiKey || aiTyping}>
+                            <button className="ai-send-btn" onClick={handleAiSend} disabled={aiTyping}>
                                 <Icon name="send" size={20} />
                             </button>
                         </div>
-                        {!apiKey && (
-                            <div style={{ fontSize: 12, color: 'var(--text-tertiary)', marginTop: 8 }}>
-                                Add your API key in Settings to enable AI
-                            </div>
-                        )}
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, marginTop: 12 }}>
+                            {[
+                                'What are side effects of ibuprofen?',
+                                'How should I store my medications?',
+                                'What should I do if I miss a dose?',
+                                'Can I drink alcohol with my meds?'
+                            ].map((prompt, i) => (
+                                <button
+                                    key={i}
+                                    onClick={() => { setAiInput(prompt); setTimeout(handleAiSend, 100); }}
+                                    style={{
+                                        padding: '8px 12px',
+                                        fontSize: 12,
+                                        background: 'var(--bg-primary)',
+                                        border: '1px solid var(--border-subtle)',
+                                        borderRadius: 'var(--radius-full)',
+                                        color: 'var(--text-secondary)',
+                                        cursor: 'pointer',
+                                        fontFamily: 'inherit'
+                                    }}
+                                >
+                                    {prompt}
+                                </button>
+                            ))}
+                        </div>
                     </div>
 
                     {aiTyping && (
