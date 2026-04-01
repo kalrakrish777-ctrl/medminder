@@ -2007,8 +2007,14 @@ Keep responses friendly, warm, and helpful.`;
             // Stats
             const today = getToday();
             const allDoses = useMemo(() => meds.flatMap(m => m.times.map(t => ({ ...m, currentTime: t }))), [meds]);
-            const takenToday = Object.keys(taken[today] || {}).length;
             const totalToday = allDoses.length;
+            const takenToday = useMemo(() => {
+                const takenKeys = Object.keys(taken[today] || {});
+                return takenKeys.filter(key => {
+                    const medId = key.split('-').slice(0, -1).join('-');
+                    return meds.some(m => m.id === medId);
+                }).length;
+            }, [taken, today, meds]);
             const percent = totalToday > 0 ? Math.round((takenToday / totalToday) * 100) : 0;
 
             const streak = useMemo(() => {
@@ -2017,9 +2023,13 @@ Keep responses friendly, warm, and helpful.`;
                     const d = new Date();
                     d.setDate(d.getDate() - i);
                     const ds = d.toISOString().split('T')[0];
+                    const medIds = meds.map(m => m.id);
+                    const takenKeys = Object.keys(taken[ds] || {}).filter(key => {
+                        const medId = key.split('-').slice(0, -1).join('-');
+                        return medIds.includes(medId);
+                    });
                     const total = meds.flatMap(m => m.times).length;
-                    const done = Object.keys(taken[ds] || {}).length;
-                    if (total > 0 && done >= total) s++;
+                    if (total > 0 && takenKeys.length >= total) s++;
                     else if (total > 0) break;
                 }
                 return s;
@@ -2027,24 +2037,32 @@ Keep responses friendly, warm, and helpful.`;
 
             const weeklyRate = useMemo(() => {
                 let total = 0, done = 0;
+                const medIds = meds.map(m => m.id);
                 for (let i = 6; i >= 0; i--) {
                     const d = new Date();
                     d.setDate(d.getDate() - i);
                     const ds = d.toISOString().split('T')[0];
                     total += meds.flatMap(m => m.times).length;
-                    done += Object.keys(taken[ds] || {}).length;
+                    done += Object.keys(taken[ds] || {}).filter(key => {
+                        const medId = key.split('-').slice(0, -1).join('-');
+                        return medIds.includes(medId);
+                    }).length;
                 }
                 return total > 0 ? Math.round((done / total) * 100) : 0;
             }, [taken, meds]);
 
             const getWeeklyData = useMemo(() => {
                 const days = [];
+                const medIds = meds.map(m => m.id);
                 for (let i = 6; i >= 0; i--) {
                     const d = new Date();
                     d.setDate(d.getDate() - i);
                     const ds = d.toISOString().split('T')[0];
                     const total = meds.flatMap(m => m.times).length;
-                    const done = Object.keys(taken[ds] || {}).length;
+                    const done = Object.keys(taken[ds] || {}).filter(key => {
+                        const medId = key.split('-').slice(0, -1).join('-');
+                        return medIds.includes(medId);
+                    }).length;
                     days.push({
                         label: d.toLocaleDateString('en-US', { weekday: 'short' }).slice(0, 2),
                         rate: total > 0 ? Math.round((done / total) * 100) : 0
