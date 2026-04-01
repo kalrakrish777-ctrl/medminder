@@ -1116,12 +1116,10 @@
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${apiKey}`,
-                        'HTTP-Referer': window.location.origin,
-                        'X-Title': 'MedMinder'
+                        'Authorization': `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
-                        model: 'qwen/qwen-2.5-7b-instruct',
+                        model: 'deepseek/deepseek-chat-v3-0324',
                         messages,
                         max_tokens: 1000,
                         temperature: 0.7
@@ -1129,8 +1127,8 @@
                 });
                 
                 if (!response.ok) {
-                    const error = await response.text();
-                    throw new Error(error);
+                    const error = await response.json();
+                    throw new Error(error.error?.message || error);
                 }
                 
                 const data = await response.json();
@@ -1681,7 +1679,7 @@ Keep responses friendly, warm, and helpful.`;
                                     <Icon name="sparkles" size={18} />
                                     AI Settings
                                 </div>
-                                <div className="api-provider">Provider: OpenRouter (Qwen 2.5)</div>
+                                <div className="api-provider">Provider: OpenRouter (DeepSeek)</div>
                                 <input
                                     type="password"
                                     className="api-key-input"
