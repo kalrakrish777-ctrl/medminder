@@ -1121,7 +1121,7 @@
                         'X-Title': 'MedMinder'
                     },
                     body: JSON.stringify({
-                        model: 'moonshotai/kimi-k2.5',
+                        model: 'qwen/qwen-2.5-7b-instruct',
                         messages,
                         max_tokens: 1000,
                         temperature: 0.7
@@ -1681,7 +1681,7 @@ Keep responses friendly, warm, and helpful.`;
                                     <Icon name="sparkles" size={18} />
                                     AI Settings
                                 </div>
-                                <div className="api-provider">Provider: OpenRouter (Kimi K2.5)</div>
+                                <div className="api-provider">Provider: OpenRouter (Qwen 2.5)</div>
                                 <input
                                     type="password"
                                     className="api-key-input"
