@@ -1109,32 +1109,72 @@
             set: (k, v) => localStorage.setItem(`mm_${k}`, JSON.stringify(v))
         };
 
-        // AI Client - Local assistant (no API key needed)
+        // AI Client - Smart local assistant (no API key needed)
         const aiClient = {
             async chat(apiKey, messages) {
                 const lastMessage = messages[messages.length - 1].content.toLowerCase();
+                await new Promise(resolve => setTimeout(resolve, 600 + Math.random() * 800));
                 
-                // Simulate typing delay
-                await new Promise(resolve => setTimeout(resolve, 800));
+                const responses = {
+                    greeting: [
+                        "Hello! Great to see you. How can I help with your medications today?",
+                        "Hi there! I'm here to help you stay on track with your health. What do you need?",
+                        "Hey! Ready to help you manage your medications. What's up?"
+                    ],
+                    addMed: [
+                        "To add a medication, tap the + button on the home screen. You can set the name, dosage, and times you'd like to be reminded.",
+                        "Easy! Just tap the + button and fill in your medication details. I can help you remember to take them on time.",
+                        "Adding medications is simple - use the + button below. Set your preferred times and I'll help you stay consistent."
+                    ],
+                    missed: [
+                        "It's okay - we all forget sometimes. If you've missed a dose, check with your pharmacist about whether to take it now or wait.",
+                        "Don't stress! Try to take it as soon as you remember, but if it's almost time for your next dose, skip it. Never double up.",
+                        "Missing a dose happens. The best thing is to get back on track. Set a reminder so it doesn't happen again!"
+                    ],
+                    reminder: [
+                        "MedMinder helps you remember! Check your home screen to see upcoming doses. You can also set custom reminders for each medication.",
+                        "Reminders are key to consistency. I'll show you your daily progress on the home screen. Keep up the great work!",
+                        "Staying on schedule is important. Look for the progress ring on your home screen - it shows how you're doing today!"
+                    ],
+                    general: [
+                        "I'm here to support your health journey! Ask me anything about managing medications or using the app.",
+                        "Taking medications consistently makes a big difference. Let me know if you have any questions!",
+                        "Health is wealth! I'm happy to help with any medication-related questions you have.",
+                        "Keep taking care of yourself! I'm always here to help with reminders and tips.",
+                        "You've got this! Small steps lead to big health improvements. What else can I help with?"
+                    ],
+                    encouragement: [
+                        "You're doing amazing by keeping track of your medications. Consistency is the key to feeling better!",
+                        "Proud of you for staying on top of your health! Regular medication can make a world of difference.",
+                        "Taking your medications regularly is one of the best things you can do for yourself. Keep going!"
+                    ]
+                };
                 
-                // Basic medication responses
-                if (lastMessage.includes('add') || lastMessage.includes('take') || lastMessage.includes('medication')) {
-                    return "I can help you manage medications! Tap the + button on the home screen to add a new medication, or tell me: 'Add [medication name] at [time]' and I'll help you set it up.";
+                const getRandom = (arr) => arr[Math.floor(Math.random() * arr.length)];
+                
+                if (/^(hi|hello|hey|greetings)/.test(lastMessage)) {
+                    return getRandom(responses.greeting);
                 }
-                if (lastMessage.includes('miss') || lastMessage.includes('forgot')) {
-                    return "Don't worry - it happens! If you've missed a dose, check with your doctor or pharmacist about what to do. Setting reminders can help prevent missed doses.";
+                if (/add.*med|take.*med|new.*med|medication.*add|start.*taking/.test(lastMessage)) {
+                    return getRandom(responses.addMed);
                 }
-                if (lastMessage.includes('side effect')) {
-                    return "For any concerns about side effects, please consult your doctor or pharmacist. They can provide personalized advice based on your health history.";
+                if (/miss|forgot|skip|forget/.test(lastMessage)) {
+                    return getRandom(responses.missed);
                 }
-                if (lastMessage.includes('hello') || lastMessage.includes('hi') || lastMessage.includes('hey')) {
-                    return "Hello! I'm MedMinder AI. I can help you track medications, set reminders, and answer basic health questions. What would you like help with?";
+                if (/remind|alert|notify|notification/.test(lastMessage)) {
+                    return getRandom(responses.reminder);
                 }
-                if (lastMessage.includes('thank')) {
-                    return "You're welcome! Taking care of your health is important. Let me know if you need anything else!";
+                if (/thank|thanks|awesome|great|good/.test(lastMessage)) {
+                    return getRandom(responses.encouragement);
+                }
+                if (/how.*work|how.*use|how.*do|help.*me|what.*do/.test(lastMessage)) {
+                    return "This app tracks your medications. Tap + to add meds, check them off when taken, and see your progress on the home screen. The Progress tab shows your weekly history!";
+                }
+                if (/why|what.*for|why.*take|importance/.test(lastMessage)) {
+                    return "Taking medications consistently is important for managing health conditions. Even if you feel fine, many medications work best when taken regularly. Talk to your doctor about any concerns.";
                 }
                 
-                return "I'm here to help with medication management! You can ask me to add medications, remind you about doses, or explain how to use the app. What would you like to know?";
+                return getRandom(responses.general);
             }
         };
 
