@@ -1231,10 +1231,14 @@ Keep responses friendly, warm, and helpful.`;
                     const medsList = meds.map(m => `${m.name} ${m.dosage || ''}`).join(', ') || 'No medications added yet';
                     const systemPrompt = SYSTEM_PROMPT.replace('{meds}', medsList);
                     
+                    console.log('Sending to AI with key:', apiKey.substring(0, 10) + '...');
+                    
                     const response = await aiClient.chat(apiKey, [
                         { role: 'system', content: systemPrompt },
                         { role: 'user', content: userMessage }
                     ]);
+                    
+                    console.log('AI Response:', response);
                     
                     setAiResponse({
                         text: response,
@@ -1267,8 +1271,9 @@ Keep responses friendly, warm, and helpful.`;
                         // Not JSON, just show response
                     }
                 } catch (error) {
+                    console.error('AI Error:', error);
                     setAiResponse({
-                        text: `Sorry, I couldn't connect to the AI. Please check your API key.`,
+                        text: `Error: ${error.message}. Please check your API key and try again.`,
                         time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                     });
                 }
