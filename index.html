@@ -23,21 +23,36 @@
             --text-secondary: rgba(240,237,232,0.55);
             --text-tertiary: rgba(240,237,232,0.3);
             --accent-green: #7eb89a;
+            --accent-green-dim: rgba(126,184,154,0.15);
             --accent-amber: #e8a97e;
+            --accent-amber-dim: rgba(232,169,126,0.15);
             --accent-rose: #c97b84;
+            --accent-rose-dim: rgba(201,123,132,0.15);
             --accent-blue: #7aa3c8;
+            --accent-blue-dim: rgba(122,163,200,0.15);
+            --accent-purple: #9b8dc4;
+            --accent-teal: #6bb3b3;
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        html, body { height: 100%; }
+        html, body { height: 100%; overflow: hidden; }
         body {
-            font-family: 'DM Sans', sans-serif;
+            font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
             font-size: 16px;
             line-height: 1.6;
             color: var(--text-primary);
             background: var(--bg-primary);
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
+
+        ::selection { background: var(--accent-green-dim); color: var(--text-primary); }
 
         #root { height: 100%; display: flex; flex-direction: column; }
 
@@ -55,85 +70,123 @@
             height: 100%;
             display: flex;
             flex-direction: column;
+            opacity: 0;
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
         /* Header */
         .header {
-            padding: 20px;
-            text-align: center;
-            border-bottom: 1px solid var(--border-subtle);
+            padding: 20px 20px 16px;
+            animation: slideUp 0.5s ease forwards;
         }
 
         .logo {
             display: flex;
             align-items: center;
-            justify-content: center;
             gap: 12px;
-            margin-bottom: 8px;
         }
 
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            background: var(--accent-green);
-            border-radius: 12px;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent-green), #5a9a7a);
+            border-radius: var(--radius-md);
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 16px rgba(126,184,154,0.25);
         }
 
-        .logo-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--bg-primary);
-        }
+        .logo-icon svg { width: 24px; height: 24px; stroke: var(--bg-primary); }
 
         .logo-text {
             font-family: 'Instrument Serif', serif;
-            font-size: 28px;
-            color: var(--text-primary);
+            font-size: 26px;
+            letter-spacing: -0.02em;
         }
 
         .tagline {
             color: var(--text-tertiary);
-            font-size: 14px;
+            font-size: 13px;
+            margin-top: 2px;
+            padding-left: 56px;
         }
 
         /* Content */
         .content {
             flex: 1;
             overflow-y: auto;
-            padding: 24px 20px 100px;
+            overflow-x: hidden;
+            padding: 8px 20px 120px;
+            scroll-behavior: smooth;
         }
 
-        /* Page Title */
-        .page-title {
-            font-family: 'Instrument Serif', serif;
-            font-size: 32px;
+        .content::-webkit-scrollbar { width: 4px; }
+        .content::-webkit-scrollbar-track { background: transparent; }
+        .content::-webkit-scrollbar-thumb { background: var(--border-medium); border-radius: 2px; }
+
+        /* Page Header */
+        .page-header {
             margin-bottom: 24px;
+            animation: slideUp 0.5s ease forwards;
+            animation-delay: 0.1s;
+            opacity: 0;
         }
 
-        /* Cards */
-        .card {
+        .page-date {
+            font-family: 'Instrument Serif', serif;
+            font-size: 28px;
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .page-subtitle {
+            color: var(--text-secondary);
+            font-size: 15px;
+        }
+
+        /* Progress Ring Card */
+        .progress-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
+            border-radius: var(--radius-lg);
+            padding: 28px;
+            margin-bottom: 24px;
+            animation: slideUp 0.5s ease forwards;
+            animation-delay: 0.15s;
+            opacity: 0;
         }
 
-        /* Progress Ring */
         .progress-container {
             display: flex;
-            flex-direction: column;
             align-items: center;
-            padding: 32px 0;
+            gap: 24px;
         }
 
         .progress-ring-wrapper {
             position: relative;
-            width: 180px;
-            height: 180px;
+            width: 100px;
+            height: 100px;
+            flex-shrink: 0;
         }
 
         .progress-ring {
@@ -143,16 +196,19 @@
         .progress-ring-bg {
             fill: none;
             stroke: var(--border-subtle);
-            stroke-width: 10;
+            stroke-width: 8;
         }
 
         .progress-ring-fill {
             fill: none;
             stroke: var(--accent-green);
-            stroke-width: 10;
+            stroke-width: 8;
             stroke-linecap: round;
-            transition: stroke-dashoffset 0.6s ease;
+            transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        .progress-ring-fill.low { stroke: var(--accent-amber); }
+        .progress-ring-fill.critical { stroke: var(--accent-rose); }
 
         .progress-center {
             position: absolute;
@@ -163,178 +219,339 @@
 
         .progress-percent {
             font-family: 'Instrument Serif', serif;
-            font-size: 42px;
+            font-size: 28px;
+            line-height: 1;
         }
 
         .progress-label {
+            font-size: 9px;
             color: var(--text-tertiary);
-            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
         }
 
-        .progress-summary {
-            color: var(--text-secondary);
-            margin-top: 16px;
-            font-size: 15px;
+        .progress-info {
+            flex: 1;
         }
 
-        /* Stats */
-        .stats-grid {
+        .progress-stat {
+            display: flex;
+            align-items: baseline;
+            gap: 4px;
+            margin-bottom: 8px;
+        }
+
+        .progress-stat-value {
+            font-family: 'Instrument Serif', serif;
+            font-size: 36px;
+            line-height: 1;
+        }
+
+        .progress-stat-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .progress-message {
+            color: var(--text-tertiary);
+            font-size: 14px;
+        }
+
+        /* Stats Row */
+        .stats-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 12px;
-            margin-top: 24px;
+            margin-bottom: 24px;
+            animation: slideUp 0.5s ease forwards;
+            animation-delay: 0.2s;
+            opacity: 0;
         }
 
         .stat-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 20px;
+            border-radius: var(--radius-lg);
+            padding: 16px;
             text-align: center;
         }
 
+        .stat-icon {
+            width: 36px;
+            height: 36px;
+            margin: 0 auto 8px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon.streak { background: var(--accent-amber-dim); color: var(--accent-amber); }
+        .stat-icon.rate { background: var(--accent-green-dim); color: var(--accent-green); }
+        .stat-icon.total { background: var(--accent-blue-dim); color: var(--accent-blue); }
+
+        .stat-icon svg { width: 20px; height: 20px; }
+
         .stat-value {
             font-family: 'Instrument Serif', serif;
-            font-size: 32px;
-            color: var(--accent-green);
+            font-size: 24px;
+            line-height: 1.2;
         }
 
         .stat-label {
+            font-size: 11px;
             color: var(--text-tertiary);
-            font-size: 12px;
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.08em;
             margin-top: 4px;
         }
 
-        /* Med Group */
+        /* Med Section */
         .med-section {
-            margin-bottom: 32px;
+            margin-bottom: 28px;
+            animation: slideUp 0.5s ease forwards;
+            opacity: 0;
         }
 
+        .med-section:nth-child(4) { animation-delay: 0.25s; }
+        .med-section:nth-child(5) { animation-delay: 0.3s; }
+        .med-section:nth-child(6) { animation-delay: 0.35s; }
+        .med-section:nth-child(7) { animation-delay: 0.4s; }
+
         .med-section-title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             color: var(--text-tertiary);
             font-size: 11px;
             text-transform: uppercase;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.12em;
             margin-bottom: 12px;
             padding-left: 4px;
         }
 
+        .med-section-title svg { width: 14px; height: 14px; }
+
+        /* Med Card */
         .med-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 12px;
+            border-radius: var(--radius-lg);
+            padding: 16px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
+            transition: all var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
         }
 
         .med-card::before {
             content: '';
             position: absolute;
-            left: 0;
-            top: 0;
-            bottom: 0;
+            left: 0; top: 0; bottom: 0;
             width: 4px;
-            border-radius: 4px 0 0 4px;
+            transition: width var(--transition);
         }
 
-        .med-color-dot {
-            width: 12px;
-            height: 12px;
-            border-radius: 50%;
-            flex-shrink: 0;
+        .med-card[data-color="blue"]::before { background: var(--accent-blue); }
+        .med-card[data-color="green"]::before { background: var(--accent-green); }
+        .med-card[data-color="amber"]::before { background: var(--accent-amber); }
+        .med-card[data-color="rose"]::before { background: var(--accent-rose); }
+        .med-card[data-color="purple"]::before { background: var(--accent-purple); }
+        .med-card[data-color="teal"]::before { background: var(--accent-teal); }
+
+        .med-card:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--border-medium);
+            transform: translateX(4px);
         }
 
-        .med-info { flex: 1; }
-        .med-name { font-weight: 600; font-size: 17px; }
-        .med-dosage { color: var(--text-secondary); font-size: 14px; }
-        .med-time { color: var(--text-tertiary); font-size: 13px; margin-top: 4px; }
+        .med-card:active { transform: scale(0.98); }
 
         .med-card.done {
             opacity: 0.5;
         }
+
+        .med-card.done::before { opacity: 0.4; }
+
+        .med-card.taking {
+            animation: pulse 0.4s ease;
+        }
+
+        .med-color-dot {
+            width: 10px;
+            height: 40px;
+            border-radius: 5px;
+            flex-shrink: 0;
+            margin-left: 8px;
+        }
+
+        .med-info { flex: 1; min-width: 0; }
+
+        .med-name {
+            font-weight: 600;
+            font-size: 16px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
         .med-card.done .med-name {
             text-decoration: line-through;
             text-decoration-color: var(--text-tertiary);
         }
 
-        .btn {
-            padding: 12px 24px;
-            border-radius: 24px;
-            font-size: 14px;
+        .med-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+        }
+
+        .med-dosage { color: var(--text-secondary); font-size: 14px; }
+
+        .med-time {
+            color: var(--text-tertiary);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .med-time svg { width: 12px; height: 12px; }
+
+        .med-tag {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            background: var(--bg-surface-hover);
+            color: var(--text-tertiary);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .med-check {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--accent-green-dim);
+            color: var(--accent-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all var(--transition);
+        }
+
+        .med-check svg { width: 18px; height: 18px; }
+
+        .med-btn {
+            padding: 10px 20px;
+            border-radius: var(--radius-xl);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all var(--transition);
             font-family: inherit;
-            border: none;
-        }
-
-        .btn-primary {
-            background: var(--accent-green);
-            color: var(--bg-primary);
-        }
-
-        .btn-outline {
-            background: transparent;
             border: 2px solid var(--accent-green);
+            background: transparent;
             color: var(--accent-green);
         }
 
-        .btn-outline:hover {
+        .med-btn:hover {
             background: var(--accent-green);
             color: var(--bg-primary);
         }
 
-        .btn-small {
-            padding: 8px 16px;
-            font-size: 13px;
+        .med-btn:active { transform: scale(0.95); }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 48px 24px;
+            animation: slideUp 0.5s ease forwards;
         }
+
+        .empty-icon {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 20px;
+            background: var(--bg-surface);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+        }
+
+        .empty-icon svg { width: 32px; height: 32px; }
+
+        .empty-title {
+            font-family: 'Instrument Serif', serif;
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .empty-text { color: var(--text-tertiary); font-size: 14px; }
 
         /* List Items */
         .list-item {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 16px;
             margin-bottom: 12px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 14px;
+            transition: all var(--transition);
         }
 
-        .list-item-info { flex: 1; }
+        .list-item:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--border-medium);
+        }
+
+        .list-item-info { flex: 1; min-width: 0; }
         .list-item-title { font-weight: 600; font-size: 16px; }
-        .list-item-subtitle { color: var(--text-secondary); font-size: 14px; }
+        .list-item-subtitle { color: var(--text-secondary); font-size: 14px; margin-top: 2px; }
+        .list-item-chips { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+
+        .chip {
+            font-size: 11px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background: var(--bg-surface-hover);
+            color: var(--text-secondary);
+        }
 
         .icon-btn {
             background: transparent;
             border: none;
             color: var(--text-tertiary);
             cursor: pointer;
-            padding: 8px;
-            border-radius: 8px;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            transition: all var(--transition);
         }
-        .icon-btn:hover {
-            background: var(--bg-surface-hover);
-            color: var(--text-primary);
-        }
+        .icon-btn:hover { background: var(--bg-surface-hover); color: var(--text-primary); }
+        .icon-btn:active { transform: scale(0.9); }
         .icon-btn svg { width: 20px; height: 20px; }
 
         /* Bottom Nav */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; right: 0;
-            background: var(--bg-primary);
+            background: rgba(10,15,30,0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border-top: 1px solid var(--border-subtle);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0 28px;
+            padding: 8px 0 24px;
             z-index: 100;
         }
 
@@ -346,39 +563,35 @@
             background: transparent;
             border: none;
             color: var(--text-tertiary);
-            font-size: 11px;
+            font-size: 10px;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 8px 20px;
             position: relative;
             font-family: inherit;
-            transition: color 0.3s ease;
+            transition: all var(--transition);
         }
 
-        .nav-btn.active {
-            color: var(--text-primary);
-        }
+        .nav-btn svg { width: 24px; height: 24px; }
 
+        .nav-btn.active { color: var(--text-primary); }
         .nav-btn.active::after {
             content: '';
             position: absolute;
-            bottom: -4px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 24px;
+            width: 20px;
             height: 3px;
             background: var(--accent-green);
             border-radius: 2px;
         }
 
-        .nav-btn svg {
-            width: 24px;
-            height: 24px;
-        }
+        .nav-btn:active { transform: scale(0.9); }
 
         /* FAB */
         .fab {
             position: fixed;
-            bottom: 90px;
+            bottom: 88px;
             right: 20px;
             width: 56px;
             height: 56px;
@@ -391,53 +604,53 @@
             align-items: center;
             justify-content: center;
             z-index: 50;
-            transition: transform 0.3s ease;
-            box-shadow: 0 4px 20px rgba(126, 184, 154, 0.3);
+            box-shadow: 0 4px 20px rgba(126,184,154,0.35);
+            transition: all var(--transition);
         }
-        .fab:hover { transform: scale(1.05); }
-        .fab svg { width: 28px; height: 28px; }
+        .fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(126,184,154,0.45); }
+        .fab:active { transform: scale(0.95); }
+        .fab svg { width: 26px; height: 26px; }
 
         /* Bottom Sheet */
         .sheet-overlay {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
             z-index: 200;
             opacity: 0;
             pointer-events: none;
-            transition: opacity 0.3s ease;
+            transition: opacity var(--transition);
         }
-        .sheet-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
+        .sheet-overlay.active { opacity: 1; pointer-events: auto; }
 
         .bottom-sheet {
             position: fixed;
             bottom: 0; left: 0; right: 0;
             background: var(--bg-primary);
             border: 1px solid var(--border-medium);
-            border-radius: 24px 24px 0 0;
-            padding: 24px 20px 40px;
+            border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+            padding: 20px 20px 40px;
             z-index: 201;
             transform: translateY(100%);
-            transition: transform 0.4s ease;
-            max-height: 85vh;
+            transition: transform var(--transition-slow);
+            max-height: 90vh;
             overflow-y: auto;
         }
         .bottom-sheet.active { transform: translateY(0); }
 
         .sheet-handle {
-            width: 40px;
+            width: 36px;
             height: 4px;
             background: var(--border-medium);
             border-radius: 2px;
-            margin: 0 auto 20px;
+            margin: 0 auto 16px;
         }
 
         .sheet-title {
             font-family: 'Instrument Serif', serif;
-            font-size: 24px;
+            font-size: 22px;
             margin-bottom: 24px;
         }
 
@@ -448,45 +661,58 @@
             font-size: 13px;
             color: var(--text-secondary);
             margin-bottom: 8px;
+            font-weight: 500;
         }
         .form-input {
             width: 100%;
             padding: 14px 16px;
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             color: var(--text-primary);
             font-size: 16px;
             font-family: inherit;
+            transition: all var(--transition);
         }
         .form-input:focus {
             outline: none;
             border-color: var(--accent-green);
+            background: var(--bg-surface-hover);
         }
         .form-input::placeholder { color: var(--text-tertiary); }
 
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .color-swatches { display: flex; gap: 12px; flex-wrap: wrap; }
+        .color-swatches { display: flex; gap: 10px; flex-wrap: wrap; }
         .swatch {
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
             cursor: pointer;
             border: 3px solid transparent;
-            transition: border-color 0.3s ease;
+            transition: all var(--transition);
         }
-        .swatch.selected { border-color: var(--text-primary); }
+        .swatch:hover { transform: scale(1.1); }
+        .swatch.selected { border-color: var(--text-primary); transform: scale(1.05); }
+        .swatch-blue { background: var(--accent-blue); }
+        .swatch-green { background: var(--accent-green); }
+        .swatch-amber { background: var(--accent-amber); }
+        .swatch-rose { background: var(--accent-rose); }
+        .swatch-purple { background: var(--accent-purple); }
+        .swatch-teal { background: var(--accent-teal); }
 
         .times-list { display: flex; flex-direction: column; gap: 8px; }
         .time-row {
             display: flex;
             align-items: center;
             gap: 8px;
-            padding: 12px;
+            padding: 12px 14px;
             background: var(--bg-surface);
-            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            transition: all var(--transition);
         }
+        .time-row:focus-within { border-color: var(--accent-green); }
         .time-row input {
             flex: 1;
             background: transparent;
@@ -497,39 +723,81 @@
         }
         .time-row input:focus { outline: none; }
 
-        .add-time-btn {
+        .add-btn {
+            width: 100%;
+            padding: 14px;
             background: transparent;
             border: 1px dashed var(--border-medium);
             color: var(--text-secondary);
-            padding: 12px;
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             font-size: 14px;
             cursor: pointer;
-            width: 100%;
             margin-top: 8px;
             font-family: inherit;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
         }
+        .add-btn:hover { border-color: var(--accent-green); color: var(--accent-green); }
+        .add-btn svg { width: 18px; height: 18px; }
 
         .food-btns { display: flex; gap: 8px; }
         .food-btn {
             flex: 1;
-            padding: 12px;
+            padding: 12px 8px;
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 12px;
+            border-radius: var(--radius-md);
             color: var(--text-secondary);
-            font-size: 13px;
+            font-size: 12px;
             cursor: pointer;
             font-family: inherit;
+            transition: all var(--transition);
         }
         .food-btn.selected {
             border-color: var(--accent-green);
+            background: var(--accent-green-dim);
             color: var(--accent-green);
         }
 
-        textarea.form-input { min-height: 100px; resize: vertical; }
+        textarea.form-input { min-height: 80px; resize: vertical; }
 
-        .btn-full { width: 100%; }
+        /* Buttons */
+        .btn {
+            padding: 14px 24px;
+            border-radius: var(--radius-md);
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: inherit;
+            border: none;
+            width: 100%;
+        }
+
+        .btn-primary {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+        .btn-primary:hover { background: #8ec4a5; }
+        .btn-primary:active { transform: scale(0.98); }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-medium);
+            color: var(--text-secondary);
+        }
+        .btn-outline:hover { background: var(--bg-surface-hover); }
+
+        .btn-danger {
+            background: var(--accent-rose-dim);
+            border: 1px solid var(--accent-rose);
+            color: var(--accent-rose);
+            margin-top: 12px;
+        }
+        .btn-danger:hover { background: var(--accent-rose); color: var(--bg-primary); }
 
         /* Toast */
         .toast {
@@ -539,14 +807,16 @@
             right: 20px;
             background: var(--bg-surface);
             border: 1px solid var(--border-medium);
-            border-radius: 12px;
-            padding: 16px 20px;
+            border-radius: var(--radius-md);
+            padding: 14px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             z-index: 300;
             transform: translateY(150%);
-            transition: transform 0.3s ease;
+            transition: transform var(--transition);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
         }
         .toast.show { transform: translateY(0); }
         .toast-msg { font-size: 14px; }
@@ -558,67 +828,98 @@
             font-weight: 600;
             cursor: pointer;
             font-family: inherit;
+            padding: 4px 8px;
         }
-
-        /* Empty State */
-        .empty {
-            text-align: center;
-            padding: 48px 24px;
-            color: var(--text-tertiary);
-        }
-        .empty-icon {
-            width: 64px;
-            height: 64px;
-            margin: 0 auto 16px;
-            opacity: 0.4;
-        }
-        .empty-text { font-size: 15px; }
+        .toast-undo:hover { text-decoration: underline; }
 
         /* Contact Card */
+        .contact-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            padding: 20px;
+            margin-bottom: 16px;
+            transition: all var(--transition);
+        }
+        .contact-card:hover {
+            background: var(--bg-surface-hover);
+            border-color: var(--border-medium);
+        }
+
         .contact-role {
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-tertiary);
             text-transform: uppercase;
             letter-spacing: 0.15em;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
         }
-        .contact-name { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
-        .contact-phone { color: var(--text-secondary); margin-bottom: 16px; }
-        .contact-actions { display: flex; gap: 12px; }
+        .contact-name { font-size: 18px; font-weight: 600; }
+        .contact-phone { color: var(--text-secondary); margin-top: 2px; }
+        .contact-actions { display: flex; gap: 10px; margin-top: 16px; }
         .contact-btn {
             flex: 1;
-            padding: 14px;
-            border-radius: 12px;
-            font-size: 14px;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
             font-family: inherit;
+            transition: all var(--transition);
         }
         .contact-btn.call { background: var(--accent-green); border: none; color: var(--bg-primary); }
+        .contact-btn.call:hover { background: #8ec4a5; }
         .contact-btn.edit { background: transparent; border: 1px solid var(--border-medium); color: var(--text-secondary); }
-        .contact-btn svg { width: 18px; height: 18px; }
+        .contact-btn.edit:hover { background: var(--bg-surface-hover); }
+        .contact-btn svg { width: 16px; height: 16px; }
 
-        /* Bar Chart */
+        /* Chart */
         .chart-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
-            border-radius: 16px;
+            border-radius: var(--radius-lg);
             padding: 20px;
             margin-bottom: 24px;
         }
-        .chart-title { font-size: 13px; color: var(--text-secondary); margin-bottom: 20px; }
-        .bar-chart { display: flex; justify-content: space-between; align-items: flex-end; height: 120px; gap: 8px; }
-        .bar-day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .bar { width: 100%; max-width: 32px; border-radius: 4px 4px 0 0; transition: height 0.4s ease; }
-        .bar-label { font-size: 11px; color: var(--text-tertiary); }
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .chart-title { font-size: 13px; color: var(--text-secondary); }
+        .chart-legend {
+            display: flex;
+            gap: 12px;
+            font-size: 10px;
+            color: var(--text-tertiary);
+        }
+        .legend-item { display: flex; align-items: center; gap: 4px; }
+        .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+        .bar-chart { display: flex; justify-content: space-between; align-items: flex-end; height: 100px; gap: 6px; }
+        .bar-day { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .bar { width: 100%; max-width: 28px; border-radius: 4px 4px 0 0; transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+        .bar-label { font-size: 10px; color: var(--text-tertiary); }
 
         /* History */
+        .history-list {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+        }
+        .history-header {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-subtle);
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
         .history-item {
-            padding: 14px 0;
+            padding: 14px 16px;
             border-bottom: 1px solid var(--border-subtle);
             display: flex;
             align-items: center;
@@ -631,13 +932,15 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-shrink: 0;
         }
-        .history-icon.taken { background: rgba(126, 184, 154, 0.2); color: var(--accent-green); }
-        .history-icon.missed { background: rgba(201, 123, 132, 0.2); color: var(--accent-rose); }
-        .history-info { flex: 1; }
+        .history-icon.taken { background: var(--accent-green-dim); color: var(--accent-green); }
+        .history-icon.missed { background: var(--accent-rose-dim); color: var(--accent-rose); }
+        .history-icon svg { width: 16px; height: 16px; }
+        .history-info { flex: 1; min-width: 0; }
         .history-name { font-size: 14px; font-weight: 500; }
-        .history-time { font-size: 12px; color: var(--text-tertiary); }
-        .history-date { font-size: 12px; color: var(--text-tertiary); }
+        .history-meta { font-size: 12px; color: var(--text-tertiary); margin-top: 2px; }
+        .history-date { font-size: 12px; color: var(--text-tertiary); flex-shrink: 0; }
     </style>
 </head>
 <body>
@@ -658,22 +961,26 @@
     </script>
 
     <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+        const { useState, useEffect, useRef, useMemo } = React;
 
         // Icons
-        const Icon = ({ name }) => {
+        const Icon = ({ name, size = 24 }) => {
             const icons = {
-                home: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
-                pill: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>,
-                chart: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
-                phone: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
-                plus: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
-                check: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>,
-                x: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
-                edit: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
-                flame: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
-                calendar: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
-                trash: <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                home: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+                pill: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/><path d="m8.5 8.5 7 7"/></svg>,
+                chart: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>,
+                phone: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>,
+                plus: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>,
+                check: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>,
+                x: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>,
+                edit: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>,
+                flame: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>,
+                percent: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></svg>,
+                clock: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>,
+                sun: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>,
+                moon: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>,
+                sunset: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 18a5 5 0 0 0-10 0"/><line x1="12" y1="2" x2="12" y2="9"/><line x1="4.22" y1="10.22" x2="5.64" y2="11.64"/><line x1="1" y1="18" x2="3" y2="18"/><line x1="21" y1="18" x2="23" y2="18"/><line x1="18.36" y1="11.64" x2="19.78" y2="10.22"/><line x1="23" y1="22" x2="1" y2="22"/><polyline points="8 6 12 2 16 6"/></svg>,
+                trash: <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
             };
             return icons[name] || null;
         };
@@ -694,25 +1001,25 @@
                 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
                 const particles = [];
-                const geometry = new THREE.SphereGeometry(0.6, 16, 16);
-                const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.06 });
+                const geometry = new THREE.SphereGeometry(0.5, 12, 12);
+                const material = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.05 });
 
-                for (let i = 0; i < 150; i++) {
+                for (let i = 0; i < 120; i++) {
                     const particle = new THREE.Mesh(geometry, material);
                     particle.position.set(
-                        (Math.random() - 0.5) * 50,
-                        (Math.random() - 0.5) * 50,
-                        (Math.random() - 0.5) * 20
+                        (Math.random() - 0.5) * 60,
+                        (Math.random() - 0.5) * 60,
+                        (Math.random() - 0.5) * 30
                     );
                     particle.userData.vel = {
-                        x: (Math.random() - 0.5) * 0.003,
-                        y: (Math.random() - 0.5) * 0.003
+                        x: (Math.random() - 0.5) * 0.002,
+                        y: (Math.random() - 0.5) * 0.002
                     };
                     scene.add(particle);
                     particles.push(particle);
                 }
 
-                camera.position.z = 15;
+                camera.position.z = 20;
                 let animating = true;
 
                 const animate = () => {
@@ -721,8 +1028,8 @@
                     particles.forEach(p => {
                         p.position.x += p.userData.vel.x;
                         p.position.y += p.userData.vel.y;
-                        if (Math.abs(p.position.x) > 25) p.userData.vel.x *= -1;
-                        if (Math.abs(p.position.y) > 25) p.userData.vel.y *= -1;
+                        if (Math.abs(p.position.x) > 30) p.userData.vel.x *= -1;
+                        if (Math.abs(p.position.y) > 30) p.userData.vel.y *= -1;
                     });
                     renderer.render(scene, camera);
                 };
@@ -756,6 +1063,12 @@
             if (h >= 17 && h < 21) return 'evening';
             return 'night';
         };
+        const getTimeIcon = (h) => {
+            if (h >= 5 && h < 12) return 'sun';
+            if (h >= 12 && h < 17) return 'sun';
+            if (h >= 17 && h < 21) return 'sunset';
+            return 'moon';
+        };
         const formatTime = (t) => {
             const [h, m] = t.split(':');
             const hour = parseInt(h);
@@ -780,7 +1093,6 @@
             const [undoKey, setUndoKey] = useState(null);
             const undoTimer = useRef(null);
 
-            // Load data
             useEffect(() => {
                 setMeds(storage.get('meds', []));
                 setTaken(storage.get('taken', {}));
@@ -788,7 +1100,6 @@
                 setContacts(storage.get('contacts', { family: {}, doctor: {}, pharmacy: {} }));
             }, []);
 
-            // Save data
             useEffect(() => { storage.set('meds', meds); }, [meds]);
             useEffect(() => { storage.set('taken', taken); }, [taken]);
             useEffect(() => { storage.set('history', history); }, [history]);
@@ -815,13 +1126,9 @@
                 clearTimeout(undoTimer.current);
                 setToast(`${med?.name} marked as taken`);
                 setUndoKey(key);
-                undoTimer.current = setTimeout(() => {
-                    setToast(null);
-                    setUndoKey(null);
-                }, 5000);
+                undoTimer.current = setTimeout(() => { setToast(null); setUndoKey(null); }, 5000);
             };
 
-            // Undo
             const undoTaken = () => {
                 const today = getToday();
                 setTaken(prev => {
@@ -834,34 +1141,44 @@
                 setUndoKey(null);
             };
 
-            // Delete med
             const deleteMed = (id) => {
-                if (confirm('Remove this medication?')) {
-                    setMeds(prev => prev.filter(m => m.id !== id));
-                }
+                if (confirm('Remove this medication?')) setMeds(prev => prev.filter(m => m.id !== id));
             };
 
-            // Get today's stats
+            // Stats
             const today = getToday();
-            const todayMeds = meds.flatMap(m => m.times.map(t => ({ ...m, currentTime: t })));
+            const allDoses = useMemo(() => meds.flatMap(m => m.times.map(t => ({ ...m, currentTime: t }))), [meds]);
             const takenToday = Object.keys(taken[today] || {}).length;
-            const totalToday = todayMeds.length;
+            const totalToday = allDoses.length;
             const percent = totalToday > 0 ? Math.round((takenToday / totalToday) * 100) : 0;
 
-            // Group meds
-            const groupMeds = () => {
-                const groups = { morning: [], afternoon: [], evening: [], night: [] };
-                meds.forEach(m => {
-                    m.times.forEach(t => {
-                        const h = parseInt(t.split(':')[0]);
-                        groups[getTimeOfDay(h)].push({ ...m, currentTime: t });
-                    });
-                });
-                return groups;
-            };
+            const streak = useMemo(() => {
+                let s = 0;
+                for (let i = 0; i < 365; i++) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const ds = d.toISOString().split('T')[0];
+                    const total = meds.flatMap(m => m.times).length;
+                    const done = Object.keys(taken[ds] || {}).length;
+                    if (total > 0 && done >= total) s++;
+                    else if (total > 0) break;
+                }
+                return s;
+            }, [taken, meds]);
 
-            // Weekly data
-            const getWeeklyData = () => {
+            const weeklyRate = useMemo(() => {
+                let total = 0, done = 0;
+                for (let i = 6; i >= 0; i--) {
+                    const d = new Date();
+                    d.setDate(d.getDate() - i);
+                    const ds = d.toISOString().split('T')[0];
+                    total += meds.flatMap(m => m.times).length;
+                    done += Object.keys(taken[ds] || {}).length;
+                }
+                return total > 0 ? Math.round((done / total) * 100) : 0;
+            }, [taken, meds]);
+
+            const getWeeklyData = useMemo(() => {
                 const days = [];
                 for (let i = 6; i >= 0; i--) {
                     const d = new Date();
@@ -875,26 +1192,52 @@
                     });
                 }
                 return days;
+            }, [taken, meds]);
+
+            const groupMeds = useMemo(() => {
+                const groups = { morning: [], afternoon: [], evening: [], night: [] };
+                meds.forEach(m => {
+                    m.times.forEach(t => {
+                        const h = parseInt(t.split(':')[0]);
+                        groups[getTimeOfDay(h)].push({ ...m, currentTime: t });
+                    });
+                });
+                return groups;
+            }, [meds]);
+
+            const getProgressClass = () => {
+                if (percent >= 80) return '';
+                if (percent >= 50) return 'low';
+                return 'critical';
             };
 
-            // Render pages
+            const getProgressMessage = () => {
+                if (totalToday === 0) return 'Add medications to track';
+                if (percent === 100) return 'All done for today';
+                if (percent >= 80) return 'Almost there';
+                if (percent >= 50) return 'Keep going';
+                if (takenToday > 0) return 'Good start';
+                return 'Start your day';
+            };
+
+            // Render functions
             const renderHome = () => (
                 <div>
-                    <h2 className="page-title">{formatDate()}</h2>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '24px' }}>
-                        {takenToday} of {totalToday} medications taken
-                    </p>
+                    <div className="page-header">
+                        <h1 className="page-date">{formatDate()}</h1>
+                        <p className="page-subtitle">{takenToday} of {totalToday} medications taken</p>
+                    </div>
 
-                    <div className="card">
+                    <div className="progress-card">
                         <div className="progress-container">
                             <div className="progress-ring-wrapper">
-                                <svg className="progress-ring" width="180" height="180">
-                                    <circle className="progress-ring-bg" cx="90" cy="90" r="75" />
+                                <svg className="progress-ring" width="100" height="100">
+                                    <circle className="progress-ring-bg" cx="50" cy="50" r="42" />
                                     <circle
-                                        className="progress-ring-fill"
-                                        cx="90" cy="90" r="75"
-                                        strokeDasharray={`${2 * Math.PI * 75}`}
-                                        strokeDashoffset={`${2 * Math.PI * 75 * (1 - percent / 100)}`}
+                                        className={`progress-ring-fill ${getProgressClass()}`}
+                                        cx="50" cy="50" r="42"
+                                        strokeDasharray={`${2 * Math.PI * 42}`}
+                                        strokeDashoffset={`${2 * Math.PI * 42 * (1 - percent / 100)}`}
                                     />
                                 </svg>
                                 <div className="progress-center">
@@ -902,27 +1245,44 @@
                                     <div className="progress-label">Today</div>
                                 </div>
                             </div>
+                            <div className="progress-info">
+                                <div className="progress-stat">
+                                    <span className="progress-stat-value">{takenToday}</span>
+                                    <span className="progress-stat-label">of {totalToday}</span>
+                                </div>
+                                <p className="progress-message">{getProgressMessage()}</p>
+                            </div>
                         </div>
                     </div>
 
-                    {Object.entries(groupMeds()).map(([period, items]) => 
+                    {Object.entries(groupMeds).map(([period, items]) => 
                         items.length > 0 && (
                             <div className="med-section" key={period}>
-                                <div className="med-section-title">{period}</div>
+                                <div className="med-section-title">
+                                    <Icon name={getTimeIcon(parseInt(items[0]?.currentTime?.split(':')[0] || 12))} size={14} />
+                                    {period}
+                                </div>
                                 {items.map(med => {
                                     const key = `${med.id}-${med.currentTime}`;
                                     const isTaken = taken[today]?.[key];
                                     return (
-                                        <div className={`med-card ${isTaken ? 'done' : ''}`} key={key}>
+                                        <div className={`med-card ${isTaken ? 'done' : ''}`} data-color={med.color || 'blue'} key={key}>
                                             <div className="med-color-dot" style={{ background: `var(--accent-${med.color || 'blue'})` }} />
                                             <div className="med-info">
                                                 <div className="med-name">{med.name}</div>
-                                                <div className="med-dosage">{med.dosage}</div>
-                                                <div className="med-time">{formatTime(med.currentTime)}</div>
+                                                <div className="med-meta">
+                                                    <span className="med-dosage">{med.dosage}</span>
+                                                    <span className="med-time">
+                                                        <Icon name="clock" size={12} />
+                                                        {formatTime(med.currentTime)}
+                                                    </span>
+                                                </div>
                                             </div>
-                                            <button className="btn btn-outline btn-small" onClick={() => !isTaken && markTaken(med.id, med.currentTime)}>
-                                                {isTaken ? <Icon name="check" /> : 'Take'}
-                                            </button>
+                                            {isTaken ? (
+                                                <div className="med-check"><Icon name="check" size={18} /></div>
+                                            ) : (
+                                                <button className="med-btn" onClick={() => markTaken(med.id, med.currentTime)}>Take</button>
+                                            )}
                                         </div>
                                     );
                                 })}
@@ -931,41 +1291,39 @@
                     )}
 
                     {meds.length === 0 && (
-                        <div className="empty">
-                            <div className="empty-icon"><Icon name="pill" /></div>
-                            <p className="empty-text">No medications yet. Add your first one.</p>
+                        <div className="empty-state">
+                            <div className="empty-icon"><Icon name="pill" size={32} /></div>
+                            <h3 className="empty-title">No medications yet</h3>
+                            <p className="empty-text">Tap the + button to add your first medication</p>
                         </div>
                     )}
-
-                    <div className="stats-grid">
-                        <div className="stat-card">
-                            <div className="stat-value">0</div>
-                            <div className="stat-label">Day Streak</div>
-                        </div>
-                        <div className="stat-card">
-                            <div className="stat-value">{percent}%</div>
-                            <div className="stat-label">This Week</div>
-                        </div>
-                    </div>
                 </div>
             );
 
             const renderMeds = () => (
                 <div>
-                    <h2 className="page-title">Medications</h2>
-                    
+                    <div className="page-header">
+                        <h1 className="page-date">Medications</h1>
+                        <p className="page-subtitle">{meds.length} tracked</p>
+                    </div>
+
                     {meds.length === 0 ? (
-                        <div className="empty">
-                            <div className="empty-icon"><Icon name="pill" /></div>
-                            <p className="empty-text">No medications added yet</p>
+                        <div className="empty-state">
+                            <div className="empty-icon"><Icon name="pill" size={32} /></div>
+                            <h3 className="empty-title">No medications</h3>
+                            <p className="empty-text">Add medications to start tracking</p>
                         </div>
                     ) : (
                         meds.map(med => (
                             <div className="list-item" key={med.id}>
-                                <div className="med-color-dot" style={{ background: `var(--accent-${med.color || 'blue'})`, width: '8px', height: '40px', borderRadius: '4px' }} />
+                                <div style={{ width: 6, height: 40, borderRadius: 3, background: `var(--accent-${med.color || 'blue'})`, flexShrink: 0 }} />
                                 <div className="list-item-info">
                                     <div className="list-item-title">{med.name}</div>
                                     <div className="list-item-subtitle">{med.dosage}</div>
+                                    <div className="list-item-chips">
+                                        {med.times.map(t => <span className="chip" key={t}>{formatTime(t)}</span>)}
+                                        {med.food !== 'none' && <span className="chip">{med.food === 'with' ? 'With food' : 'Empty'}</span>}
+                                    </div>
                                 </div>
                                 <button className="icon-btn" onClick={() => setSheet({ type: 'edit', med })}>
                                     <Icon name="edit" />
@@ -978,26 +1336,43 @@
 
             const renderProgress = () => (
                 <div>
-                    <h2 className="page-title">Progress</h2>
+                    <div className="page-header">
+                        <h1 className="page-date">Progress</h1>
+                        <p className="page-subtitle">Your medication adherence</p>
+                    </div>
 
-                    <div className="stats-grid">
+                    <div className="stats-row">
                         <div className="stat-card">
-                            <div className="stat-value">0</div>
+                            <div className="stat-icon streak"><Icon name="flame" /></div>
+                            <div className="stat-value">{streak}</div>
                             <div className="stat-label">Day Streak</div>
                         </div>
                         <div className="stat-card">
-                            <div className="stat-value">{percent}%</div>
+                            <div className="stat-icon rate"><Icon name="percent" /></div>
+                            <div className="stat-value">{weeklyRate}%</div>
                             <div className="stat-label">This Week</div>
+                        </div>
+                        <div className="stat-card">
+                            <div className="stat-icon total"><Icon name="check" /></div>
+                            <div className="stat-value">{history.length}</div>
+                            <div className="stat-label">Total Taken</div>
                         </div>
                     </div>
 
-                    <div className="chart-card" style={{ marginTop: '24px' }}>
-                        <div className="chart-title">Weekly Overview</div>
+                    <div className="chart-card">
+                        <div className="chart-header">
+                            <span className="chart-title">Weekly Overview</span>
+                            <div className="chart-legend">
+                                <span className="legend-item"><span className="legend-dot" style={{ background: 'var(--accent-green)' }} />80%+</span>
+                                <span className="legend-item"><span className="legend-dot" style={{ background: 'var(--accent-amber)' }} />60-80%</span>
+                                <span className="legend-item"><span className="legend-dot" style={{ background: 'var(--accent-rose)' }} />Below</span>
+                            </div>
+                        </div>
                         <div className="bar-chart">
-                            {getWeeklyData().map((d, i) => (
+                            {getWeeklyData.map((d, i) => (
                                 <div className="bar-day" key={i}>
                                     <div className="bar" style={{
-                                        height: `${Math.max(d.rate, 5)}%`,
+                                        height: `${Math.max(d.rate, 4)}%`,
                                         background: d.rate >= 80 ? 'var(--accent-green)' : d.rate >= 60 ? 'var(--accent-amber)' : 'var(--accent-rose)'
                                     }} />
                                     <div className="bar-label">{d.label}</div>
@@ -1006,29 +1381,40 @@
                         </div>
                     </div>
 
-                    <h3 style={{ fontSize: '14px', color: 'var(--text-secondary)', marginBottom: '16px' }}>Recent History</h3>
-                    {history.slice(0, 20).map(h => (
-                        <div className="history-item" key={h.id}>
-                            <div className={`history-icon ${h.action}`}>
-                                <Icon name={h.action === 'taken' ? 'check' : 'x'} />
+                    <div className="history-list">
+                        <div className="history-header">Recent History</div>
+                        {history.slice(0, 20).map(h => (
+                            <div className="history-item" key={h.id}>
+                                <div className={`history-icon ${h.action}`}>
+                                    <Icon name={h.action === 'taken' ? 'check' : 'x'} />
+                                </div>
+                                <div className="history-info">
+                                    <div className="history-name">{h.name}</div>
+                                    <div className="history-meta">{formatTime(h.time)}</div>
+                                </div>
+                                <div className="history-date">
+                                    {new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                </div>
                             </div>
-                            <div className="history-info">
-                                <div className="history-name">{h.name}</div>
-                                <div className="history-time">{formatTime(h.time)}</div>
+                        ))}
+                        {history.length === 0 && (
+                            <div className="empty-state" style={{ padding: 32 }}>
+                                <p className="empty-text">No history yet</p>
                             </div>
-                            <div className="history-date">{new Date(h.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</div>
-                        </div>
-                    ))}
-                    {history.length === 0 && <div className="empty"><p className="empty-text">No history yet</p></div>}
+                        )}
+                    </div>
                 </div>
             );
 
             const renderContacts = () => (
                 <div>
-                    <h2 className="page-title">Contacts</h2>
-                    
+                    <div className="page-header">
+                        <h1 className="page-date">Contacts</h1>
+                        <p className="page-subtitle">Emergency contacts</p>
+                    </div>
+
                     {['family', 'doctor', 'pharmacy'].map(role => (
-                        <div className="card" key={role}>
+                        <div className="contact-card" key={role}>
                             <div className="contact-role">{role}</div>
                             <div className="contact-name">{contacts[role]?.name || 'Not set'}</div>
                             <div className="contact-phone">{contacts[role]?.phone || 'Tap edit to add'}</div>
@@ -1037,10 +1423,10 @@
                                     const phone = contacts[role]?.phone;
                                     if (phone) window.location.href = `tel:${phone.replace(/\D/g, '')}`;
                                 }}>
-                                    <Icon name="phone" /> Call
+                                    <Icon name="phone" size={16} /> Call
                                 </button>
                                 <button className="contact-btn edit" onClick={() => setSheet({ type: 'contact', role })}>
-                                    <Icon name="edit" /> Edit
+                                    <Icon name="edit" size={16} /> Edit
                                 </button>
                             </div>
                         </div>
@@ -1072,7 +1458,6 @@
                         {page === 'contacts' && renderContacts()}
                     </main>
 
-                    {/* Bottom Nav */}
                     <nav className="bottom-nav">
                         <button className={`nav-btn ${page === 'home' ? 'active' : ''}`} onClick={() => setPage('home')}>
                             <Icon name="home" /> Home
@@ -1088,26 +1473,23 @@
                         </button>
                     </nav>
 
-                    {/* FAB */}
                     <button className="fab" onClick={() => setSheet({ type: 'add' })}>
                         <Icon name="plus" />
                     </button>
 
-                    {/* Bottom Sheet */}
                     <div className={`sheet-overlay ${sheet ? 'active' : ''}`} onClick={() => setSheet(null)} />
                     <div className={`bottom-sheet ${sheet ? 'active' : ''}`}>
                         <div className="sheet-handle" />
-                        <h3 className="sheet-title">{sheet?.type === 'add' ? 'Add Medication' : sheet?.type === 'edit' ? 'Edit Medication' : 'Edit Contact'}</h3>
+                        <h3 className="sheet-title">
+                            {sheet?.type === 'add' ? 'Add Medication' : sheet?.type === 'edit' ? 'Edit Medication' : 'Edit Contact'}
+                        </h3>
                         
                         {(sheet?.type === 'add' || sheet?.type === 'edit') && (
                             <MedForm
                                 med={sheet?.type === 'edit' ? sheet.med : null}
                                 onSave={(data) => {
-                                    if (sheet?.type === 'edit') {
-                                        setMeds(prev => prev.map(m => m.id === sheet.med.id ? { ...m, ...data } : m));
-                                    } else {
-                                        setMeds(prev => [...prev, { ...data, id: Date.now().toString() }]);
-                                    }
+                                    if (sheet?.type === 'edit') setMeds(prev => prev.map(m => m.id === sheet.med.id ? { ...m, ...data } : m));
+                                    else setMeds(prev => [...prev, { ...data, id: Date.now().toString() }]);
                                     setSheet(null);
                                 }}
                                 onDelete={sheet?.type === 'edit' ? () => { deleteMed(sheet.med.id); setSheet(null); } : null}
@@ -1116,18 +1498,13 @@
                         
                         {sheet?.type === 'contact' && (
                             <ContactForm
-                                role={sheet.role}
                                 data={contacts[sheet.role]}
-                                onSave={(data) => {
-                                    setContacts(prev => ({ ...prev, [sheet.role]: data }));
-                                    setSheet(null);
-                                }}
+                                onSave={(data) => { setContacts(prev => ({ ...prev, [sheet.role]: data })); setSheet(null); }}
                                 onCancel={() => setSheet(null)}
                             />
                         )}
                     </div>
 
-                    {/* Toast */}
                     <div className={`toast ${toast ? 'show' : ''}`}>
                         <span className="toast-msg">{toast}</span>
                         <button className="toast-undo" onClick={undoTaken}>Undo</button>
@@ -1151,7 +1528,7 @@
                 <form onSubmit={(e) => { e.preventDefault(); onSave(form); }}>
                     <div className="form-group">
                         <label className="form-label">Name</label>
-                        <input className="form-input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="e.g., Aspirin" required />
+                        <input className="form-input" value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} placeholder="Medication name" required />
                     </div>
 
                     <div className="form-row">
@@ -1179,17 +1556,25 @@
                                         times[i] = e.target.value;
                                         setForm(f => ({ ...f, times }));
                                     }} />
-                                    {form.times.length > 1 && <button type="button" className="icon-btn" onClick={() => setForm(f => ({ ...f, times: f.times.filter((_, j) => j !== i) }))}><Icon name="x" /></button>}
+                                    {form.times.length > 1 && (
+                                        <button type="button" className="icon-btn" onClick={() => setForm(f => ({ ...f, times: f.times.filter((_, j) => j !== i) }))}>
+                                            <Icon name="x" size={16} />
+                                        </button>
+                                    )}
                                 </div>
                             ))}
                         </div>
-                        {form.times.length < 6 && <button type="button" className="add-time-btn" onClick={() => setForm(f => ({ ...f, times: [...f.times, '12:00'] }))}>+ Add time</button>}
+                        {form.times.length < 6 && (
+                            <button type="button" className="add-btn" onClick={() => setForm(f => ({ ...f, times: [...f.times, '12:00'] }))}>
+                                <Icon name="plus" size={16} /> Add time
+                            </button>
+                        )}
                     </div>
 
                     <div className="form-group">
                         <label className="form-label">Take with food</label>
                         <div className="food-btns">
-                            {[['none', 'Any'], ['with', 'With food'], ['empty', 'Empty']].map(([v, l]) => (
+                            {[['none', 'Any'], ['with', 'With food'], ['empty', 'Empty stomach']].map(([v, l]) => (
                                 <button key={v} type="button" className={`food-btn ${form.food === v ? 'selected' : ''}`} onClick={() => setForm(f => ({ ...f, food: v }))}>{l}</button>
                             ))}
                         </div>
@@ -1200,14 +1585,14 @@
                         <textarea className="form-input" value={form.notes} onChange={e => setForm(f => ({ ...f, notes: e.target.value }))} placeholder="Optional notes..." />
                     </div>
 
-                    <button type="submit" className="btn btn-primary btn-full">{med ? 'Save Changes' : 'Add Medication'}</button>
-                    {onDelete && <button type="button" className="btn btn-outline btn-full" style={{ marginTop: '12px', color: 'var(--accent-rose)', borderColor: 'var(--accent-rose)' }} onClick={onDelete}>Delete Medication</button>}
+                    <button type="submit" className="btn btn-primary">{med ? 'Save Changes' : 'Add Medication'}</button>
+                    {onDelete && <button type="button" className="btn btn-danger" onClick={onDelete}><Icon name="trash" size={16} /> Delete Medication</button>}
                 </form>
             );
         }
 
         // Contact Form
-        function ContactForm({ role, data, onSave, onCancel }) {
+        function ContactForm({ data, onSave, onCancel }) {
             const [name, setName] = useState(data?.name || '');
             const [phone, setPhone] = useState(data?.phone || '');
             
@@ -1221,15 +1606,14 @@
                         <label className="form-label">Phone</label>
                         <input className="form-input" type="tel" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" />
                     </div>
-                    <div style={{ display: 'flex', gap: '12px' }}>
-                        <button type="button" className="btn btn-outline" style={{ flex: 1 }} onClick={onCancel}>Cancel</button>
+                    <div style={{ display: 'flex', gap: 12 }}>
+                        <button type="button" className="btn btn-outline" onClick={onCancel} style={{ flex: 1 }}>Cancel</button>
                         <button type="submit" className="btn btn-primary" style={{ flex: 1 }}>Save</button>
                     </div>
                 </form>
             );
         }
 
-        // Render
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
     </script>
 </body>
