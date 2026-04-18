@@ -1936,7 +1936,84 @@
                 
                 // Help capabilities
                 if (/help|capabilities|what can you do/i.test(lastMsg)) {
-                    return "I can help you with:\n\n• **Medications** - Questions about your meds, side effects, timing\n• **Technology** - How to use your phone or tablet\n• **Emergency** - Guide you to call for help\n• **General Health** - Common health questions\n• **Conversation** - Just chat or ask questions!\n\nJust type or speak to me!";
+                    return "I can help you with:\n\n• **Medications** - Add meds, questions about side effects, timing, refills\n• **Technology** - How to use your phone or tablet\n• **Emergency** - Guide you to call for help\n• **General Health** - Common health questions\n• **Conversation** - Just chat!\n\nJust ask me to add a medication like 'Add my metformin 500mg at 8am' and I'll do it for you!";
+                }
+                
+                // Add medication requests
+                if (/add.*medication|add.*med|new.*medication|start.*taking|prescribe/i.test(lastMsg)) {
+                    const nameMatch = lastMsg.match(/(?:add|start|take|prescribe|medication|med)\s+(?:my\s+)?(\w+)/i);
+                    const dosageMatch = lastMsg.match(/(\d+\s*(?:mg|ml|mcg|g|units?|tablets?|capsules?))/i);
+                    const timeMatch = lastMsg.match(/(\d{1,2}:\d{2})/);
+                    
+                    if (nameMatch) {
+                        const medName = nameMatch[1].charAt(0).toUpperCase() + nameMatch[1].slice(1).toLowerCase();
+                        const dosage = dosageMatch ? dosageMatch[1] : 'As directed';
+                        const times = timeMatch ? [timeMatch[1]] : ['08:00'];
+                        
+                        return JSON.stringify({
+                            action: 'add_med',
+                            name: medName,
+                            dosage: dosage,
+                            times: times,
+                            color: 'blue',
+                            food: 'none'
+                        });
+                    }
+                    return "I'd be happy to help you add a medication! Please tell me:\n1. The name of the medication\n2. The dosage (like 500mg)\n3. What time(s) to take it\n\nExample: 'Add Metformin 500mg at 8am'";
+                }
+                
+                // List my medications
+                if (/list.*med|show.*med|what.*med.*taking|my.*medication/i.test(lastMsg)) {
+                    const medsList = messages[0]?.content?.match(/Current medications: ([^`]+)/)?.[1];
+                    if (medsList && medsList !== 'No medications added yet') {
+                        return `You're currently taking: ${medsList}. You can view and manage all your medications in the Meds tab!`;
+                    }
+                    return "You haven't added any medications yet. Would you like me to help you add one? Just tell me the name and dosage!";
+                }
+                
+                // Medical advice categories
+                if (/headache|head.*pain|head.*hurt/i.test(lastMsg)) {
+                    return "For headaches, try:\n• Rest in a quiet, dark room\n• Drink water (dehydration can cause headaches)\n• Over-the-counter pain relievers like acetaminophen\n\nSee a doctor if headaches are severe or happen often.";
+                }
+                
+                if (/stomach|nausea|nauseous|upset.*stomach|indigestion/i.test(lastMsg)) {
+                    return "For stomach issues:\n• Eat small, bland meals\n• Avoid spicy or greasy food\n• Drink ginger tea or water\n• Rest with your head elevated\n\nSee a doctor if it lasts more than a few days or is severe.";
+                }
+                
+                if (/sleep|insomnia|can't.*sleep|trouble.*sleep/i.test(lastMsg)) {
+                    return "For better sleep:\n• Go to bed at the same time each night\n• Avoid screens before bed\n• Keep your bedroom cool and dark\n• Limit caffeine after noon\n\nIf sleep problems continue, talk to your doctor.";
+                }
+                
+                if (/joint.*pain|arthritis|pain.*joint|stiff/i.test(lastMsg)) {
+                    return "For joint pain:\n• Gentle exercise like walking or swimming\n• Apply heat or cold packs\n• Maintain a healthy weight\n• Over-the-counter pain relievers\n\nTalk to your doctor if pain is severe or affecting daily life.";
+                }
+                
+                if (/blood.*pressure|hypertension|high.*bp/i.test(lastMsg)) {
+                    return "For blood pressure health:\n• Reduce salt intake\n• Exercise regularly\n• Eat fruits and vegetables\n• Limit alcohol\n• Take medications as prescribed\n\nHave your blood pressure checked regularly by your doctor.";
+                }
+                
+                if (/blood.*sugar|diabetes|glucose|high.*sugar/i.test(lastMsg)) {
+                    return "For blood sugar management:\n• Take medications as prescribed\n• Eat regular meals\n• Limit sugars and carbs\n• Exercise moderately\n• Check blood sugar as directed\n\nAlways follow your doctor's guidance for diabetes care.";
+                }
+                
+                if (/cold|flu|cough|sore.*throat|runny.*nose/i.test(lastMsg)) {
+                    return "For cold or flu:\n• Rest and drink plenty of fluids\n• Use humidifier or steam\n• Over-the-counter cold medicines\n• Eat soup\n\nSee a doctor if fever is high, symptoms last more than 10 days, or you have trouble breathing.";
+                }
+                
+                if (/vitamins|supplements|multivitamin/i.test(lastMsg)) {
+                    return "Common supplements for seniors:\n• Vitamin D - for bone health\n• B12 - for energy and nerves\n• Omega-3 - for heart health\n• Calcium - for bones\n\nAlways talk to your doctor before starting any supplements!";
+                }
+                
+                if (/exercise|active|workout|walking/i.test(lastMsg)) {
+                    return "Great exercise options for seniors:\n• Walking - 15-30 minutes daily\n• Swimming - easy on joints\n• Gentle stretching or yoga\n• Light strength training\n\nStart slowly and check with your doctor before new exercise routines!";
+                }
+                
+                if (/hydrate|water|drink.*water|dehydrated/i.test(lastMsg)) {
+                    return "Stay hydrated! Aim for 8 glasses of water daily. More if you're active or it's hot. Signs of dehydration: dark urine, dizziness, dry mouth. Set regular reminders to drink throughout the day!";
+                }
+                
+                if (/memory|forget|concentration|brain.*fog/i.test(lastMsg)) {
+                    return "Brain health tips:\n• Stay mentally active (puzzles, reading)\n• Regular exercise\n• Good sleep\n• Social activities\n• Eat brain-healthy foods (fish, nuts, berries)\n\nSome forgetfulness is normal, but talk to your doctor if it's affecting daily life.";
                 }
                 
                 // General fallback
