@@ -2446,6 +2446,22 @@ Keep responses friendly, warm, and helpful.`;
                 <div className="app">
                     <ThreeBackground />
                     
+                    {/* Tutorial Welcome Modal */}
+                    {storage.get('showTutorial', true) && (
+                        <div style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'}}>
+                            <div style={{background: 'var(--bg-primary)', border: '1px solid var(--border-medium)', borderRadius: '20px', padding: '32px', maxWidth: '380px', textAlign: 'center'}}>
+                                <div style={{width: '72px', height: '72px', margin: '0 auto 20px', background: 'linear-gradient(135deg, var(--accent-green), var(--accent-teal))', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <Icon name="robot" size={36} />
+                                </div>
+                                <h2 style={{fontFamily: 'Instrument Serif', fontSize: '28px', marginBottom: '10px'}}>Welcome to MedMinder!</h2>
+                                <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '28px', lineHeight: '1.5'}}>Your personal medication helper with AI voice assistant.</p>
+                                <button style={{display: 'inline-block', padding: '16px 32px', background: 'var(--accent-green)', color: 'white', border: 'none', borderRadius: '9999px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', marginBottom: '12px', minWidth: '180px'}} onClick={() => { storage.set('showTutorial', false); location.reload(); }}>
+                                    Get Started
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    
                     <header className="header">
                         <div className="header-left">
                             <div className="logo-icon">
@@ -2466,7 +2482,25 @@ Keep responses friendly, warm, and helpful.`;
                         {page === 'meds' && renderMeds()}
                         {page === 'progress' && renderProgress()}
                         {page === 'contacts' && renderContacts()}
-                        {page === 'companion' && <div className="page"><div className="page-header"><h1 className="page-title">AI Companion</h1></div><p style={{padding:20}}>Your friendly helper</p></div>}
+                        {page === 'companion' && <div className="page">
+                            <div className="page-header">
+                                <h1 className="page-title">AI Companion</h1>
+                                <p className="page-subtitle">Your friendly voice assistant</p>
+                            </div>
+                            <div style={{padding: '20px', textAlign: 'center'}}>
+                                <div style={{fontSize: '48px', marginBottom: '20px'}}>🤖</div>
+                                <h2 style={{marginBottom: '10px'}}>Hello! I'm here to help.</h2>
+                                <p style={{color: 'var(--text-secondary)', marginBottom: '20px'}}>I can answer questions about your medications, help with technology, or just chat.</p>
+                                <input 
+                                    type="text" 
+                                    placeholder="Type your question..." 
+                                    style={{width: '100%', padding: '14px', borderRadius: '12px', border: '1px solid var(--border-medium)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontSize: '16px', marginBottom: '12px'}}
+                                />
+                                <button style={{padding: '16px 32px', background: 'var(--accent-purple)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'}}>
+                                    Ask AI
+                                </button>
+                            </div>
+                        </div>}
                     </main>
 
                     <nav className="bottom-nav">
