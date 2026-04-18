@@ -2466,6 +2466,7 @@ Keep responses friendly, warm, and helpful.`;
                         {page === 'meds' && renderMeds()}
                         {page === 'progress' && renderProgress()}
                         {page === 'contacts' && renderContacts()}
+                        {page === 'companion' && <div className="page"><div className="page-header"><h1 className="page-title">AI Companion</h1></div><p style={{padding:20}}>Your friendly helper</p></div>}
                     </main>
 
                     <nav className="bottom-nav">
@@ -2476,6 +2477,10 @@ Keep responses friendly, warm, and helpful.`;
                         <button className={`nav-btn ${page === 'meds' ? 'active' : ''}`} onClick={() => setPage('meds')}>
                             <Icon name="pill" />
                             Meds
+                        </button>
+                        <button className={`nav-btn ${page === 'companion' ? 'active' : ''}`} onClick={() => setPage('companion')}>
+                            <Icon name="robot" />
+                            AI
                         </button>
                         <button className={`nav-btn ${page === 'progress' ? 'active' : ''}`} onClick={() => setPage('progress')}>
                             <Icon name="chart" />
