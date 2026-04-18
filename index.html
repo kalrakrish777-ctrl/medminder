@@ -2450,10 +2450,7 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             const [highContrast, setHighContrast] = useState(() => storage.get('highContrast', false));
             
             // Tutorial state
-            const [showTutorial, setShowTutorial] = useState(() => {
-                const hasSeenOnboarding = storage.get('hasSeenOnboarding', false);
-                return !hasSeenOnboarding;
-            });
+            const [showTutorial, setShowTutorial] = useState(false);
             const [tutorialStep, setTutorialStep] = useState(0);
             
             // Search & Filter
