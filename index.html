@@ -2494,11 +2494,16 @@ Keep responses friendly, warm, and helpful.`;
                                 <input 
                                     type="text" 
                                     placeholder="Type your question..." 
+                                    value={aiInput}
+                                    onChange={e => setAiInput(e.target.value)}
+                                    onKeyDown={e => e.key === 'Enter' && handleAiSend()}
                                     style={{width: '100%', padding: '14px', borderRadius: '12px', border: '1px solid var(--border-medium)', background: 'var(--bg-surface)', color: 'var(--text-primary)', fontSize: '16px', marginBottom: '12px'}}
                                 />
-                                <button style={{padding: '16px 32px', background: 'var(--accent-purple)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'}}>
-                                    Ask AI
+                                <button style={{padding: '16px 32px', background: 'var(--accent-purple)', color: 'white', border: 'none', borderRadius: '12px', fontSize: '16px', fontWeight: '600', cursor: 'pointer'}} onClick={handleAiSend} disabled={!aiInput.trim() || aiTyping}>
+                                    {aiTyping ? 'Thinking...' : 'Ask AI'}
                                 </button>
+                                {aiTyping && <div style={{marginTop: '16px', color: 'var(--text-secondary)'}}>AI is thinking...</div>}
+                                {aiResponse && <div style={{marginTop: '16px', padding: '16px', background: 'var(--bg-surface)', borderRadius: '12px', textAlign: 'left'}}><p style={{fontWeight: '600', color: 'var(--accent-purple)', marginBottom: '8px'}}>AI Response:</p><p style={{fontSize: '16px', lineHeight: '1.6'}}>{aiResponse.text}</p></div>}
                             </div>
                         </div>}
                     </main>
