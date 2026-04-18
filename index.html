@@ -2359,7 +2359,8 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             // Tutorial state
             const [showTutorial, setShowTutorial] = useState(() => {
                 const hasSeenTutorial = storage.get('hasSeenTutorial', false);
-                return !hasSeenTutorial;
+                const dontShow = storage.get('dontShowTutorial', false);
+                return !hasSeenTutorial && !dontShow;
             });
             const [tutorialStep, setTutorialStep] = useState(0);
             
