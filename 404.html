@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page Not Found - MedMinder</title>
+    <style>
+        :root {
+            --bg-primary: #0a0f1e;
+            --text-primary: #f0ede8;
+            --text-secondary: rgba(240,237,232,0.55);
+            --accent-green: #7eb89a;
+        }
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+        .logo {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent-green), #5a9a7a);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            stroke: var(--bg-primary);
+        }
+        h1 {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        p {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        a {
+            display: inline-block;
+            padding: 16px 32px;
+            background: var(--accent-green);
+            color: var(--bg-primary);
+            text-decoration: none;
+            border-radius: 9999px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+        a:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+        </svg>
+    </div>
+    <h1>404</h1>
+    <p>Oops! The page you're looking for doesn't exist.</p>
+    <a href="/">Go to MedMinder Home</a>
+</body>
+</html>

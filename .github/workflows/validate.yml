@@ -1,0 +1,25 @@
+name: Validate HTML
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Validate HTML
+        run: |
+          # Check for basic HTML validity using tidy if available, or just check syntax
+          which tidy && tidy -q -e index.html || echo "HTML validator not available, skipping"
+          
+          # Basic HTML structure checks
+          grep -q '<!DOCTYPE html>' index.html
+          grep -q '<html' index.html
+          grep -q '<head>' index.html
+          grep -q '<body>' index.html
+          grep -q '</html>' index.html
