@@ -987,38 +987,40 @@
             background: var(--bg-primary);
             border: 1px solid var(--border-medium);
             border-radius: var(--radius-lg);
-            padding: 20px;
-            max-width: 280px;
+            padding: 24px;
+            max-width: 320px;
+            width: 90%;
             box-shadow: 0 16px 48px rgba(0,0,0,0.4);
             z-index: 9999;
             animation: slideUp 0.4s ease;
         }
 
         .tour-card-title {
-            font-size: 18px;
-            font-weight: 600;
+            font-family: 'Instrument Serif', serif;
+            font-size: 24px;
+            font-weight: 400;
             color: var(--text-primary);
-            margin-bottom: 6px;
+            margin-bottom: 8px;
         }
 
         .tour-card-desc {
-            font-size: 14px;
+            font-size: 17px;
             color: var(--text-secondary);
-            margin-bottom: 16px;
-            line-height: 1.5;
+            margin-bottom: 20px;
+            line-height: 1.6;
         }
 
         .tour-nav {
             display: flex;
-            gap: 10px;
+            gap: 12px;
         }
 
         .tour-btn {
             flex: 1;
-            padding: 12px 16px;
+            padding: 16px 20px;
             border-radius: var(--radius-md);
-            font-size: 15px;
-            font-weight: 500;
+            font-size: 18px;
+            font-weight: 600;
             cursor: pointer;
             font-family: inherit;
             transition: all var(--transition-fast);
@@ -2565,9 +2567,10 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                 
                 if (targetEl) {
                     const rect = targetEl.getBoundingClientRect();
+                    const isRightSide = rect.left > window.innerWidth / 2;
                     return {
-                        top: rect.bottom + 20,
-                        left: rect.left,
+                        top: rect.top,
+                        [isRightSide ? 'right' : 'left']: isRightSide ? (window.innerWidth - rect.right) : rect.left,
                         transform: 'none'
                     };
                 }
