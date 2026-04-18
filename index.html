@@ -2446,16 +2446,16 @@ Keep responses friendly, warm, and helpful.`;
                 <div className="app">
                     <ThreeBackground />
                     
-                    {/* Tutorial Welcome Modal */}
+                    {/* Tutorial Welcome Modal - only show once */}
                     {storage.get('showTutorial', true) && (
-                        <div style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px'}}>
-                            <div style={{background: 'var(--bg-primary)', border: '1px solid var(--border-medium)', borderRadius: '20px', padding: '32px', maxWidth: '380px', textAlign: 'center'}}>
+                        <div style={{position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.85)', zIndex: 9999, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '20px', pointerEvents: 'auto'}}>
+                            <div style={{background: 'var(--bg-primary)', border: '1px solid var(--border-medium)', borderRadius: '20px', padding: '32px', maxWidth: '380px', textAlign: 'center', pointerEvents: 'auto'}}>
                                 <div style={{width: '72px', height: '72px', margin: '0 auto 20px', background: 'linear-gradient(135deg, var(--accent-green), var(--accent-teal))', borderRadius: '16px', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                                     <Icon name="robot" size={36} />
                                 </div>
                                 <h2 style={{fontFamily: 'Instrument Serif', fontSize: '28px', marginBottom: '10px'}}>Welcome to MedMinder!</h2>
-                                <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '28px', lineHeight: '1.5'}}>Your personal medication helper with AI voice assistant.</p>
-                                <button style={{display: 'inline-block', padding: '16px 32px', background: 'var(--accent-green)', color: 'white', border: 'none', borderRadius: '9999px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', marginBottom: '12px', minWidth: '180px'}} onClick={() => { storage.set('showTutorial', false); location.reload(); }}>
+                                <p style={{fontSize: '16px', color: 'var(--text-secondary)', marginBottom: '28px', lineHeight: '1.5'}}>Your personal medication helper.</p>
+                                <button style={{display: 'inline-block', padding: '16px 32px', background: 'var(--accent-green)', color: 'white', border: 'none', borderRadius: '9999px', fontSize: '18px', fontWeight: '600', cursor: 'pointer', marginBottom: '12px', minWidth: '180px'}} onClick={() => { storage.set('showTutorial', false); window.location.reload(); }}>
                                     Get Started
                                 </button>
                             </div>
