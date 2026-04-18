@@ -1855,25 +1855,82 @@
                     return "When traveling, keep medications in original bottles. Bring copies of prescriptions. Pack in carry-on for flights. Check destination laws for controlled substances.";
                 }
                 
+                // Technology help - Phone/Tablet
+                if (/send.*text|write.*message|sms|iPhone.*message|android.*message/i.test(lastMsg)) {
+                    return "To send a text message:\n\n1. Open the Messages app (the speech bubble icon)\n2. Tap the new message button\n3. Type the person's name or number\n4. Type your message in the text box\n5. Tap the send arrow\n\nWould you like help with anything else?";
+                }
+                
+                if (/take.*photo|camera|photo.*take/i.test(lastMsg)) {
+                    return "To take a photo:\n\n1. Open the Camera app on your phone\n2. Point your phone at what you want to photograph\n3. Tap the large round button on the screen\n4. Your photo is saved to your Photos!\n\nFind your photos in the Photos or Gallery app.";
+                }
+                
+                if (/video.call|facetime|zoom|video.*chat/i.test(lastMsg)) {
+                    return "To make a video call:\n\n**iPhone (FaceTime):**\n1. Open FaceTime app\n2. Type the person's name\n3. Tap the video call button\n\n**Zoom:**\n1. Open Zoom app\n2. Tap 'New Meeting' or 'Join'\n3. Follow the instructions\n\nWould you like more help?";
+                }
+                
+                if (/find.*contact|phone.*number|address.*book/i.test(lastMsg)) {
+                    return "To find a contact:\n\n1. Open your Contacts or Phone app\n2. Scroll through the list, or tap the search bar\n3. Type the person's name\n4. Tap on their name to see the number\n\nYou can also say 'Call [name]' to call someone!";
+                }
+                
+                if (/how.*do.*i|how.*to|tell.*me.*how|phone.*help|tablet.*help/i.test(lastMsg)) {
+                    return "I can help you learn how to use your phone or tablet! Just ask me:\n\n• How do I send a text?\n• How do I take a photo?\n• How do I make a video call?\n• How do I find my contacts?\n• And more!\n\nWhat would you like to learn?";
+                }
+                
+                // Emergency help
+                if (/call.*help|emergency|sos|help.*me|911|urgent/i.test(lastMsg)) {
+                    return "For emergencies, call 911 immediately!\n\nIn MedMinder, tap the Contacts tab to quickly call your family, doctor, or pharmacy. Your emergency contacts are saved there for quick access.";
+                }
+                
+                // Your medications
+                if (/my.*medication|my.*meds|what.*medication/i.test(lastMsg)) {
+                    const medsList = messages[0]?.content?.match(/Current medications: ([^`]+)/)?.[1] || 'No medications added';
+                    return `Your current medications: ${medsList}. Tap the Meds tab to add or manage your medications.`;
+                }
+                
+                // Greeting
+                if (/^(hi|hello|hey|good.*morning|good.*evening)/.test(lower)) {
+                    return "Hello! I'm your friendly AI companion. I can help you with:\n\n• Your medications and health\n• Learning to use your phone or tablet\n• Just having a friendly chat\n\nWhat would you like to talk about today?";
+                }
+                
+                // How are you
+                if (/how are you|how do you do/i.test(lower)) {
+                    return "I'm doing well, thank you for asking! I'm here and ready to help you. How are you feeling today?";
+                }
+                
+                // Gratitude
+                if (/thank|thanks|appreciate/i.test(lower)) {
+                    return "You're very welcome! I'm happy to help. Is there anything else you'd like to know?";
+                }
+                
+                // Help capabilities
+                if (/help|capabilities|what can you do/i.test(lastMsg)) {
+                    return "I can help you with:\n\n• **Medications** - Questions about your meds, side effects, timing\n• **Technology** - How to use your phone or tablet\n• **Emergency** - Guide you to call for help\n• **General Health** - Common health questions\n• **Conversation** - Just chat or ask questions!\n\nJust type or speak to me!";
+                }
+                
                 // General fallback
-                return "That's a great question! For specific medical advice, talk to your doctor or pharmacist who knows your health history. Is there something else I can help with?";
+                return "That's a interesting question! For specific medical advice, talk to your doctor who knows your health history. Is there something else I can help you with?";
             }
         };
 
         // System prompt for medication assistant
-        const SYSTEM_PROMPT = `You are MedMinder AI, a helpful medication assistant. You help users manage their medications through natural conversation.
+        const SYSTEM_PROMPT = `You are MedMinder AI, a friendly and patient companion for elderly users. You help with medications, technology questions, and just want to have friendly conversations.
 
-When a user wants to add a medication, respond with JSON in this format:
-{"action": "add_med", "name": "Medication Name", "dosage": "dosage", "times": ["HH:MM"], "color": "blue|green|amber|rose|purple|teal", "food": "none|with|empty"}
+IMPORTANT: You are speaking to elderly users. Use:
+- Simple, clear language
+- Short sentences
+- Warm, respectful tone (like speaking to a grandparent)
+- Offer step-by-step help when they ask about technology
+- Never be condescending or impatient
 
-When checking for drug interactions, respond with JSON:
-{"action": "interaction_check", "medications": ["list of medications"], "concern": true|false, "message": "explanation"}
-
-When providing advice or motivation, respond naturally.
+You can help with:
+1. MEDICATIONS - Questions about their meds, side effects, timing, refills
+2. TECHNOLOGY - How to use phone/tablet (send texts, take photos, make calls, use apps)
+3. EMERGENCY - If they say "call for help" or "emergency", guide them to their emergency contacts
+4. CONVERSATION - Friendly chat, weather, reminders
 
 Current medications: {meds}
 
-Keep responses friendly, warm, and helpful.`;
+Keep responses friendly, warm, and helpful. When explaining technology, break it into simple numbered steps.`;
 
         // Main App
         function App() {
