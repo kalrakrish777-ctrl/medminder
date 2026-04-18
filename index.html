@@ -2402,8 +2402,18 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             const [highContrast, setHighContrast] = useState(() => storage.get('highContrast', false));
             
             // Tutorial state
-            const [showTutorial, setShowTutorial] = useState(true);
+            const [showTutorial, setShowTutorial] = useState(() => {
+                const hasSeenOnboarding = storage.get('hasSeenOnboarding', false);
+                return !hasSeenOnboarding;
+            });
             const [tutorialStep, setTutorialStep] = useState(0);
+
+            // Check if first time and pre-open add form
+            useEffect(() => {
+                if (showTutorial && tutorialStep === 0 && meds.length === 0) {
+                    // User has no meds - will show onboarding
+                }
+            }, [showTutorial, tutorialStep, meds.length]);
             
             // Voice settings
             const [voiceEnabled, setVoiceEnabled] = useState(() => storage.get('voiceEnabled', true));
