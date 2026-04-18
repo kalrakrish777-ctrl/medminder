@@ -46,6 +46,10 @@
             --transition-fast: 150ms ease;
             --transition-base: 200ms ease;
             --transition-slow: 300ms ease;
+            --font-size-base: 15px;
+            --font-size-lg: 18px;
+            --font-size-xl: 22px;
+            --font-size-xxl: 28px;
         }
 
         [data-theme="light"] {
@@ -72,12 +76,20 @@
         html, body { height: 100%; overflow: hidden; }
         body {
             font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-            font-size: 15px;
+            font-size: var(--font-size-base);
             line-height: 1.5;
             color: var(--text-primary);
             background: var(--bg-primary);
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
         }
 
         ::-webkit-scrollbar { width: 3px; }
@@ -600,6 +612,12 @@
         .med-card:hover { background: var(--bg-surface-hover); transform: translateX(4px); }
         .med-card.done { opacity: 0.5; }
         .med-card.done .med-name { text-decoration: line-through; text-decoration-color: var(--text-tertiary); }
+        .med-card.missed { border-left: 4px solid var(--accent-rose); background: var(--accent-rose-dim); }
+        .med-card.missed .med-name { color: var(--accent-rose); }
+        .med-missed-badge { background: var(--accent-rose); color: white; padding: 6px 12px; border-radius: var(--radius-full); font-size: 12px; font-weight: 600; }
+        .med-actions { display: flex; gap: 8px; }
+        .med-btn.take { background: var(--accent-green); }
+        .med-btn.miss { background: var(--accent-rose); }
 
         .med-color-bar {
             width: 4px;
@@ -1541,6 +1559,29 @@
         .toast-undo { background: transparent; border: none; color: var(--accent-green); font-size: 14px; font-weight: 600; cursor: pointer; font-family: inherit; padding: 4px 8px; transition: opacity var(--transition-fast); }
         .toast-undo:hover { opacity: 0.8; }
 
+        /* High Contrast Mode */
+        [data-high-contrast="true"] {
+            --bg-primary: #000000 !important;
+            --bg-surface: #1a1a1a !important;
+            --text-primary: #ffffff !important;
+            --text-secondary: #ffff00 !important;
+            --text-tertiary: #cccccc !important;
+            --border-subtle: #ffffff !important;
+            --border-medium: #ffffff !important;
+        }
+        
+        [data-high-contrast="true"] .header,
+        [data-high-contrast="true"] .bottom-nav,
+        [data-high-contrast="true"] .bottom-sheet {
+            background: #000 !important;
+            border-color: #fff !important;
+        }
+        
+        [data-high-contrast="true"] .fab {
+            background: #ffff00 !important;
+            color: #000 !important;
+        }
+
         /* Settings Section */
         .settings-section {
             background: var(--bg-surface);
@@ -2357,6 +2398,8 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             const [notifications, setNotifications] = useState(() => storage.get('notifications', false));
             const [notificationSound, setNotificationSound] = useState(() => storage.get('notificationSound', true));
             const [weekStartsOn, setWeekStartsOn] = useState(() => storage.get('weekStartsOn', 0));
+            const [fontSize, setFontSize] = useState(() => storage.get('fontSize', 'medium'));
+            const [highContrast, setHighContrast] = useState(() => storage.get('highContrast', false));
             
             // Tutorial state
             const [showTutorial, setShowTutorial] = useState(true);
@@ -2397,6 +2440,57 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             useEffect(() => { storage.set('weekStartsOn', weekStartsOn); }, [weekStartsOn]);
             useEffect(() => { storage.set('voiceEnabled', voiceEnabled); }, [voiceEnabled]);
             useEffect(() => { storage.set('wakeWordEnabled', wakeWordEnabled); }, [wakeWordEnabled]);
+            useEffect(() => { 
+                storage.set('fontSize', fontSize);
+                const sizes = { small: '14px', medium: '15px', large: '18px', xlarge: '20px' };
+                document.documentElement.style.setProperty('--font-size-base', sizes[fontSize] || '15px');
+            }, [fontSize]);
+            useEffect(() => { 
+                storage.set('highContrast', highContrast);
+                document.documentElement.setAttribute('data-high-contrast', highContrast ? 'true' : 'false');
+            }, [highContrast]);
+
+            // Schedule medication notifications
+            useEffect(() => {
+                if (!notifications || !('Notification' in window)) return;
+                
+                const scheduleNotification = (med, time) => {
+                    const [hours, minutes] = time.split(':');
+                    const now = new Date();
+                    const scheduledTime = new Date();
+                    scheduledTime.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+                    
+                    if (scheduledTime <= now) {
+                        scheduledTime.setDate(scheduledTime.getDate() + 1);
+                    }
+                    
+                    const delay = scheduledTime.getTime() - now.getTime();
+                    
+                    setTimeout(() => {
+                        if (Notification.permission === 'granted') {
+                            const notification = new Notification('MedMinder Reminder', {
+                                body: `Time to take ${med.name}${med.dosage ? ` (${med.dosage})` : ''}`,
+                                icon: '/icon-192.png',
+                                badge: '/icon-192.png',
+                                tag: `${med.id}-${time}`,
+                                requireInteraction: true
+                            });
+                            
+                            notification.onclick = () => {
+                                window.focus();
+                                markTaken(med.id, time);
+                                notification.close();
+                            };
+                        }
+                    }, delay);
+                };
+                
+                meds.forEach(med => {
+                    med.times.forEach(time => {
+                        scheduleNotification(med, time);
+                    });
+                });
+            }, [meds, notifications]);
 
             // Apply theme
             const applyTheme = (t) => {
@@ -2420,7 +2514,7 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             const markTaken = useCallback((medId, time) => {
                 const key = `${medId}-${time}`;
                 const today = getToday();
-                setTaken(prev => ({ ...prev, [today]: { ...(prev[today] || {}), [key]: true } }));
+                setTaken(prev => ({ ...prev, [today]: { ...(prev[today] || {}), [key]: { taken: true, missed: false } } }));
                 const med = meds.find(m => m.id === medId);
                 if (med) {
                     setHistory(prev => [{ id: Date.now(), name: med.name, time, date: today, action: 'taken' }, ...prev].slice(0, 100));
@@ -2429,6 +2523,17 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                 setToast(`${med?.name} marked as taken`);
                 setUndoKey(key);
                 undoTimer.current = setTimeout(() => { setToast(null); setUndoKey(null); }, 5000);
+            }, [meds]);
+
+            const markMissed = useCallback((medId, time) => {
+                const key = `${medId}-${time}`;
+                const today = getToday();
+                setTaken(prev => ({ ...prev, [today]: { ...(prev[today] || {}), [key]: { taken: false, missed: true } } }));
+                const med = meds.find(m => m.id === medId);
+                if (med) {
+                    setHistory(prev => [{ id: Date.now(), name: med.name, time, date: today, action: 'missed' }, ...prev].slice(0, 100));
+                }
+                setToast(`${med?.name} marked as missed`);
             }, [meds]);
 
             const undoTaken = useCallback(() => {
@@ -2867,9 +2972,12 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                                 </div>
                                 {items.map(med => {
                                     const key = `${med.id}-${med.currentTime}`;
-                                    const isTaken = taken[today]?.[key];
+                                    const status = taken[today]?.[key];
+                                    const isTaken = status?.taken;
+                                    const isMissed = status?.missed;
+                                    
                                     return (
-                                        <div className={`med-card ${isTaken ? 'done' : ''}`} data-color={med.color || 'blue'} key={key}>
+                                        <div className={`med-card ${isTaken ? 'done' : ''} ${isMissed ? 'missed' : ''}`} data-color={med.color || 'blue'} key={key}>
                                             <div className="med-color-bar" style={{ background: `var(--accent-${med.color || 'blue'})` }} />
                                             <div className="med-info">
                                                 <div className="med-name">{med.name}</div>
@@ -2883,8 +2991,13 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                                             </div>
                                             {isTaken ? (
                                                 <div className="med-check"><Icon name="check" size={18} /></div>
+                                            ) : isMissed ? (
+                                                <div className="med-missed-badge">Missed</div>
                                             ) : (
-                                                <button className="med-btn" onClick={() => markTaken(med.id, med.currentTime)}>Take</button>
+                                                <div className="med-actions">
+                                                    <button className="med-btn take" onClick={() => markTaken(med.id, med.currentTime)}>Take</button>
+                                                    <button className="med-btn miss" onClick={() => markMissed(med.id, med.currentTime)}>Missed</button>
+                                                </div>
                                             )}
                                         </div>
                                     );
@@ -3245,8 +3358,8 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                         <div className="header-left">
                             <div className="logo-icon">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                    <path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7Z"/>
-                                    <path d="m8.5 8.5 7 7"/>
+                                    <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/>
+                                    <path d="M12 5v6M9 8h6"/>
                                 </svg>
                             </div>
                             <span className="logo-text">MedMinder</span>
@@ -3313,7 +3426,7 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                                     <div className="settings-row">
                                         <div>
                                             <div className="settings-label">Theme</div>
-                                            <div className="settings-desc">Choose your preferred theme</div>
+                                            <div className="settings-desc">Dark, Light, or System</div>
                                         </div>
                                         <div className="theme-btns">
                                             <button className={`theme-btn ${theme === 'dark' ? 'active' : ''}`} onClick={() => setTheme('dark')}>
@@ -3326,6 +3439,29 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                                                 <Icon name="monitor" size={14} />
                                             </button>
                                         </div>
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">Font Size</div>
+                                            <div className="settings-desc">Small, Medium, Large</div>
+                                        </div>
+                                        <div className="theme-btns">
+                                            {['small', 'medium', 'large'].map(size => (
+                                                <button key={size} className={`theme-btn ${fontSize === size ? 'active' : ''}`} onClick={() => setFontSize(size)}>
+                                                    <span style={{ fontSize: size === 'small' ? '12px' : size === 'medium' ? '14px' : '16px' }}>A</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div className="settings-row">
+                                        <div>
+                                            <div className="settings-label">High Contrast</div>
+                                            <div className="settings-desc">Better visibility</div>
+                                        </div>
+                                        <label className="toggle">
+                                            <input type="checkbox" checked={highContrast} onChange={(e) => setHighContrast(e.target.checked)} />
+                                            <span className="toggle-slider"></span>
+                                        </label>
                                     </div>
                                 </div>
 
