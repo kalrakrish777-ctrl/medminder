@@ -2551,7 +2551,7 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
 
             const getTourCardPosition = useCallback(() => {
                 const step = tutorialSteps[tutorialStep - 1];
-                if (!step) return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+                if (!step) return { top: '30%', left: '50%', transform: 'translateX(-50%)' };
                 
                 const navButtons = document.querySelectorAll('.nav-btn');
                 let targetEl;
@@ -2562,19 +2562,23 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                     case 'nav-ai': targetEl = navButtons[2]; break;
                     case 'nav-progress': targetEl = navButtons[3]; break;
                     case 'nav-contacts': targetEl = navButtons[4]; break;
-                    default: return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+                    default: return { top: '30%', left: '50%', transform: 'translateX(-50%)' };
                 }
                 
                 if (targetEl) {
                     const rect = targetEl.getBoundingClientRect();
-                    const isRightSide = rect.left > window.innerWidth / 2;
+                    const isRight = rect.left > window.innerWidth / 2;
+                    const horizontalPos = isRight 
+                        ? Math.min(rect.right + 20, window.innerWidth - 340)
+                        : Math.max(rect.left - 20, 20);
                     return {
-                        top: rect.top,
-                        [isRightSide ? 'right' : 'left']: isRightSide ? (window.innerWidth - rect.right) : rect.left,
+                        top: '25%',
+                        left: horizontalPos,
                         transform: 'none'
                     };
                 }
-                return { top: '50%', left: '50%', transform: 'translate(-50%, -50%)' };
+                return { top: '30%', left: '50%', transform: 'translateX(-50%)' };
+            }, [tutorialStep, tutorialSteps]);
             }, [tutorialStep, tutorialSteps]);
 
             // AI Chat
