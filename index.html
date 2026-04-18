@@ -1872,8 +1872,40 @@
                     return "To find a contact:\n\n1. Open your Contacts or Phone app\n2. Scroll through the list, or tap the search bar\n3. Type the person's name\n4. Tap on their name to see the number\n\nYou can also say 'Call [name]' to call someone!";
                 }
                 
+                if (/wifi|internet|connect.*wifi|wi-fi/i.test(lastMsg)) {
+                    return "To connect to WiFi:\n\n**iPhone:**\n1. Go to Settings\n2. Tap WiFi\n3. Turn it on\n4. Tap your home network\n5. Enter your password\n\n**Android:**\n1. Go to Settings\n2. Tap Network & Internet or Connections\n3. Tap WiFi\n4. Select your network\n5. Enter password\n\nNeed more help?";
+                }
+                
+                if (/bluetooth|connect.*headphone|connect.*earphone/i.test(lastMsg)) {
+                    return "To connect Bluetooth headphones:\n\n1. Put your headphones in pairing mode (check instructions)\n2. Go to Settings on your phone\n3. Tap Bluetooth (or Connections)\n4. Turn on Bluetooth\n5. Tap your headphones in the list\n\nThey should connect automatically next time!";
+                }
+                
+                if (/volume|louder|quieter|volume.*up|volume.*down/i.test(lastMsg)) {
+                    return "To adjust volume:\n\n**Side buttons:** Press the buttons on the side of your phone\n\n**Settings:**\n1. Go to Settings\n2. Tap Sounds & Haptics (iPhone) or Sound (Android)\n3. Adjust your preferences\n\nFor louder ringer, check that your phone isn't on silent mode!";
+                }
+                
+                if (/battery|charge|charging|i.*low/i.test(lastMsg)) {
+                    return "To charge your phone:\n\n1. Plug the charging cable into your phone\n2. Plug the other end into a power outlet or computer\n3. Look for the battery icon to appear\n4. Leave it to charge until full\n\nTip: Use the original charger that came with your phone for best results!";
+                }
+                
+                if (/screen.*dark|brightness|dim.*screen/i.test(lastMsg)) {
+                    return "To change screen brightness:\n\n**Quick way:** Swipe down from the top of your screen to open controls, then adjust the brightness slider.\n\n**Settings way:**\n1. Go to Settings\n2. Tap Display (or Brightness)\n3. Adjust the slider\n\nYou can also turn on Auto-Brightness for automatic adjustment!";
+                }
+                
+                if (/alarm|reminder|set.*alarm|wake.*up/i.test(lastMsg)) {
+                    return "To set an alarm:\n\n**iPhone:**\n1. Open the Clock app\n2. Tap Alarm\n3. Tap the + button\n4. Set the time\n5. Tap Save\n\n**Android:**\n1. Open Clock app\n2. Tap Alarm\n3. Tap the + button\n4. Set your time\n5. Tap OK\n\nWould you like help with anything else?";
+                }
+                
+                if (/download|install.*app|app.*store|play.*store/i.test(lastMsg)) {
+                    return "To download an app:\n\n**iPhone (App Store):**\n1. Open the App Store\n2. Search for the app\n3. Tap Get or the price\n4. Confirm with Face ID or password\n\n**Android (Play Store):**\n1. Open Play Store\n2. Search for the app\n3. Tap Install\n4. Tap Open when done\n\nLet me know if you need help with a specific app!";
+                }
+                
+                if (/weather|temperature|today.*like/i.test(lastMsg)) {
+                    return "To check the weather:\n\n**iPhone:** Swipe left on your home screen to see the Weather app, or ask Siri \"What's the weather?\"\n\n**Android:** Check the Google app or download a weather app like Weather.com\n\n**Online:** Visit weather.com or weather.google.com\n\nWould you like help with anything else?";
+                }
+                
                 if (/how.*do.*i|how.*to|tell.*me.*how|phone.*help|tablet.*help/i.test(lastMsg)) {
-                    return "I can help you learn how to use your phone or tablet! Just ask me:\n\n• How do I send a text?\n• How do I take a photo?\n• How do I make a video call?\n• How do I find my contacts?\n• And more!\n\nWhat would you like to learn?";
+                    return "I can help you learn how to use your phone or tablet! Just ask me:\n\n• How do I send a text?\n• How do I take a photo?\n• How do I make a video call?\n• How do I find my contacts?\n• How do I connect WiFi?\n• How do I set an alarm?\n• And more!\n\nWhat would you like to learn?";
                 }
                 
                 // Emergency help
@@ -2545,7 +2577,14 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
                                 <p className="page-subtitle">Your friendly voice assistant</p>
                             </div>
                             <div style={{padding: '20px', textAlign: 'center'}}>
-                                <div style={{fontSize: '48px', marginBottom: '20px'}}>💚</div>
+                                <div style={{width: '80px', height: '80px', margin: '0 auto 20px', background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-teal))', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
+                                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+                                        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+                                        <circle cx="8.5" cy="9.5" r="1.5" fill="white"/>
+                                        <circle cx="15.5" cy="9.5" r="1.5" fill="white"/>
+                                        <path d="M8 15c0 0 1.5 2 4 2s4-2 4-2" stroke="white" strokeWidth="2" fill="none"/>
+                                    </svg>
+                                </div>
                                 <h2 style={{marginBottom: '10px'}}>Hello! I'm here to help.</h2>
                                 <p style={{color: 'var(--text-secondary)', marginBottom: '20px'}}>I can answer questions about your medications, help with technology, or just chat.</p>
                                 <input 
