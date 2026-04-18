@@ -2357,11 +2357,7 @@ Keep responses friendly, warm, and helpful. When explaining technology, break it
             const [weekStartsOn, setWeekStartsOn] = useState(() => storage.get('weekStartsOn', 0));
             
             // Tutorial state
-            const [showTutorial, setShowTutorial] = useState(() => {
-                const hasSeenTutorial = storage.get('hasSeenTutorial', false);
-                const dontShow = storage.get('dontShowTutorial', false);
-                return !hasSeenTutorial && !dontShow;
-            });
+            const [showTutorial, setShowTutorial] = useState(true);
             const [tutorialStep, setTutorialStep] = useState(0);
             
             // Voice settings
